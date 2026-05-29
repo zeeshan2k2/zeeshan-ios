@@ -15,6 +15,9 @@ export type Project = {
   techStack: string[];
   overview: string;
   purpose: string;
+  buildSummary: string;
+  highlights: string[];
+  progress: string[];
   currentStatus: string;
   links: ProjectLink[];
   isSourcePrivate?: boolean;

@@ -35,4 +35,27 @@ export const feedPosts: FeedPost[] = [
       "The interesting part of Swift GenUI is not just generating views. It is designing schemas that keep the output native, predictable, and easy to inspect.",
     project: "swift-genui",
   },
+  {
+    slug: "relive-private-product-notes",
+    title: "Relive as a private product",
+    date: "2026-05-29",
+    type: "devlog",
+    tags: ["Relive", "iOS", "Product"],
+    excerpt:
+      "For Relive, the public trail should be product progress, interaction notes, and screenshots instead of source code.",
+    content:
+      "Relive is personal product work, so the code stays private while the public page becomes a product journal: progress, interaction notes, screenshots, technical decisions, and the small design questions that shape the experience.",
+    project: "relive",
+  },
+  {
+    slug: "codex-data-flow-detective",
+    title: "Tracing data flow like a detective",
+    date: "2026-05-29",
+    type: "note",
+    tags: ["Codex", "Architecture", "Debugging"],
+    excerpt:
+      "Codex keeps calling this production-level, but I am still tracing the data flow like a detective.",
+    content:
+      "Codex keeps calling this production-level, but I am still tracing the data flow like a detective. The feature can look done from the outside while the internal flow still needs more trust.",
+  },
 ];
