@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 
 import { CommentsPlaceholder } from "@/components/feed/CommentsPlaceholder";
 import { FeedList } from "@/components/feed/FeedList";
+import { AppWindow } from "@/components/layout/AppWindow";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { SectionReveal } from "@/components/motion/SectionReveal";
-import { Badge } from "@/components/ui/Badge";
 import { feedPosts } from "@/content/feed";
 
 export const metadata: Metadata = {
@@ -15,35 +15,26 @@ export const metadata: Metadata = {
 
 export default function FeedPage() {
   return (
-    <PageTransition className="gap-8">
-      <SectionReveal className="grid gap-6 lg:grid-cols-[1fr_0.75fr] lg:items-end">
-        <div>
-          <Badge>Feed</Badge>
-          <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
-            Developer notes, devlogs, and small engineering thoughts.
-          </h1>
-          <p className="mt-5 max-w-3xl text-base leading-7 text-white/62">
-            A local-content feed for Swift/iOS debugging notes, RAG experiments, product updates,
-            Xcode observations, and technical ideas that are too useful to disappear.
-          </p>
-        </div>
-
-        <div className="rounded-3xl border border-white/10 bg-[#1c1c1e]/58 p-5 shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/36">
-            Local v1 architecture
-          </p>
-          <p className="mt-3 text-sm leading-6 text-white/58">
-            Posts live in <span className="font-medium text-white/72">content/feed.ts</span> for
-            now. MDX can come later when the writing layer needs richer formatting.
-          </p>
-        </div>
-      </SectionReveal>
-
+    <PageTransition>
       <SectionReveal>
-        <FeedList posts={feedPosts} />
-      </SectionReveal>
-      <SectionReveal>
-        <CommentsPlaceholder />
+        <AppWindow
+          actions={
+            <div className="rounded-2xl border border-white/10 bg-[#1c1c1e]/70 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/36">
+                Local v1
+              </p>
+              <p className="mt-1 text-xs leading-5 text-white/54">content/feed.ts now, MDX later.</p>
+            </div>
+          }
+          description="Swift/iOS debugging notes, RAG experiments, product updates, Xcode observations, and technical ideas that are too useful to disappear."
+          eyebrow="Feed"
+          title="Developer notes, devlogs, and small engineering thoughts."
+        >
+          <div className="space-y-6">
+            <FeedList posts={feedPosts} />
+            <CommentsPlaceholder />
+          </div>
+        </AppWindow>
       </SectionReveal>
     </PageTransition>
   );
