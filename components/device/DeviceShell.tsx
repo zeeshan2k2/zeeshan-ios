@@ -15,6 +15,9 @@ type DeviceShellProps = {
   children: ReactNode;
 };
 
+const wallpaperSrc = "/wallpapers/wallpaper3.jpg";
+const lockSoundSrc = "/sounds/lock.mp3";
+
 export function DeviceShell({ children }: DeviceShellProps) {
   const [screenState, setScreenState] = useState<"home" | "black" | "lock">("home");
   const [showBlackCover, setShowBlackCover] = useState(false);
@@ -24,6 +27,8 @@ export function DeviceShell({ children }: DeviceShellProps) {
   const volumeTimeoutRef = useRef<number | null>(null);
 
   function handlePowerPress() {
+    new Audio(lockSoundSrc).play().catch(() => undefined);
+
     if (powerTimeoutRef.current !== null) {
       window.clearTimeout(powerTimeoutRef.current);
       powerTimeoutRef.current = null;
@@ -109,8 +114,9 @@ export function DeviceShell({ children }: DeviceShellProps) {
           onVolumeUp={() => handleVolumeChange("up")}
         />
 
-        <div className="relative flex-1 overflow-hidden md:min-h-0 md:rounded-[2.75rem] md:border md:border-white/10 md:bg-[#080a0f] md:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]">
-          <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_26%_0%,rgba(115,151,255,0.2),transparent_30rem),radial-gradient(circle_at_92%_8%,rgba(255,255,255,0.08),transparent_22rem)]" />
+        <div className="relative flex-1 overflow-hidden bg-[#080a0f] md:min-h-0 md:rounded-[2.75rem]">
+          <div className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center" style={{ backgroundImage: `url(${wallpaperSrc})` }} />
+          <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(2,4,8,0.28),rgba(2,4,8,0.42)),radial-gradient(circle_at_26%_0%,rgba(115,151,255,0.18),transparent_30rem),radial-gradient(circle_at_92%_8%,rgba(255,255,255,0.1),transparent_22rem)]" />
           <div
             className="device-screen-scroll relative z-10 h-full overflow-y-auto overscroll-contain pb-24 md:min-h-0 md:pb-28"
             data-device-scroll
@@ -124,7 +130,7 @@ export function DeviceShell({ children }: DeviceShellProps) {
           <AnimatePresence>
             {showVolumeHUD && screenState !== "black" ? <VolumeHUD key="volume-hud" volume={volume} /> : null}
             {screenState === "lock" ? (
-              <LockScreen key="lock-screen" onUnlock={handleUnlock} />
+              <LockScreen key="lock-screen" onUnlock={handleUnlock} wallpaperSrc={wallpaperSrc} />
             ) : null}
             {showBlackCover ? (
               <motion.div
