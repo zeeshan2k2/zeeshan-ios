@@ -5,7 +5,7 @@ import { experience } from "@/content/experience";
 import { feedPosts } from "@/content/feed";
 import { projects } from "@/content/projects";
 import { socialLinks } from "@/content/social";
-import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
+import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const featuredProject = projects.find((project) => project.slug === "swift-genui") ?? projects[0];
@@ -17,6 +17,27 @@ const quickActions = [
   { label: "Resume", symbol: "CV", href: socialLinks.find((link) => link.label === "View Resume")?.href },
   { label: "GitHub", symbol: "GH", href: socialLinks.find((link) => link.label === "GitHub")?.href },
   { label: "Email", symbol: "@", href: socialLinks.find((link) => link.label === "Email")?.href },
+];
+
+const contactPosterLinks = [
+  {
+    label: "GitHub",
+    href: socialLinks.find((link) => link.label === "GitHub")?.href,
+    icon: "github",
+    className: "bg-[#181717] text-white",
+  },
+  {
+    label: "LinkedIn",
+    href: socialLinks.find((link) => link.label === "LinkedIn")?.href,
+    icon: "linkedin",
+    className: "bg-[#0A66C2] text-white",
+  },
+  {
+    label: "Email",
+    href: socialLinks.find((link) => link.label === "Email")?.href,
+    icon: "email",
+    className: "bg-[linear-gradient(145deg,#64D2FF,#0A84FF)] text-white",
+  },
 ];
 
 const buildingItems = [
@@ -53,12 +74,50 @@ function WidgetSurface({
   );
 }
 
+function ContactPosterIcon({ icon }: { icon: string }) {
+  if (icon === "github") {
+    return (
+      <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24">
+        <path
+          d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.91.58.1.79-.25.79-.56v-2.02c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18A10.98 10.98 0 0 1 12 6.17c.98 0 1.96.13 2.88.39 2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.04c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  }
+
+  if (icon === "linkedin") {
+    return <span aria-hidden="true" className="text-[1.55rem] font-bold leading-none tracking-[-0.02em]">in</span>;
+  }
+
+  if (icon === "email") {
+    return (
+      <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24">
+        <path
+          d="M4.75 5.5h14.5c1.24 0 2.25 1.01 2.25 2.25v8.5c0 1.24-1.01 2.25-2.25 2.25H4.75A2.25 2.25 0 0 1 2.5 16.25v-8.5C2.5 6.51 3.51 5.5 4.75 5.5Zm.2 2 6.28 4.86c.45.35 1.09.35 1.54 0l6.28-4.86H4.95Z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24">
+      <path
+        d="M6.25 2.75h7.5L19.25 8v13.25h-13V2.75Zm7.2 1.8v4.1h4.2l-4.2-4.1ZM8.6 12.25h6.8v1.65H8.6v-1.65Zm0 3.1h6.8V17H8.6v-1.65Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 export function HomeWidgetScreen() {
   return (
     <div className="grid auto-rows-[minmax(10rem,auto)] gap-4 lg:grid-cols-8">
       <WidgetSurface className="min-h-[25rem] p-6 sm:p-7 lg:col-span-5 lg:row-span-2">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(10,132,255,0.3),transparent_18rem),radial-gradient(circle_at_92%_0%,rgba(255,255,255,0.14),transparent_13rem),linear-gradient(145deg,rgba(24,31,43,0.78),rgba(12,14,20,0.48)_58%,rgba(8,9,12,0.68))]" />
-        <div className="relative z-10 flex h-full flex-col justify-between gap-8">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_10%,rgba(10,132,255,0.34),transparent_18rem),radial-gradient(circle_at_88%_0%,rgba(191,90,242,0.18),transparent_14rem),linear-gradient(145deg,rgba(24,31,43,0.82),rgba(12,14,20,0.5)_58%,rgba(8,9,12,0.72))]" />
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/[0.055] blur-3xl" />
+        <div className="relative z-10 flex h-full flex-col justify-between gap-7">
           <div className="flex items-start justify-between gap-5">
             <div>
               <WidgetTitle>Contact Poster</WidgetTitle>
@@ -66,20 +125,22 @@ export function HomeWidgetScreen() {
                 {SITE_NAME}
               </h1>
             </div>
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[1.8rem] bg-white/14 text-2xl font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_44px_rgba(0,0,0,0.26)] sm:h-24 sm:w-24">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[1.75rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.2),rgba(255,255,255,0.08))] text-2xl font-semibold tracking-[-0.04em] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_44px_rgba(0,0,0,0.3)] sm:h-24 sm:w-24 sm:text-3xl">
               ZW
             </div>
           </div>
 
           <div>
             <p className="max-w-2xl text-[clamp(1.55rem,3vw,2.45rem)] font-semibold leading-tight tracking-[-0.04em] text-white/92">
-              iOS Engineer building native apps and local AI tools.
+              iOS Developer building native apps, AI-assisted systems, and polished Apple-platform experiences.
             </p>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-white/64">{SITE_DESCRIPTION}</p>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-white/64">
+              I work across Swift, UIKit, SwiftUI, and VisionOS, with production experience in app architecture, monetization, onboarding, and client-facing iOS work.
+            </p>
           </div>
 
           <div className="grid gap-2.5 sm:grid-cols-3">
-            {["Swift", "UIKit / SwiftUI", "Local AI"].map((item) => (
+            {["Swift / UIKit", "SwiftUI / VisionOS", "Python / AI"].map((item) => (
               <div
                 className="rounded-[1.35rem] bg-black/22 px-4 py-3 text-sm font-semibold text-white/78 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
                 key={item}
@@ -87,6 +148,25 @@ export function HomeWidgetScreen() {
                 {item}
               </div>
             ))}
+          </div>
+
+          <div className="flex flex-wrap gap-2.5">
+            {contactPosterLinks.map((link) =>
+              link.href ? (
+                <a
+                  aria-label={link.label}
+                  className={cn(
+                    "flex h-12 w-12 items-center justify-center rounded-[1.15rem] shadow-[0_12px_28px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.96]",
+                    link.className,
+                  )}
+                  href={link.href}
+                  key={link.label}
+                  title={link.label}
+                >
+                  <ContactPosterIcon icon={link.icon} />
+                </a>
+              ) : null,
+            )}
           </div>
         </div>
       </WidgetSurface>
