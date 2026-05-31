@@ -18,6 +18,10 @@ export const socialLinks = [
     href: "https://linkedin.com/in/zeeshanwaheed1",
   },
   {
+    label: "X",
+    href: "https://x.com/zeeshan_wz",
+  },
+  {
     label: "Email",
     href: "mailto:zeeshanwaheed.wz@gmail.com",
   },

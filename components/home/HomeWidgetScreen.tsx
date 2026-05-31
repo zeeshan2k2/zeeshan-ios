@@ -1,15 +1,16 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useState, type ReactNode } from "react";
+
+import Image from "next/image";
 
 import { Card } from "@/components/ui/Card";
 import { experience } from "@/content/experience";
 import { feedPosts } from "@/content/feed";
-import { projects } from "@/content/projects";
 import { socialLinks } from "@/content/social";
 import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const featuredProject = projects.find((project) => project.slug === "swift-genui") ?? projects[0];
-const projectStack = projects.filter((project) => project.slug !== featuredProject.slug);
 const latestPost = feedPosts[0];
 const enterpriseExperience = experience[0];
 
@@ -33,6 +34,12 @@ const contactPosterLinks = [
     className: "bg-[#0A66C2] text-white",
   },
   {
+    label: "X",
+    href: socialLinks.find((link) => link.label === "X")?.href,
+    icon: "x",
+    className: "bg-black text-white",
+  },
+  {
     label: "Email",
     href: socialLinks.find((link) => link.label === "Email")?.href,
     icon: "email",
@@ -40,10 +47,66 @@ const contactPosterLinks = [
   },
 ];
 
-const buildingItems = [
-  { label: "Relive", detail: "Private iOS product", tint: "bg-[#0A84FF]" },
-  { label: "Swift GenUI", detail: "Local LLM UI systems", tint: "bg-[#34C759]" },
-  { label: "Local AI tooling", detail: "RAG + model experiments", tint: "bg-[#BF5AF2]" },
+const appleStackItems = [
+  { label: "Languages", detail: "Swift, Objective-C, Python, JavaScript", tint: "bg-[#0A84FF]" },
+  { label: "Apple UI", detail: "UIKit, SwiftUI, VisionOS, WidgetKit", tint: "bg-[#BF5AF2]" },
+  { label: "Data & APIs", detail: "Core Data, SwiftData, Keychain, URLSession", tint: "bg-[#34C759]" },
+  { label: "Reliability", detail: "XCTest, Firebase, Crashlytics, Notifications", tint: "bg-[#FF9F0A]" },
+  { label: "Product", detail: "StoreKit, Ads SDKs, Lottie, Figma", tint: "bg-[#FF453A]" },
+];
+
+const currentRoleHighlights = [
+  "App Store VPN apps",
+  "VisionOS AI Tutor",
+  "Enterprise iOS client work",
+  "Legacy iPad modernization",
+];
+
+const homeProjects = [
+  {
+    name: "33VPN",
+    status: "Public first phase",
+    description: "UIKit VPN client interface with MVVM Clean Architecture.",
+    icon: "/ui/appscreenshots/33vpn/app-icon.png",
+    href: "/projects#33vpn",
+    screenshots: [
+      "/ui/appscreenshots/33vpn/Home.png",
+      "/ui/appscreenshots/33vpn/servers.png",
+      "/ui/appscreenshots/33vpn/settings.png",
+      "/ui/appscreenshots/33vpn/premium%201.png",
+      "/ui/appscreenshots/33vpn/vpn%20protocol.png",
+    ],
+  },
+  {
+    name: "Weather",
+    status: "SwiftUI + widgets",
+    description: "SwiftUI weather interface with forecast views, widgets, and AI summary screens.",
+    icon: "/ui/appscreenshots/weather/app-icon.png",
+    href: "/projects#weather-app",
+    screenshots: [
+      "/ui/appscreenshots/weather/weather-view.PNG",
+      "/ui/appscreenshots/weather/weather-list-view.png",
+      "/ui/appscreenshots/weather/day-detail-view.PNG",
+      "/ui/appscreenshots/weather/ai-summary-view.PNG",
+      "/ui/appscreenshots/weather/widget-medium.jpg",
+    ],
+  },
+  {
+    name: "SwiftGenUI",
+    status: "AI + native UI",
+    description: "Schema-driven UI generation rendered into native Apple-platform interfaces.",
+    iconFallback: "UI",
+    href: "/projects#swift-genui",
+    screenshots: [],
+  },
+  {
+    name: "Spatial Tutor",
+    status: "AI + VisionOS",
+    description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
+    iconFallback: "ST",
+    href: "/projects#spatial-tutor",
+    screenshots: [],
+  },
 ];
 
 function WidgetTitle({ children, className }: { children: ReactNode; className?: string }) {
@@ -90,6 +153,10 @@ function ContactPosterIcon({ icon }: { icon: string }) {
     return <span aria-hidden="true" className="text-[1.55rem] font-bold leading-none tracking-[-0.02em]">in</span>;
   }
 
+  if (icon === "x") {
+    return <Image alt="" aria-hidden="true" className="h-6 w-6 object-contain" height={24} src="/icons/X.avif" width={24} />;
+  }
+
   if (icon === "email") {
     return (
       <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24">
@@ -112,9 +179,12 @@ function ContactPosterIcon({ icon }: { icon: string }) {
 }
 
 export function HomeWidgetScreen() {
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const selectedProject = homeProjects[selectedProjectIndex];
+
   return (
     <div className="grid auto-rows-[minmax(10rem,auto)] gap-4 lg:grid-cols-8">
-      <WidgetSurface className="min-h-[25rem] p-6 sm:p-7 lg:col-span-5 lg:row-span-2">
+      <WidgetSurface className="min-h-[25rem] p-6 sm:p-7 lg:col-span-5">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_10%,rgba(10,132,255,0.34),transparent_18rem),radial-gradient(circle_at_88%_0%,rgba(191,90,242,0.18),transparent_14rem),linear-gradient(145deg,rgba(24,31,43,0.82),rgba(12,14,20,0.5)_58%,rgba(8,9,12,0.72))]" />
         <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/[0.055] blur-3xl" />
         <div className="relative z-10 flex h-full flex-col justify-between gap-7">
@@ -172,13 +242,14 @@ export function HomeWidgetScreen() {
       </WidgetSurface>
 
       <WidgetSurface className="p-5 lg:col-span-3">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(10,132,255,0.2),transparent_12rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_42%)]" />
         <div className="relative z-10">
-          <WidgetTitle>Reminders</WidgetTitle>
-          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white">Currently building</h2>
-          <div className="mt-5 space-y-3">
-            {buildingItems.map((item) => (
+          <WidgetTitle>Apple Stack</WidgetTitle>
+          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white">Production-ready iOS toolkit.</h2>
+          <div className="mt-5 space-y-2.5">
+            {appleStackItems.map((item) => (
               <div className="flex items-center gap-3 rounded-[1.35rem] bg-white/[0.065] px-3.5 py-3" key={item.label}>
-                <span className={cn("h-3 w-3 shrink-0 rounded-full shadow-[0_0_18px_currentColor]", item.tint)} />
+                <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full shadow-[0_0_18px_currentColor]", item.tint)} />
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-white/86">{item.label}</p>
                   <p className="mt-0.5 truncate text-xs font-medium text-white/44">{item.detail}</p>
@@ -186,58 +257,114 @@ export function HomeWidgetScreen() {
               </div>
             ))}
           </div>
-        </div>
-      </WidgetSurface>
 
-      <a className="block lg:col-span-3" href={`/projects#${featuredProject.slug}`}>
-        <WidgetSurface className="min-h-[17rem] p-5">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_0%,rgba(10,132,255,0.42),transparent_12rem),linear-gradient(145deg,rgba(10,132,255,0.22),rgba(60,55,178,0.18)_44%,rgba(20,21,28,0.5))]" />
-          <div className="relative z-10 flex h-full flex-col">
-            <div className="flex items-center justify-between gap-4">
-              <WidgetTitle className="text-white/58">Shortcuts</WidgetTitle>
-              <span className="rounded-full bg-white/14 px-3 py-1 text-xs font-semibold text-white/72">
-                {featuredProject.status}
+          <div className="mt-5 rounded-[1.45rem] bg-black/22 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/42">Current Role</p>
+                <p className="mt-2 text-sm font-semibold text-white/84">iOS Developer</p>
+                <p className="mt-1 text-xs font-medium text-white/48">Synapse Consulting</p>
+              </div>
+              <span className="rounded-full bg-[#34C759]/16 px-2.5 py-1 text-[0.68rem] font-semibold text-[#9BE7AE]">
+                Aug 2024 - Present
               </span>
             </div>
-            <div className="mt-5 flex h-14 w-14 items-center justify-center rounded-[1.25rem] bg-[#0A84FF] text-xl font-semibold text-white shadow-[0_16px_38px_rgba(10,132,255,0.28),inset_0_1px_0_rgba(255,255,255,0.28)]">
-              UI
-            </div>
-            <h2 className="mt-5 text-3xl font-semibold tracking-[-0.045em] text-white">{featuredProject.name}</h2>
-            <p className="mt-2 text-sm leading-6 text-white/64">{featuredProject.description}</p>
-            <div className="mt-auto flex flex-wrap gap-2 pt-5">
-              {featuredProject.techStack.slice(0, 3).map((tech) => (
-                <span className="rounded-full bg-white/12 px-2.5 py-1 text-[0.7rem] font-semibold text-white/58" key={tech}>
-                  {tech}
-                </span>
+            <div className="mt-3 grid gap-1.5">
+              {currentRoleHighlights.map((highlight) => (
+                <div className="flex items-center gap-2 text-xs font-medium text-white/54" key={highlight}>
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/36" />
+                  <span>{highlight}</span>
+                </div>
               ))}
             </div>
           </div>
-        </WidgetSurface>
-      </a>
+        </div>
+      </WidgetSurface>
 
-      <WidgetSurface className="p-5 lg:col-span-5">
+      <WidgetSurface className="p-4 lg:col-span-8">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(75,167,255,0.18),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
         <div className="relative z-10">
-          <div className="flex items-center justify-between gap-4">
-            <WidgetTitle>Files</WidgetTitle>
+          <div className="mb-4 flex items-center justify-between gap-4 px-1">
+            <div>
+              <WidgetTitle>Files</WidgetTitle>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Project previews</h2>
+            </div>
             <a className="text-sm font-semibold text-[#9FD0FF]" href="/projects">
-              Projects
+              View all
             </a>
           </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            {projectStack.map((project) => (
-              <a
-                className="group min-h-36 rounded-[1.55rem] bg-white/[0.065] p-3.5 transition hover:bg-white/[0.1] active:scale-[0.99]"
-                href={`/projects#${project.slug}`}
-                key={project.slug}
-              >
-                <div className="mb-4 h-10 w-14 rounded-b-[0.55rem] rounded-t-[0.9rem] bg-[linear-gradient(180deg,#7DD9FF,#35B7F2)] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_12px_26px_rgba(0,0,0,0.2)]">
-                  <div className="h-3 w-9 rounded-t-[0.55rem] bg-[#B8EEFF]" />
+
+          <div className="grid gap-4 lg:grid-cols-[16.5rem_minmax(0,1fr)]">
+            <div className="space-y-2.5 rounded-[1.75rem] bg-black/20 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              {homeProjects.map((project, index) => {
+                const isSelected = index === selectedProjectIndex;
+
+                return (
+                  <button
+                    className={cn(
+                      "flex w-full items-center gap-3 rounded-[1.35rem] p-3 text-left transition active:scale-[0.99]",
+                      isSelected ? "bg-white/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]" : "hover:bg-white/[0.07]",
+                    )}
+                    key={project.name}
+                    onClick={() => setSelectedProjectIndex(index)}
+                    type="button"
+                  >
+                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,#2C2C2E,#111217)] shadow-[0_10px_22px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.14)]">
+                      {project.icon ? (
+                        <Image alt="" className="h-full w-full object-cover" height={48} src={project.icon} width={48} />
+                      ) : (
+                        <span className="text-sm font-semibold text-white/86">{project.iconFallback}</span>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-white/88">{project.name}</p>
+                      <p className="mt-1 truncate text-xs font-medium text-white/44">{project.status}</p>
+                    </div>
+                    <span className={cn("ml-auto h-2 w-2 rounded-full", isSelected ? "bg-[#0A84FF]" : "bg-white/18")} />
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="min-w-0 rounded-[1.75rem] bg-black/18 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+              <div className="mb-3 flex items-start justify-between gap-4 px-1">
+                <div className="min-w-0">
+                  <p className="text-lg font-semibold tracking-[-0.025em] text-white">{selectedProject.name}</p>
+                  <p className="mt-1 max-w-xl text-sm leading-5 text-white/52">{selectedProject.description}</p>
                 </div>
-                <p className="text-base font-semibold tracking-[-0.02em] text-white">{project.name}</p>
-                <p className="mt-1 text-xs font-medium text-white/42">{project.status}</p>
-                <p className="mt-3 text-xs leading-5 text-white/50">{project.category}</p>
-              </a>
-            ))}
+                <a className="shrink-0 rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/58 transition hover:bg-white/[0.13] hover:text-white" href={selectedProject.href}>
+                  Open
+                </a>
+              </div>
+
+              {selectedProject.screenshots.length > 0 ? (
+                <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {selectedProject.screenshots.map((screenshot, index) => (
+                    <div
+                      className="relative h-[22rem] w-[10.4rem] shrink-0 overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 shadow-[0_18px_42px_rgba(0,0,0,0.34)] sm:h-[25rem] sm:w-[11.8rem]"
+                      key={screenshot}
+                    >
+                      <Image
+                        alt={`${selectedProject.name} screenshot ${index + 1}`}
+                        className="h-full w-full object-cover"
+                        height={800}
+                        src={screenshot}
+                        width={380}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex h-[22rem] items-center justify-center rounded-[1.65rem] border border-dashed border-white/16 bg-white/[0.045] text-center sm:h-[25rem]">
+                  <div>
+                    <p className="text-sm font-semibold text-white/72">Screenshots coming soon</p>
+                    <p className="mt-2 max-w-xs text-xs leading-5 text-white/42">
+                      Add assets for {selectedProject.name} and this preview will turn into a horizontal gallery.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </WidgetSurface>
