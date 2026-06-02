@@ -106,15 +106,15 @@ export function DeviceShell({ children }: DeviceShellProps) {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden px-0 text-white md:flex md:items-center md:justify-center md:px-4 md:py-6 lg:px-6">
-      <div className="relative flex h-screen w-full flex-col bg-[#080a0f] md:h-[min(86vh,940px)] md:min-h-0 md:max-w-[1320px] md:rounded-[3.5rem] md:border md:border-white/14 md:bg-[#0a0b0f] md:p-3 md:shadow-[0_38px_140px_rgba(0,0,0,0.56),inset_0_1px_0_rgba(255,255,255,0.12)] lg:p-4">
+    <div className="fixed inset-0 overflow-hidden px-0 text-white md:flex md:items-start md:justify-center md:px-4 md:py-3 lg:px-5 lg:py-4 xl:items-center xl:px-6 xl:py-6">
+      <div className="relative flex h-full w-full flex-col bg-[#080a0f] md:h-auto md:max-h-full md:min-h-0 md:max-w-[1320px] md:self-stretch md:rounded-[2.65rem] md:border md:border-white/14 md:bg-[#0a0b0f] md:p-2 md:shadow-[0_38px_140px_rgba(0,0,0,0.56),inset_0_1px_0_rgba(255,255,255,0.12)] lg:rounded-[3.1rem] lg:p-3 xl:rounded-[3.5rem] xl:p-4">
         <IPadFrame
           onPowerPress={handlePowerPress}
           onVolumeDown={() => handleVolumeChange("down")}
           onVolumeUp={() => handleVolumeChange("up")}
         />
 
-        <div className="relative flex-1 overflow-hidden bg-[#080a0f] md:min-h-0 md:rounded-[2.75rem]">
+        <div className="relative min-h-0 flex-1 overflow-hidden bg-[#080a0f] md:rounded-[2.1rem] lg:rounded-[2.45rem] xl:rounded-[2.75rem]">
           <div className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center" style={{ backgroundImage: `url(${wallpaperSrc})` }} />
           <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(2,4,8,0.28),rgba(2,4,8,0.42)),radial-gradient(circle_at_26%_0%,rgba(115,151,255,0.18),transparent_30rem),radial-gradient(circle_at_92%_8%,rgba(255,255,255,0.1),transparent_22rem)]" />
           <div

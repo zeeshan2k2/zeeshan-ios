@@ -1,0 +1,147 @@
+import type { LearningProject, ProfessionalApp, ShowcaseProject } from "@/types/projectArchive";
+
+export const professionalApps: ProfessionalApp[] = [
+  {
+    name: "Zurich Cyber",
+    label: "Contributed",
+    icon: "/professional-apps/zurich-cyber.png",
+    href: "https://apps.apple.com/ch/app/zurich-cyber-security/id6476657273?l=en-GB",
+  },
+  {
+    name: "Boxx Cyber",
+    label: "Contributed",
+    icon: "/professional-apps/boxx-cyber.png",
+    href: "https://apps.apple.com/us/app/boxx-cyber-security/id6752987257",
+  },
+  {
+    name: "VPN TomatoLink",
+    label: "Built end-to-end",
+    icon: "/professional-apps/tomato-vpn.png",
+    href: "https://apps.apple.com/us/app/vpn-tomatolink-fast-wifi-proxy/id6449517484",
+  },
+  {
+    name: "Bubble VPN",
+    label: "Built end-to-end",
+    icon: "/professional-apps/bubble-vpn.png",
+    href: "https://apps.apple.com/us/app/bubble-vpn-speed-connect-fast/id1591409499",
+  },
+  {
+    name: "Uranus NetTest",
+    label: "Built end-to-end",
+    icon: "/professional-apps/uranus-nettest.png",
+    href: "https://apps.apple.com/us/app/uranus-nettest-speed-test/id1585109550",
+  },
+  {
+    name: "PunchLog",
+    label: "Modernized",
+    icon: "/professional-apps/punchlist.png",
+  },
+];
+
+export const showcaseProjects: ShowcaseProject[] = [
+  {
+    slug: "33vpn",
+    name: "33VPN",
+    status: "Public first phase",
+    description: "UIKit VPN client interface with MVVM Clean Architecture.",
+    category: "UIKit app architecture",
+    icon: "/ui/appscreenshots/33vpn/app-icon.png",
+    href: "/projects#33vpn",
+    techStack: ["Swift", "UIKit", "MVVM", "Clean Architecture", "CocoaPods"],
+    preferredFrame: "phone",
+    screenshots: [
+      { src: "/ui/appscreenshots/33vpn/home-updated.png" },
+      { src: "/ui/appscreenshots/33vpn/servers.png" },
+      { src: "/ui/appscreenshots/33vpn/settings.png" },
+      { src: "/ui/appscreenshots/33vpn/premium%201.png" },
+      { src: "/ui/appscreenshots/33vpn/vpn%20protocol.png" },
+    ],
+  },
+  {
+    slug: "weather",
+    name: "Weather",
+    status: "SwiftUI + widgets",
+    description: "SwiftUI weather interface with forecast views, widgets, and AI summary screens.",
+    category: "SwiftUI product UI",
+    icon: "/ui/appscreenshots/weather/app-icon.png",
+    href: "/projects#weather",
+    techStack: ["Swift", "SwiftUI", "Widgets", "Forecast UI"],
+    preferredFrame: "phone",
+    screenshots: [
+      { src: "/ui/appscreenshots/weather/weather-view.PNG" },
+      { src: "/ui/appscreenshots/weather/weather-list-view.png" },
+      { src: "/ui/appscreenshots/weather/day-detail-view.PNG" },
+      { src: "/ui/appscreenshots/weather/ai-summary-view.PNG" },
+      { src: "/ui/appscreenshots/weather/widget-medium.jpg", frame: "wide" },
+    ],
+  },
+  {
+    slug: "swift-genui",
+    name: "SwiftGenUI",
+    status: "AI + native UI",
+    description: "Schema-driven native UI generation using local LLMs and SwiftUI.",
+    category: "AI + iOS systems",
+    iconFallback: "UI",
+    href: "/projects#swift-genui",
+    techStack: ["Swift", "SwiftUI", "Local LLMs", "Schema Design"],
+    preferredFrame: "wide",
+    screenshots: [],
+  },
+  {
+    slug: "spatial-tutor",
+    name: "Spatial Tutor",
+    status: "VisionOS + AI",
+    description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
+    category: "VisionOS product work",
+    iconFallback: "ST",
+    href: "/projects#spatial-tutor",
+    techStack: ["SwiftUI", "VisionOS", "TCA", "WebSocket", "SwiftData"],
+    preferredFrame: "vision",
+    screenshots: [],
+  },
+];
+
+export const learningProjects: LearningProject[] = [
+  {
+    name: "UIKit Flow Experiments",
+    category: "UIKit",
+    description: "Small navigation, delegate, and screen-flow experiments used to sharpen production iOS patterns.",
+    techStack: ["Swift", "UIKit", "Delegates"],
+    status: "Learning",
+  },
+  {
+    name: "SwiftUI Component Lab",
+    category: "SwiftUI",
+    description: "Reusable view experiments, previews, layout tests, and interaction polish for Apple-platform UI work.",
+    techStack: ["SwiftUI", "Previews", "Layout"],
+    status: "Learning",
+  },
+  {
+    name: "Local AI Notes",
+    category: "AI",
+    description: "Explorations around local model workflows, RAG notes, prompts, and app-facing AI behavior.",
+    techStack: ["Python", "RAG", "LLMs"],
+    status: "Research",
+  },
+  {
+    name: "C++ Systems Sketches",
+    category: "Systems",
+    description: "Low-level experiments for understanding file formats, model tooling, and performance-minded code.",
+    techStack: ["C++", "GGUF", "CLI"],
+    status: "Experimental",
+  },
+  {
+    name: "Architecture Demos",
+    category: "Architecture",
+    description: "Practice projects focused on MVVM, dependency boundaries, testability, and clean screen composition.",
+    techStack: ["Swift", "MVVM", "XCTest"],
+    status: "Learning",
+  },
+  {
+    name: "Creative Product Tests",
+    category: "Product",
+    description: "Small experiments around game feel, product loops, and interaction ideas before they become full projects.",
+    techStack: ["Prototyping", "Game Design", "UI"],
+    status: "Exploring",
+  },
+];

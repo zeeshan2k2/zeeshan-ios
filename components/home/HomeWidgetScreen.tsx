@@ -1,24 +1,17 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Card } from "@/components/ui/Card";
-import { experience } from "@/content/experience";
 import { feedPosts } from "@/content/feed";
 import { socialLinks } from "@/content/social";
 import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const latestPost = feedPosts[0];
-const enterpriseExperience = experience[0];
-
-const quickActions = [
-  { label: "Resume", symbol: "CV", href: socialLinks.find((link) => link.label === "View Resume")?.href },
-  { label: "GitHub", symbol: "GH", href: socialLinks.find((link) => link.label === "GitHub")?.href },
-  { label: "Email", symbol: "@", href: socialLinks.find((link) => link.label === "Email")?.href },
-];
+const feedPreviewPosts = feedPosts.slice(0, 4);
 
 const contactPosterLinks = [
   {
@@ -62,6 +55,77 @@ const currentRoleHighlights = [
   "Legacy iPad modernization",
 ];
 
+type ProfessionalApp = {
+  name: string;
+  label: string;
+  icon?: string;
+  iconFallback?: string;
+  href?: string;
+};
+
+const professionalApps: ProfessionalApp[] = [
+  {
+    name: "Zurich Cyber",
+    label: "Contributed",
+    icon: "/professional-apps/zurich-cyber.png",
+    href: "https://apps.apple.com/ch/app/zurich-cyber-security/id6476657273?l=en-GB",
+  },
+  {
+    name: "Boxx Cyber",
+    label: "Contributed",
+    icon: "/professional-apps/boxx-cyber.png",
+    href: "https://apps.apple.com/us/app/boxx-cyber-security/id6752987257",
+  },
+  {
+    name: "VPN TomatoLink",
+    label: "Built end-to-end",
+    icon: "/professional-apps/tomato-vpn.png",
+    href: "https://apps.apple.com/us/app/vpn-tomatolink-fast-wifi-proxy/id6449517484",
+  },
+  {
+    name: "Bubble VPN",
+    label: "Built end-to-end",
+    icon: "/professional-apps/bubble-vpn.png",
+    href: "https://apps.apple.com/us/app/bubble-vpn-speed-connect-fast/id1591409499",
+  },
+  {
+    name: "Uranus NetTest",
+    label: "Built end-to-end",
+    icon: "/professional-apps/uranus-nettest.png",
+    href: "https://apps.apple.com/us/app/uranus-nettest-speed-test/id1585109550",
+  },
+  {
+    name: "PunchLog",
+    label: "Modernized",
+    icon: "/professional-apps/punchlist.png",
+  },
+];
+
+type ScreenshotFrame = "phone" | "wide" | "square" | "vision";
+
+type HomeProjectScreenshot = {
+  src: string;
+  frame?: ScreenshotFrame;
+};
+
+type HomeProject = {
+  name: string;
+  status: string;
+  description: string;
+  icon?: string;
+  iconFallback?: string;
+  href: string;
+  preferredFrame?: ScreenshotFrame;
+  screenshots: HomeProjectScreenshot[];
+};
+
+const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
+  phone: "h-[22rem] w-[10.4rem] sm:h-[25rem] sm:w-[11.8rem]",
+  wide: "h-[13.25rem] w-[24rem] sm:h-[15rem] sm:w-[27rem]",
+  square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
+  vision: "h-[15rem] w-[27rem] sm:h-[17rem] sm:w-[31rem]",
+};
+
 const homeProjects = [
   {
     name: "33VPN",
@@ -69,12 +133,13 @@ const homeProjects = [
     description: "UIKit VPN client interface with MVVM Clean Architecture.",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
+    preferredFrame: "phone",
     screenshots: [
-      "/ui/appscreenshots/33vpn/Home.png",
-      "/ui/appscreenshots/33vpn/servers.png",
-      "/ui/appscreenshots/33vpn/settings.png",
-      "/ui/appscreenshots/33vpn/premium%201.png",
-      "/ui/appscreenshots/33vpn/vpn%20protocol.png",
+      { src: "/ui/appscreenshots/33vpn/home-updated.png" },
+      { src: "/ui/appscreenshots/33vpn/servers.png" },
+      { src: "/ui/appscreenshots/33vpn/settings.png" },
+      { src: "/ui/appscreenshots/33vpn/premium%201.png" },
+      { src: "/ui/appscreenshots/33vpn/vpn%20protocol.png" },
     ],
   },
   {
@@ -83,12 +148,13 @@ const homeProjects = [
     description: "SwiftUI weather interface with forecast views, widgets, and AI summary screens.",
     icon: "/ui/appscreenshots/weather/app-icon.png",
     href: "/projects#weather-app",
+    preferredFrame: "phone",
     screenshots: [
-      "/ui/appscreenshots/weather/weather-view.PNG",
-      "/ui/appscreenshots/weather/weather-list-view.png",
-      "/ui/appscreenshots/weather/day-detail-view.PNG",
-      "/ui/appscreenshots/weather/ai-summary-view.PNG",
-      "/ui/appscreenshots/weather/widget-medium.jpg",
+      { src: "/ui/appscreenshots/weather/weather-view.PNG" },
+      { src: "/ui/appscreenshots/weather/weather-list-view.png" },
+      { src: "/ui/appscreenshots/weather/day-detail-view.PNG" },
+      { src: "/ui/appscreenshots/weather/ai-summary-view.PNG" },
+      { src: "/ui/appscreenshots/weather/widget-medium.jpg", frame: "wide" },
     ],
   },
   {
@@ -97,6 +163,7 @@ const homeProjects = [
     description: "Schema-driven UI generation rendered into native Apple-platform interfaces.",
     iconFallback: "UI",
     href: "/projects#swift-genui",
+    preferredFrame: "wide",
     screenshots: [],
   },
   {
@@ -105,9 +172,10 @@ const homeProjects = [
     description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
     iconFallback: "ST",
     href: "/projects#spatial-tutor",
+    preferredFrame: "vision",
     screenshots: [],
   },
-];
+] satisfies HomeProject[];
 
 function WidgetTitle({ children, className }: { children: ReactNode; className?: string }) {
   return (
@@ -180,7 +248,69 @@ function ContactPosterIcon({ icon }: { icon: string }) {
 
 export function HomeWidgetScreen() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const projectSectionRef = useRef<HTMLDivElement>(null);
   const selectedProject = homeProjects[selectedProjectIndex];
+
+  useEffect(() => {
+    const section = projectSectionRef.current;
+    const scrollContainer = section?.closest("[data-device-scroll]") as HTMLElement | null;
+
+    if (!section || !scrollContainer) {
+      return;
+    }
+
+    const currentSection = section;
+    const currentScrollContainer = scrollContainer;
+    const desktopProjectBrowserQuery = window.matchMedia("(min-width: 1280px)");
+
+    function updateSelectedProject() {
+      if (!desktopProjectBrowserQuery.matches) {
+        return;
+      }
+
+      const sectionRect = currentSection.getBoundingClientRect();
+      const containerRect = currentScrollContainer.getBoundingClientRect();
+      const scrollDistance = Math.max(1, sectionRect.height - containerRect.height);
+      const progress = Math.min(0.999, Math.max(0, (containerRect.top - sectionRect.top) / scrollDistance));
+      const nextIndex = Math.min(homeProjects.length - 1, Math.floor(progress * homeProjects.length));
+
+      setSelectedProjectIndex(nextIndex);
+    }
+
+    updateSelectedProject();
+    currentScrollContainer.addEventListener("scroll", updateSelectedProject, { passive: true });
+    desktopProjectBrowserQuery.addEventListener("change", updateSelectedProject);
+    window.addEventListener("resize", updateSelectedProject);
+
+    return () => {
+      currentScrollContainer.removeEventListener("scroll", updateSelectedProject);
+      desktopProjectBrowserQuery.removeEventListener("change", updateSelectedProject);
+      window.removeEventListener("resize", updateSelectedProject);
+    };
+  }, []);
+
+  function handleProjectSelect(index: number) {
+    setSelectedProjectIndex(index);
+
+    const section = projectSectionRef.current;
+    const scrollContainer = section?.closest("[data-device-scroll]") as HTMLElement | null;
+
+    if (!section || !scrollContainer) {
+      return;
+    }
+
+    if (!window.matchMedia("(min-width: 1280px)").matches) {
+      return;
+    }
+
+    const sectionRect = section.getBoundingClientRect();
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const scrollDistance = Math.max(1, section.offsetHeight - scrollContainer.clientHeight);
+    const segmentTop = scrollDistance * (index / homeProjects.length) + 1;
+    const targetTop = scrollContainer.scrollTop + sectionRect.top - containerRect.top + segmentTop;
+
+    scrollContainer.scrollTo({ top: targetTop, behavior: "smooth" });
+  }
 
   return (
     <div className="grid auto-rows-[minmax(10rem,auto)] gap-4 lg:grid-cols-8">
@@ -281,7 +411,9 @@ export function HomeWidgetScreen() {
         </div>
       </WidgetSurface>
 
-      <WidgetSurface className="p-4 lg:col-span-8">
+      <div className="lg:col-span-8 xl:h-[250vh]" ref={projectSectionRef}>
+        <div className="xl:sticky xl:top-[calc(50%-18rem)]">
+          <WidgetSurface className="p-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(75,167,255,0.18),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
         <div className="relative z-10">
           <div className="mb-4 flex items-center justify-between gap-4 px-1">
@@ -294,19 +426,19 @@ export function HomeWidgetScreen() {
             </a>
           </div>
 
-          <div className="grid gap-4 lg:grid-cols-[16.5rem_minmax(0,1fr)]">
-            <div className="space-y-2.5 rounded-[1.75rem] bg-black/20 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+          <div className="grid gap-4 xl:grid-cols-[16.5rem_minmax(0,1fr)]">
+            <div className="flex gap-2 overflow-x-auto rounded-[1.75rem] bg-black/20 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden xl:block xl:space-y-2.5 xl:overflow-visible">
               {homeProjects.map((project, index) => {
                 const isSelected = index === selectedProjectIndex;
 
                 return (
                   <button
                     className={cn(
-                      "flex w-full items-center gap-3 rounded-[1.35rem] p-3 text-left transition active:scale-[0.99]",
+                      "flex min-w-[13.25rem] items-center gap-3 rounded-[1.35rem] p-3 text-left transition active:scale-[0.99] xl:w-full xl:min-w-0",
                       isSelected ? "bg-white/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]" : "hover:bg-white/[0.07]",
                     )}
                     key={project.name}
-                    onClick={() => setSelectedProjectIndex(index)}
+                    onClick={() => handleProjectSelect(index)}
                     type="button"
                   >
                     <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,#2C2C2E,#111217)] shadow-[0_10px_22px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.14)]">
@@ -320,92 +452,175 @@ export function HomeWidgetScreen() {
                       <p className="truncate text-sm font-semibold text-white/88">{project.name}</p>
                       <p className="mt-1 truncate text-xs font-medium text-white/44">{project.status}</p>
                     </div>
-                    <span className={cn("ml-auto h-2 w-2 rounded-full", isSelected ? "bg-[#0A84FF]" : "bg-white/18")} />
+                    <span className={cn("ml-auto h-2 w-2 shrink-0 rounded-full", isSelected ? "bg-[#0A84FF]" : "bg-white/18")} />
                   </button>
                 );
               })}
             </div>
 
             <div className="min-w-0 rounded-[1.75rem] bg-black/18 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-              <div className="mb-3 flex items-start justify-between gap-4 px-1">
-                <div className="min-w-0">
-                  <p className="text-lg font-semibold tracking-[-0.025em] text-white">{selectedProject.name}</p>
-                  <p className="mt-1 max-w-xl text-sm leading-5 text-white/52">{selectedProject.description}</p>
-                </div>
-                <a className="shrink-0 rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/58 transition hover:bg-white/[0.13] hover:text-white" href={selectedProject.href}>
-                  Open
-                </a>
-              </div>
-
-              {selectedProject.screenshots.length > 0 ? (
-                <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  {selectedProject.screenshots.map((screenshot, index) => (
-                    <div
-                      className="relative h-[22rem] w-[10.4rem] shrink-0 overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 shadow-[0_18px_42px_rgba(0,0,0,0.34)] sm:h-[25rem] sm:w-[11.8rem]"
-                      key={screenshot}
-                    >
-                      <Image
-                        alt={`${selectedProject.name} screenshot ${index + 1}`}
-                        className="h-full w-full object-cover"
-                        height={800}
-                        src={screenshot}
-                        width={380}
-                      />
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, x: -18, filter: "blur(8px)" }}
+                  initial={{ opacity: 0, x: 18, filter: "blur(8px)" }}
+                  key={selectedProject.name}
+                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="mb-3 flex items-start justify-between gap-4 px-1">
+                    <div className="min-w-0">
+                      <p className="text-lg font-semibold tracking-[-0.025em] text-white">{selectedProject.name}</p>
+                      <p className="mt-1 max-w-xl text-sm leading-5 text-white/52">{selectedProject.description}</p>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex h-[22rem] items-center justify-center rounded-[1.65rem] border border-dashed border-white/16 bg-white/[0.045] text-center sm:h-[25rem]">
-                  <div>
-                    <p className="text-sm font-semibold text-white/72">Screenshots coming soon</p>
-                    <p className="mt-2 max-w-xs text-xs leading-5 text-white/42">
-                      Add assets for {selectedProject.name} and this preview will turn into a horizontal gallery.
-                    </p>
+                    <a className="shrink-0 rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/58 transition hover:bg-white/[0.13] hover:text-white" href={selectedProject.href}>
+                      Open
+                    </a>
                   </div>
-                </div>
-              )}
+
+                  {selectedProject.screenshots.length > 0 ? (
+                    <div className="flex snap-x gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      {selectedProject.screenshots.map((screenshot, index) => (
+                        <motion.div
+                          animate={{ opacity: 1, y: 0 }}
+                          className={cn(
+                            "relative shrink-0 snap-start overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 shadow-[0_18px_42px_rgba(0,0,0,0.34)]",
+                            screenshotFrameClasses[screenshot.frame ?? selectedProject.preferredFrame ?? "phone"],
+                          )}
+                          initial={{ opacity: 0, y: 10 }}
+                          key={screenshot.src}
+                          transition={{ delay: index * 0.035, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          <Image
+                            alt={`${selectedProject.name} screenshot ${index + 1}`}
+                            className="h-full w-full object-contain"
+                            height={800}
+                            src={screenshot.src}
+                            unoptimized
+                            width={1200}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div
+                      className={cn(
+                        "flex items-center justify-center rounded-[1.65rem] border border-dashed border-white/16 bg-white/[0.045] text-center",
+                        selectedProject.preferredFrame === "vision"
+                          ? "h-[15rem] sm:h-[17rem]"
+                          : selectedProject.preferredFrame === "wide"
+                            ? "h-[13.25rem] sm:h-[15rem]"
+                            : "h-[22rem] sm:h-[25rem]",
+                      )}
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-white/72">Screenshots coming soon</p>
+                        <p className="mt-2 max-w-xs text-xs leading-5 text-white/42">
+                          Add assets for {selectedProject.name} and this preview will turn into a horizontal gallery.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
+          </div>
+        </div>
+          </WidgetSurface>
+        </div>
+      </div>
+
+      <WidgetSurface className="p-5 lg:col-span-5">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(10,132,255,0.22),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.09),rgba(28,28,30,0.22)_48%)]" />
+        <div className="relative z-10">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <WidgetTitle>Professional App Work</WidgetTitle>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Apps I’ve built and contributed to.</h2>
+            </div>
+            <span className="rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/48">
+              Synapse
+            </span>
+          </div>
+
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/52">
+            Selected iOS work across VPN products I built, enterprise client apps I contributed to, and iPad modernization work.
+          </p>
+
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {professionalApps.map((app) => {
+              const content = (
+                <>
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1.15rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_14px_28px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.16)] sm:h-16 sm:w-16 sm:rounded-[1.3rem]">
+                    {app.icon ? (
+                      <Image
+                        alt=""
+                        aria-hidden="true"
+                        className="h-full w-full object-cover"
+                        height={64}
+                        src={app.icon}
+                        unoptimized
+                        width={64}
+                      />
+                    ) : (
+                      <span className="text-sm font-semibold text-white/84">{app.iconFallback}</span>
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold leading-tight text-white/86">{app.name}</p>
+                    <p className="mt-1 text-xs font-medium leading-tight text-white/42">{app.label}</p>
+                  </div>
+                  {app.href ? (
+                    <span className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-[0.7rem] font-semibold text-white/42 transition group-hover:bg-white/[0.14] group-hover:text-white/72">
+                      ↗
+                    </span>
+                  ) : null}
+                </>
+              );
+
+              const className =
+                "group flex min-h-24 items-center gap-3 rounded-[1.55rem] bg-black/20 p-3.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.08] active:scale-[0.985]";
+
+              return app.href ? (
+                <a className={className} href={app.href} key={app.name} rel="noreferrer" target="_blank">
+                  {content}
+                </a>
+              ) : (
+                <div className={className} key={app.name}>
+                  {content}
+                </div>
+              );
+            })}
           </div>
         </div>
       </WidgetSurface>
 
-      <WidgetSurface className="p-5 lg:col-span-4">
+      <WidgetSurface className="p-5 lg:col-span-3">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,214,10,0.18),rgba(28,28,30,0.28)_42%)]" />
         <div className="relative z-10">
           <div className="flex items-center justify-between gap-4">
             <WidgetTitle className="text-white/52">Notes</WidgetTitle>
             <a className="text-sm font-semibold text-[#FFE07A]" href="/feed">
-              Feed
+              Open Feed
             </a>
           </div>
-          <div className="mt-5 rounded-[1.45rem] bg-[rgba(255,250,224,0.1)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
-            <p className="text-xs font-semibold text-[#FFE07A]/80">{latestPost.type}</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">{latestPost.title}</h2>
-            <p className="mt-3 text-sm leading-6 text-white/58">{latestPost.excerpt}</p>
-          </div>
-        </div>
-      </WidgetSurface>
 
-      <WidgetSurface className="p-5 lg:col-span-4">
-        <div className="relative z-10">
-          <WidgetTitle>Control Center</WidgetTitle>
-          <div className="mt-5 grid grid-cols-3 gap-3">
-            {quickActions.map((action) =>
-              action.href ? (
-                <a
-                  className="flex min-h-28 flex-col justify-between rounded-[1.65rem] bg-white/[0.075] p-4 transition hover:bg-white/[0.12] active:scale-[0.98]"
-                  href={action.href}
-                  key={action.label}
-                >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-[1.1rem] bg-white/14 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
-                    {action.symbol}
+          <div className="mt-5 space-y-2.5">
+            {feedPreviewPosts.map((post) => (
+              <a
+                className="block rounded-[1.25rem] bg-[rgba(255,250,224,0.1)] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition hover:bg-[rgba(255,250,224,0.14)]"
+                href="/feed"
+                key={post.slug}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="truncate text-sm font-semibold text-white/84">{post.title}</p>
+                  <span className="shrink-0 rounded-full bg-[#FFE07A]/14 px-2 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.08em] text-[#FFE07A]/82">
+                    {post.type}
                   </span>
-                  <span className="text-sm font-semibold text-white/78">{action.label}</span>
-                </a>
-              ) : null,
-            )}
+                </div>
+                <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-white/46">{post.excerpt}</p>
+              </a>
+            ))}
           </div>
-          <p className="mt-5 text-xs leading-5 text-white/42">{enterpriseExperience.summary}</p>
         </div>
       </WidgetSurface>
     </div>
