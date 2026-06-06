@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import type { ScreenshotFrame } from "@/types/projectArchive";
 
 const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
-  phone: "h-[22rem] w-[10.4rem] sm:h-[25rem] sm:w-[11.8rem]",
+  phone: "h-[22rem] w-[10.166rem] sm:h-[25rem] sm:w-[11.552rem]",
   wide: "h-[13.5rem] w-[24rem] sm:h-[15.5rem] sm:w-[28rem]",
   square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
   vision: "h-[15rem] w-[27rem] sm:h-[17rem] sm:w-[31rem]",
@@ -193,7 +193,12 @@ export function ProjectsArchive() {
                         >
                           <Image
                             alt={`${selectedProject.name} screenshot ${index + 1}`}
-                            className="h-full w-full object-contain"
+                            className={cn(
+                              "h-full w-full",
+                              (screenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
+                                ? "object-cover"
+                                : "object-contain",
+                            )}
                             height={800}
                             src={screenshot.src}
                             unoptimized

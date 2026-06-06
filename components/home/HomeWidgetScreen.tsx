@@ -120,13 +120,13 @@ type HomeProject = {
 };
 
 const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
-  phone: "h-[22rem] w-[10.4rem] sm:h-[25rem] sm:w-[11.8rem]",
+  phone: "h-[22rem] w-[10.166rem] sm:h-[25rem] sm:w-[11.552rem]",
   wide: "h-[13.25rem] w-[24rem] sm:h-[15rem] sm:w-[27rem]",
   square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
   vision: "h-[15rem] w-[27rem] sm:h-[17rem] sm:w-[31rem]",
 };
 
-const homeProjects = [
+const homeProjects: HomeProject[] = [
   {
     name: "33VPN",
     status: "Public first phase",
@@ -135,11 +135,16 @@ const homeProjects = [
     href: "/projects#33vpn",
     preferredFrame: "phone",
     screenshots: [
-      { src: "/ui/appscreenshots/33vpn/home-updated.png" },
+      { src: "/ui/appscreenshots/33vpn/home.png" },
       { src: "/ui/appscreenshots/33vpn/servers.png" },
       { src: "/ui/appscreenshots/33vpn/settings.png" },
       { src: "/ui/appscreenshots/33vpn/premium%201.png" },
+      { src: "/ui/appscreenshots/33vpn/premium%202.png" },
+      { src: "/ui/appscreenshots/33vpn/premium%203.png" },
       { src: "/ui/appscreenshots/33vpn/vpn%20protocol.png" },
+      { src: "/ui/appscreenshots/33vpn/privacy%20policy.png" },
+      { src: "/ui/appscreenshots/33vpn/delete%20alert.png" },
+      { src: "/ui/appscreenshots/33vpn/Support.png" },
     ],
   },
   {
@@ -155,16 +160,24 @@ const homeProjects = [
       { src: "/ui/appscreenshots/weather/day-detail-view.PNG" },
       { src: "/ui/appscreenshots/weather/ai-summary-view.PNG" },
       { src: "/ui/appscreenshots/weather/widget-medium.jpg", frame: "wide" },
+      { src: "/ui/appscreenshots/weather/widget-small.jpg", frame: "square" },
     ],
   },
   {
     name: "SwiftGenUI",
     status: "AI + native UI",
     description: "Schema-driven UI generation rendered into native Apple-platform interfaces.",
-    iconFallback: "UI",
+    icon: "/ui/appscreenshots/swift-genui/app-icon.png",
     href: "/projects#swift-genui",
-    preferredFrame: "wide",
-    screenshots: [],
+    preferredFrame: "phone",
+    screenshots: [
+      { src: "/ui/appscreenshots/swift-genui/home.png" },
+      { src: "/ui/appscreenshots/swift-genui/generated%20canvas.png" },
+      { src: "/ui/appscreenshots/swift-genui/schema%20inspector.png" },
+      { src: "/ui/appscreenshots/swift-genui/ai%20provider.png" },
+      { src: "/ui/appscreenshots/swift-genui/endpoint%20setting.png" },
+      { src: "/ui/appscreenshots/swift-genui/history.png" },
+    ],
   },
   {
     name: "Spatial Tutor",
@@ -175,7 +188,7 @@ const homeProjects = [
     preferredFrame: "vision",
     screenshots: [],
   },
-] satisfies HomeProject[];
+];
 
 function WidgetTitle({ children, className }: { children: ReactNode; className?: string }) {
   return (
@@ -492,7 +505,12 @@ export function HomeWidgetScreen() {
                         >
                           <Image
                             alt={`${selectedProject.name} screenshot ${index + 1}`}
-                            className="h-full w-full object-contain"
+                            className={cn(
+                              "h-full w-full",
+                              (screenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
+                                ? "object-cover"
+                                : "object-contain",
+                            )}
                             height={800}
                             src={screenshot.src}
                             unoptimized
