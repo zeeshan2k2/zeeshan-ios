@@ -3,7 +3,8 @@ export const SITE_TITLE = "iOS Engineer";
 export const SITE_DESCRIPTION =
   "I build Swift/iOS apps, experiment with local LLM systems, and turn ideas into polished product experiences.";
 
-export const RESUME_PATH = "/resume.pdf";
+export const RESUME_PATH = "/resume";
+export const RESUME_PDF_PATH = "/resume/Zeeshan_CV.pdf";
 
 export const NAV_ITEMS = [
   {
