@@ -6,20 +6,16 @@ type FeedCardProps = {
   post: FeedPost;
 };
 
+const postTypeMetadata: Record<FeedPost["type"], { label: string; tint: string }> = {
+  short: { label: "Short", tint: "bg-[#FFD60A]" },
+  note: { label: "Note", tint: "bg-[#0A84FF]" },
+  devlog: { label: "Devlog", tint: "bg-[#34C759]" },
+  technical: { label: "Technical", tint: "bg-[#BF5AF2]" },
+};
+
 export function FeedCard({ post }: FeedCardProps) {
   const isShort = post.type === "short";
-  const typeLabel = {
-    short: "Short",
-    note: "Note",
-    devlog: "Devlog",
-    technical: "Technical",
-  }[post.type];
-  const typeTint = {
-    short: "bg-[#FFD60A]",
-    note: "bg-[#0A84FF]",
-    devlog: "bg-[#34C759]",
-    technical: "bg-[#BF5AF2]",
-  }[post.type];
+  const { label: typeLabel, tint: typeTint } = postTypeMetadata[post.type];
 
   return (
     <article
