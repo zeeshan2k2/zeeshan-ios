@@ -14,7 +14,6 @@
     </filter>
   </defs>
   <rect width="128" height="128" rx="28" fill="url(#tile)"/>
-  <rect x="17" y="13" width="94" height="28" rx="14" fill="#fff" opacity="0.16"/>
   <g filter="url(#soft)">
     <rect x="27" y="23" width="72" height="84" rx="19" fill="url(#card)" stroke="#fff" stroke-opacity="0.28" stroke-width="1"/>
     <rect x="94" y="38" width="10" height="16" rx="5" fill="#FF9F0A" opacity="0.98"/>

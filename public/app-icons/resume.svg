@@ -14,7 +14,6 @@
     </filter>
   </defs>
   <rect width="128" height="128" rx="28" fill="url(#tile)"/>
-  <rect x="17" y="13" width="94" height="28" rx="14" fill="#fff" opacity="0.16"/>
   <g filter="url(#soft)">
     <path d="M43 20h31l25 25v55c0 5.2-2.8 8-8 8H45c-5.2 0-8-2.8-8-8V28c0-5.2 2.8-8 8-8Z" fill="url(#doc)"/>
     <path d="M74 20v19c0 3.8 2.2 6 6 6h19Z" fill="#E9DDCA"/>

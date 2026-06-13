@@ -16,10 +16,6 @@ export const NAV_ITEMS = [
     href: "/projects",
   },
   {
-    label: "Feed",
-    href: "/feed",
-  },
-  {
     label: "About",
     href: "/about",
   },

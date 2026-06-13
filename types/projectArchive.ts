@@ -21,6 +21,7 @@ export type ShowcaseProject = {
   icon?: string;
   iconFallback?: string;
   href: string;
+  githubUrl?: string;
   techStack: string[];
   preferredFrame?: ScreenshotFrame;
   screenshots: ShowcaseScreenshot[];
@@ -31,6 +32,7 @@ export type LearningProject = {
   category: string;
   description: string;
   techStack: string[];
-  href?: string;
+  githubUrl?: string;
+  notionUrl?: string;
   status: string;
 };

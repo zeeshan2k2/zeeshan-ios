@@ -47,6 +47,7 @@ export const showcaseProjects: ShowcaseProject[] = [
     category: "UIKit app architecture",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
+    githubUrl: "https://github.com/zeeshan2k2/33VPN",
     techStack: ["Swift", "UIKit", "MVVM", "Clean Architecture", "CocoaPods"],
     preferredFrame: "phone",
     screenshots: [
@@ -59,7 +60,7 @@ export const showcaseProjects: ShowcaseProject[] = [
       { src: "/ui/appscreenshots/33vpn/vpn%20protocol.png" },
       { src: "/ui/appscreenshots/33vpn/privacy%20policy.png" },
       { src: "/ui/appscreenshots/33vpn/delete%20alert.png" },
-      { src: "/ui/appscreenshots/33vpn/Support.png" },
+      { src: "/ui/appscreenshots/33vpn/support.png" },
     ],
   },
   {
@@ -70,13 +71,14 @@ export const showcaseProjects: ShowcaseProject[] = [
     category: "SwiftUI product UI",
     icon: "/ui/appscreenshots/weather/app-icon.png",
     href: "/projects#weather",
+    githubUrl: "https://github.com/zeeshan2k2/Weather",
     techStack: ["Swift", "SwiftUI", "Widgets", "Forecast UI"],
     preferredFrame: "phone",
     screenshots: [
-      { src: "/ui/appscreenshots/weather/weather-view.PNG" },
+      { src: "/ui/appscreenshots/weather/weather-view.png" },
       { src: "/ui/appscreenshots/weather/weather-list-view.png" },
-      { src: "/ui/appscreenshots/weather/day-detail-view.PNG" },
-      { src: "/ui/appscreenshots/weather/ai-summary-view.PNG" },
+      { src: "/ui/appscreenshots/weather/day-detail-view.png" },
+      { src: "/ui/appscreenshots/weather/ai-summary-view.png" },
       { src: "/ui/appscreenshots/weather/widget-medium.jpg", frame: "wide" },
       { src: "/ui/appscreenshots/weather/widget-small.jpg", frame: "square" },
     ],
@@ -89,6 +91,7 @@ export const showcaseProjects: ShowcaseProject[] = [
     category: "AI + iOS systems",
     icon: "/ui/appscreenshots/swift-genui/app-icon.png",
     href: "/projects#swift-genui",
+    githubUrl: "https://github.com/zeeshan2k2/SwiftGenUI",
     techStack: ["Swift", "SwiftUI", "Local LLMs", "Schema Design"],
     preferredFrame: "phone",
     screenshots: [

@@ -6,39 +6,8 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Card } from "@/components/ui/Card";
-import { feedPosts } from "@/content/feed";
-import { socialLinks } from "@/content/social";
 import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-
-const feedPreviewPosts = feedPosts.slice(0, 4);
-
-const contactPosterLinks = [
-  {
-    label: "GitHub",
-    href: socialLinks.find((link) => link.label === "GitHub")?.href,
-    icon: "github",
-    className: "bg-[#181717] text-white",
-  },
-  {
-    label: "LinkedIn",
-    href: socialLinks.find((link) => link.label === "LinkedIn")?.href,
-    icon: "linkedin",
-    className: "bg-[#0A66C2] text-white",
-  },
-  {
-    label: "X",
-    href: socialLinks.find((link) => link.label === "X")?.href,
-    icon: "x",
-    className: "bg-black text-white",
-  },
-  {
-    label: "Email",
-    href: socialLinks.find((link) => link.label === "Email")?.href,
-    icon: "email",
-    className: "bg-[linear-gradient(145deg,#64D2FF,#0A84FF)] text-white",
-  },
-];
 
 const appleStackItems = [
   { label: "Languages", detail: "Swift, Objective-C, Python, JavaScript", tint: "bg-[#0A84FF]" },
@@ -115,12 +84,14 @@ type HomeProject = {
   icon?: string;
   iconFallback?: string;
   href: string;
+  githubUrl?: string;
   preferredFrame?: ScreenshotFrame;
   screenshots: HomeProjectScreenshot[];
 };
 
 const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
-  phone: "h-[22rem] w-[10.166rem] sm:h-[25rem] sm:w-[11.552rem]",
+  phone:
+    "h-[22rem] w-[10.166rem] sm:h-[25rem] sm:w-[11.552rem] [@media(min-width:2300px)]:h-[30.25rem] [@media(min-width:2300px)]:w-[14rem]",
   wide: "h-[13.25rem] w-[24rem] sm:h-[15rem] sm:w-[27rem]",
   square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
   vision: "h-[15rem] w-[27rem] sm:h-[17rem] sm:w-[31rem]",
@@ -133,6 +104,7 @@ const homeProjects: HomeProject[] = [
     description: "UIKit VPN client interface with MVVM Clean Architecture.",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
+    githubUrl: "https://github.com/zeeshan2k2/33VPN",
     preferredFrame: "phone",
     screenshots: [
       { src: "/ui/appscreenshots/33vpn/home.png" },
@@ -144,7 +116,7 @@ const homeProjects: HomeProject[] = [
       { src: "/ui/appscreenshots/33vpn/vpn%20protocol.png" },
       { src: "/ui/appscreenshots/33vpn/privacy%20policy.png" },
       { src: "/ui/appscreenshots/33vpn/delete%20alert.png" },
-      { src: "/ui/appscreenshots/33vpn/Support.png" },
+      { src: "/ui/appscreenshots/33vpn/support.png" },
     ],
   },
   {
@@ -153,12 +125,13 @@ const homeProjects: HomeProject[] = [
     description: "SwiftUI weather interface with forecast views, widgets, and AI summary screens.",
     icon: "/ui/appscreenshots/weather/app-icon.png",
     href: "/projects#weather-app",
+    githubUrl: "https://github.com/zeeshan2k2/Weather",
     preferredFrame: "phone",
     screenshots: [
-      { src: "/ui/appscreenshots/weather/weather-view.PNG" },
+      { src: "/ui/appscreenshots/weather/weather-view.png" },
       { src: "/ui/appscreenshots/weather/weather-list-view.png" },
-      { src: "/ui/appscreenshots/weather/day-detail-view.PNG" },
-      { src: "/ui/appscreenshots/weather/ai-summary-view.PNG" },
+      { src: "/ui/appscreenshots/weather/day-detail-view.png" },
+      { src: "/ui/appscreenshots/weather/ai-summary-view.png" },
       { src: "/ui/appscreenshots/weather/widget-medium.jpg", frame: "wide" },
       { src: "/ui/appscreenshots/weather/widget-small.jpg", frame: "square" },
     ],
@@ -169,6 +142,7 @@ const homeProjects: HomeProject[] = [
     description: "Schema-driven UI generation rendered into native Apple-platform interfaces.",
     icon: "/ui/appscreenshots/swift-genui/app-icon.png",
     href: "/projects#swift-genui",
+    githubUrl: "https://github.com/zeeshan2k2/SwiftGenUI",
     preferredFrame: "phone",
     screenshots: [
       { src: "/ui/appscreenshots/swift-genui/home.png" },
@@ -215,47 +189,6 @@ function WidgetSurface({
       <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0))]" />
       {children}
     </Card>
-  );
-}
-
-function ContactPosterIcon({ icon }: { icon: string }) {
-  if (icon === "github") {
-    return (
-      <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24">
-        <path
-          d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.91.58.1.79-.25.79-.56v-2.02c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18A10.98 10.98 0 0 1 12 6.17c.98 0 1.96.13 2.88.39 2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.04c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"
-          fill="currentColor"
-        />
-      </svg>
-    );
-  }
-
-  if (icon === "linkedin") {
-    return <span aria-hidden="true" className="text-[1.55rem] font-bold leading-none tracking-[-0.02em]">in</span>;
-  }
-
-  if (icon === "x") {
-    return <Image alt="" aria-hidden="true" className="h-6 w-6 object-contain" height={24} src="/icons/X.avif" width={24} />;
-  }
-
-  if (icon === "email") {
-    return (
-      <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24">
-        <path
-          d="M4.75 5.5h14.5c1.24 0 2.25 1.01 2.25 2.25v8.5c0 1.24-1.01 2.25-2.25 2.25H4.75A2.25 2.25 0 0 1 2.5 16.25v-8.5C2.5 6.51 3.51 5.5 4.75 5.5Zm.2 2 6.28 4.86c.45.35 1.09.35 1.54 0l6.28-4.86H4.95Z"
-          fill="currentColor"
-        />
-      </svg>
-    );
-  }
-
-  return (
-    <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24">
-      <path
-        d="M6.25 2.75h7.5L19.25 8v13.25h-13V2.75Zm7.2 1.8v4.1h4.2l-4.2-4.1ZM8.6 12.25h6.8v1.65H8.6v-1.65Zm0 3.1h6.8V17H8.6v-1.65Z"
-        fill="currentColor"
-      />
-    </svg>
   );
 }
 
@@ -363,24 +296,6 @@ export function HomeWidgetScreen() {
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-2.5">
-            {contactPosterLinks.map((link) =>
-              link.href ? (
-                <a
-                  aria-label={link.label}
-                  className={cn(
-                    "flex h-12 w-12 items-center justify-center rounded-[1.15rem] shadow-[0_12px_28px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.18)] transition hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.96]",
-                    link.className,
-                  )}
-                  href={link.href}
-                  key={link.label}
-                  title={link.label}
-                >
-                  <ContactPosterIcon icon={link.icon} />
-                </a>
-              ) : null,
-            )}
-          </div>
         </div>
       </WidgetSurface>
 
@@ -425,7 +340,7 @@ export function HomeWidgetScreen() {
       </WidgetSurface>
 
       <div className="lg:col-span-8 xl:h-[250vh]" ref={projectSectionRef}>
-        <div className="xl:sticky xl:top-[calc(50%-18rem)]">
+        <div className="xl:sticky xl:top-10">
           <WidgetSurface className="p-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(75,167,255,0.18),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
         <div className="relative z-10">
@@ -485,9 +400,22 @@ export function HomeWidgetScreen() {
                       <p className="text-lg font-semibold tracking-[-0.025em] text-white">{selectedProject.name}</p>
                       <p className="mt-1 max-w-xl text-sm leading-5 text-white/52">{selectedProject.description}</p>
                     </div>
-                    <a className="shrink-0 rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/58 transition hover:bg-white/[0.13] hover:text-white" href={selectedProject.href}>
-                      Open
-                    </a>
+                    {selectedProject.githubUrl ? (
+                      <a
+                        className="group flex shrink-0 items-center gap-2 rounded-xl bg-[#181717] px-3 py-2 text-xs font-semibold text-white/76 shadow-[0_10px_24px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.16)] transition hover:-translate-y-0.5 hover:bg-[#242424] hover:text-white active:scale-[0.97]"
+                        href={selectedProject.githubUrl}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24">
+                          <path
+                            d="M12 .8A11.2 11.2 0 0 0 8.46 22.63c.56.1.76-.24.76-.54v-1.97c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.15 1.72 1.15 1 1.72 2.63 1.22 3.28.94.1-.72.39-1.22.71-1.5-2.49-.29-5.11-1.25-5.11-5.56 0-1.23.44-2.23 1.15-3.01-.11-.28-.5-1.43.11-2.97 0 0 .94-.3 3.09 1.15A10.75 10.75 0 0 1 12 6.28c.96 0 1.92.13 2.82.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.69.12 2.97.72.78 1.15 1.78 1.15 3.01 0 4.32-2.63 5.27-5.13 5.55.4.35.76 1.04.76 2.09v2.97c0 .3.21.65.78.54A11.2 11.2 0 0 0 12 .8Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        GitHub
+                      </a>
+                    ) : null}
                   </div>
 
                   {selectedProject.screenshots.length > 0 ? (
@@ -547,7 +475,7 @@ export function HomeWidgetScreen() {
         </div>
       </div>
 
-      <WidgetSurface className="p-5 lg:col-span-5">
+      <WidgetSurface className="p-5 lg:col-span-8">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(10,132,255,0.22),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.09),rgba(28,28,30,0.22)_48%)]" />
         <div className="relative z-10">
           <div className="flex items-start justify-between gap-4">
@@ -564,16 +492,19 @@ export function HomeWidgetScreen() {
             Selected iOS work across VPN products I built, enterprise client apps I contributed to, and iPad modernization work.
           </p>
 
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {professionalApps.map((app) => {
               const content = (
                 <>
-                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1.15rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_14px_28px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.16)] sm:h-16 sm:w-16 sm:rounded-[1.3rem]">
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_14px_28px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.16)] sm:h-16 sm:w-16">
                     {app.icon ? (
                       <Image
                         alt=""
                         aria-hidden="true"
-                        className="h-full w-full object-cover"
+                        className={cn(
+                          "h-full w-full object-cover",
+                          (app.name === "Boxx Cyber" || app.name === "Uranus NetTest") && "scale-[1.04]",
+                        )}
                         height={64}
                         src={app.icon}
                         unoptimized
@@ -608,36 +539,6 @@ export function HomeWidgetScreen() {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </WidgetSurface>
-
-      <WidgetSurface className="p-5 lg:col-span-3">
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,214,10,0.18),rgba(28,28,30,0.28)_42%)]" />
-        <div className="relative z-10">
-          <div className="flex items-center justify-between gap-4">
-            <WidgetTitle className="text-white/52">Notes</WidgetTitle>
-            <a className="text-sm font-semibold text-[#FFE07A]" href="/feed">
-              Open Feed
-            </a>
-          </div>
-
-          <div className="mt-5 space-y-2.5">
-            {feedPreviewPosts.map((post) => (
-              <a
-                className="block rounded-[1.25rem] bg-[rgba(255,250,224,0.1)] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition hover:bg-[rgba(255,250,224,0.14)]"
-                href="/feed"
-                key={post.slug}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="truncate text-sm font-semibold text-white/84">{post.title}</p>
-                  <span className="shrink-0 rounded-full bg-[#FFE07A]/14 px-2 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.08em] text-[#FFE07A]/82">
-                    {post.type}
-                  </span>
-                </div>
-                <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-white/46">{post.excerpt}</p>
-              </a>
-            ))}
           </div>
         </div>
       </WidgetSurface>

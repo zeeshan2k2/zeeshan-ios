@@ -10,7 +10,8 @@ import { cn } from "@/lib/utils";
 import type { ScreenshotFrame } from "@/types/projectArchive";
 
 const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
-  phone: "h-[22rem] w-[10.166rem] sm:h-[25rem] sm:w-[11.552rem]",
+  phone:
+    "h-[22rem] w-[10.166rem] sm:h-[25rem] sm:w-[11.552rem] [@media(min-width:2300px)]:h-[30.25rem] [@media(min-width:2300px)]:w-[14rem]",
   wide: "h-[13.5rem] w-[24rem] sm:h-[15.5rem] sm:w-[28rem]",
   square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
   vision: "h-[15rem] w-[27rem] sm:h-[17rem] sm:w-[31rem]",
@@ -44,6 +45,53 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
     <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/48">
       {children}
     </p>
+  );
+}
+
+function LearningProjectAction({
+  href,
+  kind,
+  label,
+}: {
+  href?: string;
+  kind: "github" | "notion";
+  label: string;
+}) {
+  const content = (
+    <>
+      <span
+        className={cn(
+          "flex h-10 w-10 items-center justify-center overflow-hidden rounded-[0.95rem] shadow-[0_10px_24px_rgba(0,0,0,0.26),inset_0_1px_0_rgba(255,255,255,0.18)] transition group-hover:-translate-y-0.5 group-hover:brightness-110 group-active:scale-[0.96]",
+          kind === "github" ? "bg-[#181717] text-white" : "bg-white",
+        )}
+      >
+        {kind === "github" ? (
+          <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24">
+            <path
+              d="M12 .8A11.2 11.2 0 0 0 8.46 22.63c.56.1.76-.24.76-.54v-1.97c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.15 1.72 1.15 1 1.72 2.63 1.22 3.28.94.1-.72.39-1.22.71-1.5-2.49-.29-5.11-1.25-5.11-5.56 0-1.23.44-2.23 1.15-3.01-.11-.28-.5-1.43.11-2.97 0 0 .94-.3 3.09 1.15A10.75 10.75 0 0 1 12 6.28c.96 0 1.92.13 2.82.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.69.12 2.97.72.78 1.15 1.78 1.15 3.01 0 4.32-2.63 5.27-5.13 5.55.4.35.76 1.04.76 2.09v2.97c0 .3.21.65.78.54A11.2 11.2 0 0 0 12 .8Z"
+              fill="currentColor"
+            />
+          </svg>
+        ) : (
+          <Image alt="" aria-hidden="true" className="h-6 w-6 object-contain" height={24} src="/icons/notion.png" width={24} />
+        )}
+      </span>
+      <span className="text-[0.68rem] font-semibold text-white/48 transition group-hover:text-white/72">
+        {label}
+      </span>
+    </>
+  );
+
+  const className = "group flex min-w-14 flex-col items-center gap-1.5";
+
+  return href ? (
+    <a className={className} href={href} rel="noreferrer" target="_blank">
+      {content}
+    </a>
+  ) : (
+    <button className={className} title={`${label} link coming later`} type="button">
+      {content}
+    </button>
   );
 }
 
@@ -173,9 +221,22 @@ export function ProjectsArchive() {
                         ))}
                       </div>
                     </div>
-                    <a className="shrink-0 rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/58 transition hover:bg-white/[0.13] hover:text-white" href={selectedProject.href}>
-                      Details
-                    </a>
+                    {selectedProject.githubUrl ? (
+                      <a
+                        className="group flex shrink-0 items-center gap-2 rounded-xl bg-[#181717] px-3 py-2 text-xs font-semibold text-white/76 shadow-[0_10px_24px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.16)] transition hover:-translate-y-0.5 hover:bg-[#242424] hover:text-white active:scale-[0.97]"
+                        href={selectedProject.githubUrl}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24">
+                          <path
+                            d="M12 .8A11.2 11.2 0 0 0 8.46 22.63c.56.1.76-.24.76-.54v-1.97c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.15 1.72 1.15 1 1.72 2.63 1.22 3.28.94.1-.72.39-1.22.71-1.5-2.49-.29-5.11-1.25-5.11-5.56 0-1.23.44-2.23 1.15-3.01-.11-.28-.5-1.43.11-2.97 0 0 .94-.3 3.09 1.15A10.75 10.75 0 0 1 12 6.28c.96 0 1.92.13 2.82.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.69.12 2.97.72.78 1.15 1.78 1.15 3.01 0 4.32-2.63 5.27-5.13 5.55.4.35.76 1.04.76 2.09v2.97c0 .3.21.65.78.54A11.2 11.2 0 0 0 12 .8Z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        GitHub
+                      </a>
+                    ) : null}
                   </div>
 
                   {selectedProject.screenshots.length > 0 ? (
@@ -247,42 +308,44 @@ export function ProjectsArchive() {
           </div>
 
           <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {learningProjects.map((project) => {
-              const card = (
-                <>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold text-white/88">{project.name}</p>
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-white/34">{project.category}</p>
-                    </div>
-                    <span className="shrink-0 rounded-full bg-white/[0.07] px-2.5 py-1 text-[0.68rem] font-semibold text-white/42">
-                      {project.status}
-                    </span>
+            {learningProjects.map((project) => (
+              <article
+                className="flex min-h-[20rem] flex-col overflow-hidden rounded-[1.55rem] bg-black/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.07]"
+                key={project.name}
+              >
+                <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-4 py-3.5">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-white/90">{project.name}</p>
+                    <p className="mt-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-white/34">{project.category}</p>
                   </div>
-                  <p className="mt-4 text-sm leading-6 text-white/52">{project.description}</p>
+                  <span className="shrink-0 rounded-full bg-white/[0.07] px-2.5 py-1 text-[0.68rem] font-semibold text-white/42">
+                    {project.status}
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col px-4 py-4">
+                  <p className="text-sm leading-6 text-white/54">{project.description}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {project.techStack.map((tech) => (
-                      <span className="rounded-full bg-black/20 px-2.5 py-1 text-[0.68rem] font-semibold text-white/42" key={tech}>
+                      <span className="rounded-full bg-white/[0.055] px-2.5 py-1 text-[0.68rem] font-semibold text-white/42" key={tech}>
                         {tech}
                       </span>
                     ))}
                   </div>
-                </>
-              );
-
-              const className =
-                "block min-h-56 rounded-[1.55rem] bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.07]";
-
-              return project.href ? (
-                <a className={className} href={project.href} key={project.name} rel="noreferrer" target="_blank">
-                  {card}
-                </a>
-              ) : (
-                <div className={className} key={project.name}>
-                  {card}
                 </div>
-              );
-            })}
+
+                <div className="flex min-h-[5.25rem] items-center justify-between gap-4 border-t border-white/[0.06] bg-black/10 px-4 py-3">
+                  <div>
+                    <p className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/30">Resources</p>
+                    <p className="mt-1 text-xs text-white/38">Code and notes</p>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <LearningProjectAction href={project.githubUrl} kind="github" label="GitHub" />
+                    <LearningProjectAction href={project.notionUrl} kind="notion" label="Notes" />
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </ArchiveSurface>
