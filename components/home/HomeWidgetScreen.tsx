@@ -91,7 +91,7 @@ type HomeProject = {
 
 const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
   phone:
-    "h-[22rem] w-[10.166rem] sm:h-[25rem] sm:w-[11.552rem] [@media(min-width:2300px)]:h-[30.25rem] [@media(min-width:2300px)]:w-[14rem]",
+    "aspect-[1170/2532] h-auto w-[10.166rem] sm:w-[11.552rem] [@media(min-width:2300px)]:w-[17rem]",
   wide: "h-[13.25rem] w-[24rem] sm:h-[15rem] sm:w-[27rem]",
   square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
   vision: "h-[15rem] w-[27rem] sm:h-[17rem] sm:w-[31rem]",
@@ -436,7 +436,7 @@ export function HomeWidgetScreen() {
                             className={cn(
                               "h-full w-full",
                               (screenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
-                                ? "object-cover"
+                                ? "scale-[1.018] object-cover"
                                 : "object-contain",
                             )}
                             height={800}
