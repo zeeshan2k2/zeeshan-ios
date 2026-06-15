@@ -18,6 +18,43 @@ const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
   vision: "aspect-video h-auto w-[27rem] sm:w-[31rem]",
 };
 
+const professionalWorkGroups = [
+  {
+    eyebrow: "Built and scaled",
+    title: "Shared VPN product architecture",
+    description:
+      "Re-architected a shared VPN foundation across multiple App Store deployments, covering monetization, reliability, secure configuration, and reusable product flows.",
+    apps: [
+      { name: "VPN TomatoLink", role: "Built end-to-end" },
+      { name: "Bubble VPN", role: "Built end-to-end" },
+      { name: "Uranus NetTest", role: "Built end-to-end" },
+    ],
+    highlights: ["StoreKit IAP", "Ad monetization", "Crashlytics", "Secure API keys", "XCTest"],
+    outcome: "TomatoLink: 7.8k first-month downloads · 99.5% crash-free sessions · 38% retention improvement",
+  },
+  {
+    eyebrow: "Client products",
+    title: "Cybersecurity app delivery",
+    description:
+      "Improved production cybersecurity experiences through stronger onboarding, maintainable UI, authentication, localization, and targeted reliability fixes.",
+    apps: [
+      { name: "Zurich Cyber", role: "Product contribution" },
+      { name: "Boxx Cyber", role: "Client app contribution" },
+    ],
+    highlights: ["Onboarding redesign", "Passkey authentication", "Localization", "Notifications", "UI consistency"],
+    outcome: "Zurich Cyber: refactored key flows and resolved notification issues across an established App Store product",
+  },
+  {
+    eyebrow: "Modernized",
+    title: "Legacy iPad application",
+    description:
+      "Refactored and modernized a legacy Objective-C application with an iPad-focused interface overhaul and fixes across key functional paths.",
+    apps: [{ name: "PunchLog", role: "Legacy modernization" }],
+    highlights: ["Objective-C", "iPad UI overhaul", "Code refactoring", "Functional fixes", "Performance"],
+    outcome: "Improved stability, performance, maintainability, and the overall iPad user experience",
+  },
+] as const;
+
 function ArchiveSurface({
   children,
   className,
@@ -109,50 +146,101 @@ export function ProjectsArchive() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <Eyebrow>Professional App Work</Eyebrow>
-              <h1 className="mt-3 max-w-3xl text-[clamp(2rem,4vw,3.4rem)] font-semibold leading-tight tracking-[-0.055em] text-white">
-                Apps I have built and contributed to.
+              <h1 className="mt-3 max-w-3xl text-[clamp(1.8rem,3.5vw,3rem)] font-semibold leading-tight tracking-[-0.045em] text-white">
+                Production iOS work, by contribution.
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-white/54 sm:text-base sm:leading-7">
-                Selected iOS work across VPN products I built, enterprise client apps I contributed to, and iPad modernization work.
+                A closer look at the architecture, product systems, and modernization work behind the apps shown on Home.
               </p>
             </div>
-            <div className="shrink-0 rounded-full bg-white/[0.08] px-3.5 py-2 text-xs font-semibold text-white/52 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-              App Store work
+            <div className="shrink-0 text-left sm:text-right">
+              <p className="text-sm font-semibold text-white/72">Synapse Tech Inc.</p>
+              <p className="mt-1 text-xs font-medium text-white/42">Aug 2024 – Present</p>
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {professionalApps.map((app) => {
-              const content = (
-                <>
-                  <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[1.3rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_14px_28px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.16)]">
-                    <Image alt="" aria-hidden="true" className="h-full w-full object-cover" height={64} src={app.icon} unoptimized width={64} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold leading-tight text-white/88">{app.name}</p>
-                    <p className="mt-1 text-xs font-medium leading-tight text-white/44">{app.label}</p>
-                  </div>
-                  {app.href ? (
-                    <span className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-[0.7rem] font-semibold text-white/42 transition group-hover:bg-white/[0.14] group-hover:text-white/72">
-                      ↗
-                    </span>
-                  ) : null}
-                </>
-              );
+          <div className="mt-7 border-t border-white/[0.09]">
+            {professionalWorkGroups.map((group) => (
+              <section
+                className="grid gap-5 border-b border-white/[0.09] py-6 last:border-b-0 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.72fr)] lg:gap-10"
+                key={group.title}
+              >
+                <div>
+                  <p className="text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-[#64D2FF]/72">
+                    {group.eyebrow}
+                  </p>
+                  <h2 className="mt-2 text-xl font-semibold tracking-[-0.025em] text-white/92 sm:text-2xl">
+                    {group.title}
+                  </h2>
+                  <p className="mt-3 max-w-3xl text-sm leading-6 text-white/54">
+                    {group.description}
+                  </p>
 
-              const className =
-                "group flex min-h-24 items-center gap-3 rounded-[1.55rem] bg-black/20 p-3.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.08] active:scale-[0.985]";
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {group.highlights.map((highlight) => (
+                      <span
+                        className="rounded-full bg-white/[0.075] px-3 py-1.5 text-xs font-semibold text-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+                        key={highlight}
+                      >
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
 
-              return app.href ? (
-                <a className={className} href={app.href} key={app.name} rel="noreferrer" target="_blank">
-                  {content}
-                </a>
-              ) : (
-                <div className={className} key={app.name}>
-                  {content}
+                  <p className="mt-4 border-l-2 border-[#30D158]/70 pl-3 text-xs font-medium leading-5 text-white/62 sm:text-sm">
+                    {group.outcome}
+                  </p>
                 </div>
-              );
-            })}
+
+                <div className="flex flex-col justify-center divide-y divide-white/[0.08]">
+                  {group.apps.map((groupApp) => {
+                    const app = professionalApps.find((item) => item.name === groupApp.name);
+
+                    if (!app) {
+                      return null;
+                    }
+
+                    const content = (
+                      <>
+                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[1rem] shadow-[0_12px_28px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.16)]">
+                          <Image
+                            alt=""
+                            aria-hidden="true"
+                            className="h-full w-full object-cover"
+                            height={56}
+                            src={app.icon}
+                            unoptimized
+                            width={56}
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-white/88">{app.name}</p>
+                          <p className="mt-1 text-xs font-medium text-white/44">{groupApp.role}</p>
+                        </div>
+                        {app.href ? (
+                          <span className="ml-auto flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/[0.07] text-sm text-white/42 transition group-hover:bg-white/[0.13] group-hover:text-white/78">
+                            ↗
+                          </span>
+                        ) : null}
+                      </>
+                    );
+
+                    const className =
+                      "group flex min-h-20 items-center gap-3 py-3 text-left transition first:pt-0 last:pb-0";
+
+                    return app.href ? (
+                      <a className={className} href={app.href} key={app.name} rel="noreferrer" target="_blank">
+                        {content}
+                      </a>
+                    ) : (
+                      <div className={className} key={app.name}>
+                        {content}
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
           </div>
         </div>
       </ArchiveSurface>

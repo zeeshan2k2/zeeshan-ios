@@ -4,12 +4,12 @@ export const aboutProfile = {
   location: "Karachi, Pakistan",
   headline: "I build native Apple-platform apps, AI-assisted systems, and polished product experiences.",
   intro:
-    "Software Engineering graduate and iOS Developer at Synapse Consulting, focused on clean architecture, performance, maintainable code, production VPN apps, enterprise client work, and AI-assisted Apple-platform systems.",
+    "Software Engineering graduate and iOS Developer at Synapse Tech Inc., focused on clean architecture, performance, maintainable code, production VPN apps, enterprise client work, and AI-assisted Apple-platform systems.",
 };
 
 export const aboutExperience = [
   {
-    company: "Synapse Consulting",
+    company: "Synapse Tech Inc.",
     role: "iOS Developer",
     period: "Aug 2024 - Present",
     progression: [
@@ -28,7 +28,7 @@ export const aboutExperience = [
       "Re-architected and scaled shared VPN app architecture across TomatoLink, Bubble VPN, and Uranus NetTest deployments.",
       "Implemented StoreKit in-app purchases, ad monetization, Crashlytics monitoring, secure API key handling, and XCTest-backed reliability work.",
       "Built a VisionOS AI Tutor from scratch using SwiftUI, TCA, real-time WebSocket-based AI voice streaming, SwiftData persistence, session management, and automated summaries.",
-      "Contributed to enterprise iOS client projects, including Zurich-related mobile app work through Synapse Consulting, with onboarding, UI consistency, maintainability, localization, passkey authentication, and notification improvements.",
+      "Contributed to enterprise iOS client projects, including Zurich-related mobile app work through Synapse Tech Inc., with onboarding, UI consistency, maintainability, localization, passkey authentication, and notification improvements.",
       "Refactored and modernized PunchLog, a legacy Objective-C iPad app, with a tailored UI overhaul and functional stability improvements.",
     ],
   },
@@ -45,7 +45,7 @@ export const aboutWorkAreas = [
   },
   {
     title: "Enterprise Client Work",
-    body: "Client-facing iOS delivery through Synapse Consulting, with careful public wording, maintainable implementation, and professional polish.",
+    body: "Client-facing iOS delivery through Synapse Tech Inc., with careful public wording, maintainable implementation, and professional polish.",
   },
   {
     title: "iPad Modernization",

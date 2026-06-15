@@ -101,7 +101,7 @@ const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
 const homeProjects: HomeProject[] = [
   {
     name: "33VPN",
-    status: "Public first phase",
+    status: "UIKit VPN alpha",
     description: "UIKit VPN client interface with MVVM Clean Architecture.",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
@@ -156,10 +156,11 @@ const homeProjects: HomeProject[] = [
   },
   {
     name: "Spatial Tutor",
-    status: "AI + VisionOS",
+    status: "AI + visionOS",
     description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
     icon: "/ui/appscreenshots/spatial-tutor/app-icon.png",
     href: "/projects#spatial-tutor",
+    githubUrl: "https://github.com/zeeshan2k2/Spatial-Tutor",
     preferredFrame: "vision",
     screenshots: [
       { src: "/ui/appscreenshots/spatial-tutor/board%20view.png" },
@@ -329,7 +330,7 @@ export function HomeWidgetScreen() {
               <div>
                 <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/42">Current Role</p>
                 <p className="mt-2 text-sm font-semibold text-white/84">iOS Developer</p>
-                <p className="mt-1 text-xs font-medium text-white/48">Synapse Consulting</p>
+                <p className="mt-1 text-xs font-medium text-white/48">Synapse Tech Inc.</p>
               </div>
               <span className="rounded-full bg-[#34C759]/16 px-2.5 py-1 text-[0.68rem] font-semibold text-[#9BE7AE]">
                 Aug 2024 - Present

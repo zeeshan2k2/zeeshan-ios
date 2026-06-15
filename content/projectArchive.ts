@@ -42,7 +42,7 @@ export const showcaseProjects: ShowcaseProject[] = [
   {
     slug: "33vpn",
     name: "33VPN",
-    status: "Public first phase",
+    status: "UIKit VPN alpha",
     description: "UIKit VPN client interface with MVVM Clean Architecture.",
     category: "UIKit app architecture",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
@@ -106,11 +106,12 @@ export const showcaseProjects: ShowcaseProject[] = [
   {
     slug: "spatial-tutor",
     name: "Spatial Tutor",
-    status: "VisionOS + AI",
+    status: "AI + visionOS",
     description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
     category: "VisionOS product work",
     icon: "/ui/appscreenshots/spatial-tutor/app-icon.png",
     href: "/projects#spatial-tutor",
+    githubUrl: "https://github.com/zeeshan2k2/Spatial-Tutor",
     techStack: ["SwiftUI", "VisionOS", "TCA", "WebSocket", "SwiftData"],
     preferredFrame: "vision",
     screenshots: [
