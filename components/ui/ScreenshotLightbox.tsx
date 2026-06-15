@@ -157,7 +157,7 @@ export function ScreenshotLightbox({
             animate={{ opacity: 1, scale: 1 }}
             className="relative h-[calc(100dvh-5rem)] w-[calc(100vw-1.5rem)] sm:h-[calc(100dvh-7rem)] sm:w-[calc(100vw-8rem)]"
             initial={{ opacity: 0, scale: 0.98 }}
-            key={screenshots[activeIndex].src}
+            key={`${projectName}-${activeIndex}-${screenshots[activeIndex].src}`}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <Image

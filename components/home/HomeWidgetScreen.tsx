@@ -95,7 +95,7 @@ const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
     "aspect-[1170/2532] h-auto w-[10.166rem] sm:w-[11.552rem] [@media(min-width:2300px)]:w-[17rem]",
   wide: "h-[13.25rem] w-[24rem] sm:h-[15rem] sm:w-[27rem]",
   square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
-  vision: "h-[15rem] w-[27rem] sm:h-[17rem] sm:w-[31rem]",
+  vision: "aspect-video h-auto w-[27rem] sm:w-[31rem]",
 };
 
 const homeProjects: HomeProject[] = [
@@ -158,14 +158,14 @@ const homeProjects: HomeProject[] = [
     name: "Spatial Tutor",
     status: "AI + VisionOS",
     description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
-    iconFallback: "ST",
+    icon: "/ui/appscreenshots/spatial-tutor/app-icon.png",
     href: "/projects#spatial-tutor",
     preferredFrame: "vision",
     screenshots: [
       { src: "/ui/appscreenshots/spatial-tutor/board%20view.png" },
       { src: "/ui/appscreenshots/spatial-tutor/diargram%20board.png" },
       { src: "/ui/appscreenshots/spatial-tutor/entry.png" },
-      { src: "/ui/appscreenshots/spatial-tutor/welcome.png" }
+      { src: "/ui/appscreenshots/spatial-tutor/edit profile.png" },
     ],
   },
 ];
@@ -437,7 +437,7 @@ export function HomeWidgetScreen() {
                             screenshotFrameClasses[screenshot.frame ?? selectedProject.preferredFrame ?? "phone"],
                           )}
                           initial={{ opacity: 0, y: 10 }}
-                          key={screenshot.src}
+                          key={`${selectedProject.name}-${index}-${screenshot.src}`}
                           onClick={() => setLightboxIndex(index)}
                           transition={{ delay: index * 0.035, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                           type="button"
@@ -448,7 +448,9 @@ export function HomeWidgetScreen() {
                               "h-full w-full",
                               (screenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
                                 ? "scale-[1.018] object-cover"
-                                : "object-contain",
+                                : (screenshot.frame ?? selectedProject.preferredFrame) === "vision"
+                                  ? "scale-[1.006] object-cover"
+                                  : "object-contain",
                             )}
                             height={800}
                             src={screenshot.src}

@@ -109,15 +109,16 @@ export const showcaseProjects: ShowcaseProject[] = [
     status: "VisionOS + AI",
     description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
     category: "VisionOS product work",
-    iconFallback: "ST",
+    icon: "/ui/appscreenshots/spatial-tutor/app-icon.png",
     href: "/projects#spatial-tutor",
     techStack: ["SwiftUI", "VisionOS", "TCA", "WebSocket", "SwiftData"],
     preferredFrame: "vision",
     screenshots: [
       { src: "/ui/appscreenshots/spatial-tutor/board%20view.png" },
       { src: "/ui/appscreenshots/spatial-tutor/diargram%20board.png" },
+      { src: "/ui/appscreenshots/spatial-tutor/edit profile.png" },
       { src: "/ui/appscreenshots/spatial-tutor/entry.png" },
-      { src: "/ui/appscreenshots/spatial-tutor/welcome.png" }
+      { src: "/ui/appscreenshots/spatial-tutor/manage.png" },
     ],
   },
 ];
