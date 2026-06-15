@@ -6,6 +6,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Card } from "@/components/ui/Card";
+import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
 import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -160,7 +161,12 @@ const homeProjects: HomeProject[] = [
     iconFallback: "ST",
     href: "/projects#spatial-tutor",
     preferredFrame: "vision",
-    screenshots: [],
+    screenshots: [
+      { src: "/ui/appscreenshots/spatial-tutor/board%20view.png" },
+      { src: "/ui/appscreenshots/spatial-tutor/diargram%20board.png" },
+      { src: "/ui/appscreenshots/spatial-tutor/entry.png" },
+      { src: "/ui/appscreenshots/spatial-tutor/welcome.png" }
+    ],
   },
 ];
 
@@ -194,6 +200,7 @@ function WidgetSurface({
 
 export function HomeWidgetScreen() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const projectSectionRef = useRef<HTMLDivElement>(null);
   const selectedProject = homeProjects[selectedProjectIndex];
 
@@ -236,6 +243,7 @@ export function HomeWidgetScreen() {
   }, []);
 
   function handleProjectSelect(index: number) {
+    setLightboxIndex(null);
     setSelectedProjectIndex(index);
 
     const section = projectSectionRef.current;
@@ -421,15 +429,18 @@ export function HomeWidgetScreen() {
                   {selectedProject.screenshots.length > 0 ? (
                     <div className="flex snap-x gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       {selectedProject.screenshots.map((screenshot, index) => (
-                        <motion.div
+                        <motion.button
+                          aria-label={`Open ${selectedProject.name} screenshot ${index + 1}`}
                           animate={{ opacity: 1, y: 0 }}
                           className={cn(
-                            "relative shrink-0 snap-start overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 shadow-[0_18px_42px_rgba(0,0,0,0.34)]",
+                            "relative shrink-0 snap-start cursor-zoom-in overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 text-left shadow-[0_18px_42px_rgba(0,0,0,0.34)] transition hover:border-white/24 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#64D2FF]",
                             screenshotFrameClasses[screenshot.frame ?? selectedProject.preferredFrame ?? "phone"],
                           )}
                           initial={{ opacity: 0, y: 10 }}
                           key={screenshot.src}
+                          onClick={() => setLightboxIndex(index)}
                           transition={{ delay: index * 0.035, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                          type="button"
                         >
                           <Image
                             alt={`${selectedProject.name} screenshot ${index + 1}`}
@@ -444,7 +455,7 @@ export function HomeWidgetScreen() {
                             unoptimized
                             width={1200}
                           />
-                        </motion.div>
+                        </motion.button>
                       ))}
                     </div>
                   ) : (
@@ -542,6 +553,14 @@ export function HomeWidgetScreen() {
           </div>
         </div>
       </WidgetSurface>
+
+      <ScreenshotLightbox
+        activeIndex={lightboxIndex}
+        onChange={setLightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        projectName={selectedProject.name}
+        screenshots={selectedProject.screenshots}
+      />
     </div>
   );
 }

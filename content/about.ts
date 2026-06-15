@@ -82,11 +82,3 @@ export const aboutEducation = [
     period: "Nov 2021",
   },
 ];
-
-export const aboutPrinciples = [
-  "Build interfaces that feel native, not merely styled.",
-  "Keep architecture clean, modular, and maintainable enough to keep shipping.",
-  "Treat performance, reliability, and crash-free experience as product details.",
-  "Respect product constraints while protecting user experience.",
-  "Use AI as a practical engineering and product tool.",
-];

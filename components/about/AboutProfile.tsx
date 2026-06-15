@@ -3,7 +3,6 @@ import Image from "next/image";
 import {
   aboutEducation,
   aboutExperience,
-  aboutPrinciples,
   aboutProfile,
   aboutTechStack,
   aboutWorkAreas,
@@ -291,26 +290,6 @@ export function AboutProfile() {
             </div>
           </AboutSurface>
 
-          <AboutSurface className="p-5 sm:p-6" id="contact">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(10,132,255,0.2),transparent_18rem),radial-gradient(circle_at_90%_0%,rgba(100,210,255,0.12),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
-            <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-              <div>
-                <Eyebrow>Contact Me</Eyebrow>
-                <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
-                  Let&apos;s connect
-                </h2>
-                <p className="mt-2 max-w-xl text-sm leading-6 text-white/52">
-                  Find my work, connect professionally, follow updates, or send an email.
-                </p>
-              </div>
-
-              <div className="flex justify-center gap-3 rounded-[1.75rem] bg-black/18 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:gap-4">
-                {socialDockLinks.map((link) => (
-                  <SocialDockAction href={link.href} icon={link.icon} key={link.label} label={link.label} />
-                ))}
-              </div>
-            </div>
-          </AboutSurface>
         </div>
 
         <div className="grid gap-4">
@@ -329,20 +308,29 @@ export function AboutProfile() {
             </div>
           </AboutSurface>
 
-          <AboutSurface className="p-5">
-            <div className="relative z-10">
-              <Eyebrow>How I Work</Eyebrow>
-              <div className="mt-4 space-y-3">
-                {aboutPrinciples.map((principle) => (
-                  <div className="rounded-[1.25rem] bg-black/20 px-4 py-3 text-sm leading-6 text-white/58 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" key={principle}>
-                    {principle}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AboutSurface>
         </div>
       </div>
+
+      <AboutSurface className="p-5 sm:p-6" id="contact">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(10,132,255,0.2),transparent_18rem),radial-gradient(circle_at_90%_0%,rgba(100,210,255,0.12),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
+        <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <Eyebrow>Contact Me</Eyebrow>
+            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
+              Let&apos;s connect
+            </h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-white/52">
+              Find my work, connect professionally, follow updates, or send an email.
+            </p>
+          </div>
+
+          <div className="flex justify-center gap-3 rounded-[1.75rem] bg-black/18 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:gap-4">
+            {socialDockLinks.map((link) => (
+              <SocialDockAction href={link.href} icon={link.icon} key={link.label} label={link.label} />
+            ))}
+          </div>
+        </div>
+      </AboutSurface>
     </div>
   );
 }

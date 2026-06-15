@@ -6,6 +6,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { professionalApps, showcaseProjects, learningProjects } from "@/content/projectArchive";
+import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
 import { cn } from "@/lib/utils";
 import type { ScreenshotFrame } from "@/types/projectArchive";
 
@@ -97,6 +98,7 @@ function LearningProjectAction({
 
 export function ProjectsArchive() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const selectedProject = showcaseProjects[selectedProjectIndex];
 
   return (
@@ -180,7 +182,10 @@ export function ProjectsArchive() {
                       isSelected ? "bg-white/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]" : "hover:bg-white/[0.07]",
                     )}
                     key={project.slug}
-                    onClick={() => setSelectedProjectIndex(index)}
+                    onClick={() => {
+                      setLightboxIndex(null);
+                      setSelectedProjectIndex(index);
+                    }}
                     type="button"
                   >
                     <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,#2C2C2E,#111217)] shadow-[0_10px_22px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.14)]">
@@ -242,15 +247,18 @@ export function ProjectsArchive() {
                   {selectedProject.screenshots.length > 0 ? (
                     <div className="flex snap-x gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       {selectedProject.screenshots.map((screenshot, index) => (
-                        <motion.div
+                        <motion.button
+                          aria-label={`Open ${selectedProject.name} screenshot ${index + 1}`}
                           animate={{ opacity: 1, y: 0 }}
                           className={cn(
-                            "relative shrink-0 snap-start overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 shadow-[0_18px_42px_rgba(0,0,0,0.34)]",
+                            "relative shrink-0 snap-start cursor-zoom-in overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 text-left shadow-[0_18px_42px_rgba(0,0,0,0.34)] transition hover:border-white/24 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#64D2FF]",
                             screenshotFrameClasses[screenshot.frame ?? selectedProject.preferredFrame ?? "phone"],
                           )}
                           initial={{ opacity: 0, y: 10 }}
                           key={screenshot.src}
+                          onClick={() => setLightboxIndex(index)}
                           transition={{ delay: index * 0.03, duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                          type="button"
                         >
                           <Image
                             alt={`${selectedProject.name} screenshot ${index + 1}`}
@@ -265,7 +273,7 @@ export function ProjectsArchive() {
                             unoptimized
                             width={1200}
                           />
-                        </motion.div>
+                        </motion.button>
                       ))}
                     </div>
                   ) : (
@@ -293,6 +301,14 @@ export function ProjectsArchive() {
           </div>
         </div>
       </ArchiveSurface>
+
+      <ScreenshotLightbox
+        activeIndex={lightboxIndex}
+        onChange={setLightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        projectName={selectedProject.name}
+        screenshots={selectedProject.screenshots}
+      />
 
       <ArchiveSurface className="p-5 sm:p-6" id="learning">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(28,28,30,0.18)_44%),radial-gradient(circle_at_90%_0%,rgba(191,90,242,0.16),transparent_20rem)]" />
