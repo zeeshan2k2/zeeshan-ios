@@ -124,7 +124,7 @@ export const showcaseProjects: ShowcaseProject[] = [
   },
 ];
 
-export const learningProjects: LearningProject[] = [
+const learningEntries: LearningProject[] = [
   {
     name: "Menu",
     category: "SwiftUI",
@@ -374,3 +374,13 @@ export const learningProjects: LearningProject[] = [
     status: "Learning",
   },
 ];
+
+export const learningPaths = learningEntries.filter((entry) => entry.status === "Learning Path");
+
+export const technicalNotes = learningEntries.filter(
+  (entry) => !entry.githubUrl && entry.status !== "Learning Path",
+);
+
+export const learningProjects = learningEntries.filter(
+  (entry) => Boolean(entry.githubUrl) && entry.status !== "Learning Path",
+);

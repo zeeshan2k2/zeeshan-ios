@@ -5,7 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { professionalApps, showcaseProjects, learningProjects } from "@/content/projectArchive";
+import { learningPaths, learningProjects, professionalApps, showcaseProjects, technicalNotes } from "@/content/projectArchive";
 import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
 import { cn } from "@/lib/utils";
 import type { ScreenshotFrame } from "@/types/projectArchive";
@@ -137,6 +137,68 @@ function LearningProjectAction({
     <a className={className} href={href} rel="noreferrer" target="_blank">
       {content}
     </a>
+  );
+}
+
+function LearningCard({
+  project,
+  compact = false,
+  resourcesLabel = "Code and notes",
+}: {
+  project: {
+    name: string;
+    category: string;
+    description: string;
+    techStack: string[];
+    githubUrl?: string;
+    notionUrl?: string;
+    status: string;
+  };
+  compact?: boolean;
+  resourcesLabel?: string;
+}) {
+  return (
+    <article
+      className={cn(
+        "flex flex-col overflow-hidden rounded-[1.55rem] bg-black/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.07]",
+        compact ? "min-h-[17.25rem]" : "min-h-[20rem]",
+      )}
+      key={project.name}
+    >
+      <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-4 py-3.5">
+        <div className="min-w-0">
+          <p className={cn("truncate font-semibold text-white/90", compact ? "text-[0.95rem]" : "text-sm")}>
+            {project.name}
+          </p>
+          <p className="mt-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-white/34">{project.category}</p>
+        </div>
+        <span className="shrink-0 rounded-full bg-white/[0.07] px-2.5 py-1 text-[0.68rem] font-semibold text-white/42">
+          {project.status}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col px-4 py-4">
+        <p className={cn("text-white/54", compact ? "text-[0.82rem] leading-5" : "text-sm leading-6")}>{project.description}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {project.techStack.map((tech) => (
+            <span className="rounded-full bg-white/[0.055] px-2.5 py-1 text-[0.68rem] font-semibold text-white/42" key={tech}>
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex min-h-[5.25rem] items-center justify-between gap-4 border-t border-white/[0.06] bg-black/10 px-4 py-3">
+        <div>
+          <p className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/30">Resources</p>
+          <p className="mt-1 text-xs text-white/38">{resourcesLabel}</p>
+        </div>
+        <div className="flex items-end gap-2">
+          <LearningProjectAction href={project.githubUrl} kind="github" label="GitHub" />
+          <LearningProjectAction href={project.notionUrl} kind="notion" label="Notes" />
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -409,53 +471,57 @@ export function ProjectsArchive() {
         <div className="relative z-10">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <Eyebrow>Learning Projects</Eyebrow>
-              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Experiments, notes, and what I learned</h2>
+              <Eyebrow>Learning Archive</Eyebrow>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">How I learned, what I studied, and what I built</h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-white/42">
-              Smaller projects where I test new APIs, components, and architecture ideas, with code and notes on what worked, what did not, and what I learned.
+              Structured learning paths first, focused technical notes second, then the repo-backed experiments where those ideas turned into working code.
             </p>
           </div>
 
-          <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {learningProjects.map((project) => (
-              <article
-                className="flex min-h-[20rem] flex-col overflow-hidden rounded-[1.55rem] bg-black/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.07]"
-                key={project.name}
-              >
-                <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-4 py-3.5">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-white/90">{project.name}</p>
-                    <p className="mt-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-white/34">{project.category}</p>
-                  </div>
-                  <span className="shrink-0 rounded-full bg-white/[0.07] px-2.5 py-1 text-[0.68rem] font-semibold text-white/42">
-                    {project.status}
-                  </span>
-                </div>
+          <div className="mt-6 border-t border-white/[0.08] pt-6">
+            <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+              <div>
+                <Eyebrow>Learning Paths</Eyebrow>
+                <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">Course tracks and self-directed paths</h3>
+              </div>
+              <p className="max-w-md text-sm leading-6 text-white/40">The structured tracks that shaped the way I approached Swift, UIKit, and SwiftUI before the deeper topic notes and repo work.</p>
+            </div>
+            <div className="grid gap-3 lg:grid-cols-3">
+              {learningPaths.map((project) => (
+                <LearningCard compact key={project.name} project={project} resourcesLabel="Notes collection" />
+              ))}
+            </div>
+          </div>
 
-                <div className="flex flex-1 flex-col px-4 py-4">
-                  <p className="text-sm leading-6 text-white/54">{project.description}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {project.techStack.map((tech) => (
-                      <span className="rounded-full bg-white/[0.055] px-2.5 py-1 text-[0.68rem] font-semibold text-white/42" key={tech}>
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+          <div className="mt-8 border-t border-white/[0.08] pt-6">
+            <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+              <div>
+                <Eyebrow>Technical Notes</Eyebrow>
+                <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">Focused notes on the hard parts</h3>
+              </div>
+              <p className="max-w-md text-sm leading-6 text-white/40">Shorter, topic-driven notes where I tried to pin down lifecycle, memory, architecture, and UIKit behavior precisely enough to use in real code.</p>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {technicalNotes.map((project) => (
+                <LearningCard compact key={project.name} project={project} resourcesLabel="Notes and references" />
+              ))}
+            </div>
+          </div>
 
-                <div className="flex min-h-[5.25rem] items-center justify-between gap-4 border-t border-white/[0.06] bg-black/10 px-4 py-3">
-                  <div>
-                    <p className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/30">Resources</p>
-                    <p className="mt-1 text-xs text-white/38">Code and notes</p>
-                  </div>
-                  <div className="flex items-end gap-2">
-                    <LearningProjectAction href={project.githubUrl} kind="github" label="GitHub" />
-                    <LearningProjectAction href={project.notionUrl} kind="notion" label="Notes" />
-                  </div>
-                </div>
-              </article>
-            ))}
+          <div className="mt-8 border-t border-white/[0.08] pt-6">
+            <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+              <div>
+                <Eyebrow>Learning Projects</Eyebrow>
+                <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">Repo-backed experiments and practice apps</h3>
+              </div>
+              <p className="max-w-md text-sm leading-6 text-white/40">The practical side of the archive: repo work where I tested APIs, patterns, persistence, networking, UI flows, and a few systems-heavy experiments.</p>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {learningProjects.map((project) => (
+                <LearningCard key={project.name} project={project} />
+              ))}
+            </div>
           </div>
         </div>
       </ArchiveSurface>
