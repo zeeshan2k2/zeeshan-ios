@@ -206,6 +206,33 @@ export function ProjectsArchive() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const selectedProject = showcaseProjects[selectedProjectIndex];
+  const archivePriority = [
+    "Passkey",
+    "ByteForge",
+    "iOS Notifications Examples",
+    "iOS Combine Examples",
+    "iOS Networking Examples",
+    "Widget Kit",
+    "GraphQL Lab",
+    "Call Kit",
+  ];
+
+  const learningArchiveEntries = [...technicalNotes, ...learningProjects].sort((a, b) => {
+    const aPriority = archivePriority.indexOf(a.name);
+    const bPriority = archivePriority.indexOf(b.name);
+
+    if (aPriority !== -1 || bPriority !== -1) {
+      if (aPriority === -1) return 1;
+      if (bPriority === -1) return -1;
+      return aPriority - bPriority;
+    }
+
+    if (a.githubUrl !== b.githubUrl) {
+      return a.githubUrl ? 1 : -1;
+    }
+
+    return a.name.localeCompare(b.name);
+  });
 
   return (
     <div className="space-y-4">
@@ -475,7 +502,7 @@ export function ProjectsArchive() {
               <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">How I learned, what I studied, and what I built</h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-white/42">
-              Structured learning paths first, focused technical notes second, then the repo-backed experiments where those ideas turned into working code.
+              Structured learning paths first, followed by the notes, experiments, and repo-backed work that turned those ideas into something usable.
             </p>
           </div>
 
@@ -497,29 +524,19 @@ export function ProjectsArchive() {
           <div className="mt-8 border-t border-white/[0.08] pt-6">
             <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
               <div>
-                <Eyebrow>Technical Notes</Eyebrow>
-                <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">Focused notes on the hard parts</h3>
+                <Eyebrow>Notes and Projects</Eyebrow>
+                <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">Focused notes, experiments, and repo-backed practice</h3>
               </div>
-              <p className="max-w-md text-sm leading-6 text-white/40">Shorter, topic-driven notes where I tried to pin down lifecycle, memory, architecture, and UIKit behavior precisely enough to use in real code.</p>
+              <p className="max-w-md text-sm leading-6 text-white/40">The rest of the archive in one place: technical notes I wrote for myself, smaller experiments, and practical repo work where those ideas got tested properly.</p>
             </div>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              {technicalNotes.map((project) => (
-                <LearningCard compact key={project.name} project={project} resourcesLabel="Notes and references" />
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-8 border-t border-white/[0.08] pt-6">
-            <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
-              <div>
-                <Eyebrow>Learning Projects</Eyebrow>
-                <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-white">Repo-backed experiments and practice apps</h3>
-              </div>
-              <p className="max-w-md text-sm leading-6 text-white/40">The practical side of the archive: repo work where I tested APIs, patterns, persistence, networking, UI flows, and a few systems-heavy experiments.</p>
-            </div>
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              {learningProjects.map((project) => (
-                <LearningCard key={project.name} project={project} />
+              {learningArchiveEntries.map((project) => (
+                <LearningCard
+                  compact={!project.githubUrl}
+                  key={project.name}
+                  project={project}
+                  resourcesLabel={project.githubUrl ? "Code and notes" : "Notes and references"}
+                />
               ))}
             </div>
           </div>
