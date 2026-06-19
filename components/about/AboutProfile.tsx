@@ -320,7 +320,7 @@ export function AboutProfile() {
               Let&apos;s connect
             </h2>
             <p className="mt-2 max-w-xl text-sm leading-6 text-white/52">
-              Find my work, connect professionally, follow updates, or send an email.
+              Find my work, connect professionally, follow updates, or send an email. If you have any questions, feel free to ask.
             </p>
           </div>
 
