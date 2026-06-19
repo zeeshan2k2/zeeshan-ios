@@ -67,12 +67,19 @@ function ArchiveSurface({
   return (
     <section
       className={cn(
-        "relative overflow-hidden rounded-[2.15rem] border border-white/[0.07] bg-[rgba(28,28,30,0.5)] shadow-[0_22px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl",
+        "relative overflow-hidden border backdrop-blur-2xl backdrop-saturate-125",
         className,
       )}
       id={id}
+      style={{
+        background:
+          "linear-gradient(145deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.04) 48%, rgba(255, 255, 255, 0.018) 100%), rgba(20, 21, 25, 0.4)",
+        borderColor: "rgba(255, 255, 255, 0.16)",
+        borderRadius: "1.75rem",
+        boxShadow:
+          "inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 20px 48px rgba(0, 0, 0, 0.26)",
+      }}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0))]" />
       {children}
     </section>
   );
@@ -95,6 +102,10 @@ function LearningProjectAction({
   kind: "github" | "notion";
   label: string;
 }) {
+  if (!href) {
+    return null;
+  }
+
   const content = (
     <>
       <span
@@ -122,14 +133,10 @@ function LearningProjectAction({
 
   const className = "group flex min-w-14 flex-col items-center gap-1.5";
 
-  return href ? (
+  return (
     <a className={className} href={href} rel="noreferrer" target="_blank">
       {content}
     </a>
-  ) : (
-    <button className={className} title={`${label} link coming later`} type="button">
-      {content}
-    </button>
   );
 }
 
@@ -141,7 +148,6 @@ export function ProjectsArchive() {
   return (
     <div className="space-y-4">
       <ArchiveSurface className="p-5 sm:p-6">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(10,132,255,0.24),transparent_20rem),linear-gradient(145deg,rgba(255,255,255,0.09),rgba(28,28,30,0.2)_48%)]" />
         <div className="relative z-10">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
@@ -246,7 +252,6 @@ export function ProjectsArchive() {
       </ArchiveSurface>
 
       <ArchiveSurface className="p-4 sm:p-5" id="showcase">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(75,167,255,0.18),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
         <div className="relative z-10">
           <div className="mb-4 flex items-center justify-between gap-4 px-1">
             <div>
@@ -401,15 +406,14 @@ export function ProjectsArchive() {
       />
 
       <ArchiveSurface className="p-5 sm:p-6" id="learning">
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(28,28,30,0.18)_44%),radial-gradient(circle_at_90%_0%,rgba(191,90,242,0.16),transparent_20rem)]" />
         <div className="relative z-10">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <Eyebrow>Learning Projects</Eyebrow>
-              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Files-style experiment grid</h2>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Experiments, notes, and what I learned</h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-white/42">
-              Smaller repos, component labs, architecture practice, and technical experiments.
+              Smaller projects where I test new APIs, components, and architecture ideas, with code and notes on what worked, what did not, and what I learned.
             </p>
           </div>
 

@@ -11,11 +11,11 @@ import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const appleStackItems = [
-  { label: "Languages", detail: "Swift, Objective-C, Python, JavaScript", tint: "bg-[#0A84FF]" },
-  { label: "Apple UI", detail: "UIKit, SwiftUI, VisionOS, WidgetKit", tint: "bg-[#BF5AF2]" },
-  { label: "Data & APIs", detail: "Core Data, SwiftData, Keychain, URLSession", tint: "bg-[#34C759]" },
-  { label: "Reliability", detail: "XCTest, Firebase, Crashlytics, Notifications", tint: "bg-[#FF9F0A]" },
-  { label: "Product", detail: "StoreKit, Ads SDKs, Lottie, Figma", tint: "bg-[#FF453A]" },
+  { label: "Languages", detail: "Swift, Objective-C, Python, JavaScript" },
+  { label: "Apple UI", detail: "UIKit, SwiftUI, VisionOS, WidgetKit" },
+  { label: "Data & APIs", detail: "Core Data, SwiftData, Keychain, URLSession" },
+  { label: "Reliability", detail: "XCTest, Firebase, Crashlytics, Notifications" },
+  { label: "Product", detail: "StoreKit, Ads SDKs, Lottie, Figma" },
 ];
 
 const currentRoleHighlights = [
@@ -189,11 +189,18 @@ function WidgetSurface({
   return (
     <Card
       className={cn(
-        "relative h-full overflow-hidden rounded-[2.15rem] border-white/[0.07] bg-[rgba(28,28,30,0.48)] shadow-[0_22px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl",
+        "relative h-full overflow-hidden backdrop-blur-2xl backdrop-saturate-125",
         className,
       )}
+      style={{
+        background:
+          "linear-gradient(145deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.04) 48%, rgba(255, 255, 255, 0.018) 100%), rgba(20, 21, 25, 0.4)",
+        borderColor: "rgba(255, 255, 255, 0.16)",
+        borderRadius: "1.75rem",
+        boxShadow:
+          "inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 20px 48px rgba(0, 0, 0, 0.26)",
+      }}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.16),rgba(255,255,255,0))]" />
       {children}
     </Card>
   );
@@ -269,9 +276,7 @@ export function HomeWidgetScreen() {
 
   return (
     <div className="grid auto-rows-[minmax(10rem,auto)] gap-4 lg:grid-cols-8">
-      <WidgetSurface className="min-h-[25rem] p-6 sm:p-7 lg:col-span-5">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_10%,rgba(10,132,255,0.34),transparent_18rem),radial-gradient(circle_at_88%_0%,rgba(191,90,242,0.18),transparent_14rem),linear-gradient(145deg,rgba(24,31,43,0.82),rgba(12,14,20,0.5)_58%,rgba(8,9,12,0.72))]" />
-        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/[0.055] blur-3xl" />
+      <WidgetSurface className="order-1 min-h-[25rem] p-6 sm:p-7 lg:order-none lg:col-span-5">
         <div className="relative z-10 flex h-full flex-col justify-between gap-7">
           <div className="flex items-start justify-between gap-5">
             <div>
@@ -280,8 +285,14 @@ export function HomeWidgetScreen() {
                 {SITE_NAME}
               </h1>
             </div>
-            <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[1.75rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.2),rgba(255,255,255,0.08))] text-2xl font-semibold tracking-[-0.04em] text-white/92 shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_18px_44px_rgba(0,0,0,0.3)] sm:h-24 sm:w-24 sm:text-3xl">
-              ZW
+            <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[0.95rem] border border-white/14 shadow-[0_10px_24px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.2)] sm:h-16 sm:w-16 sm:rounded-[0.8rem]">
+              <Image
+                alt="Swift"
+                className="h-full w-full object-cover"
+                height={96}
+                src="/icons/swift.png"
+                width={96}
+              />
             </div>
           </div>
 
@@ -308,15 +319,13 @@ export function HomeWidgetScreen() {
         </div>
       </WidgetSurface>
 
-      <WidgetSurface className="p-5 lg:col-span-3">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(10,132,255,0.2),transparent_12rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_42%)]" />
+      <WidgetSurface className="order-4 p-5 lg:order-none lg:col-span-3">
         <div className="relative z-10">
           <WidgetTitle>Apple Stack</WidgetTitle>
           <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white">Production-ready iOS toolkit.</h2>
           <div className="mt-5 space-y-2.5">
             {appleStackItems.map((item) => (
-              <div className="flex items-center gap-3 rounded-[1.35rem] bg-white/[0.065] px-3.5 py-3" key={item.label}>
-                <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full shadow-[0_0_18px_currentColor]", item.tint)} />
+              <div className="rounded-[1.35rem] bg-white/[0.065] px-3.5 py-3" key={item.label}>
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-white/86">{item.label}</p>
                   <p className="mt-0.5 truncate text-xs font-medium text-white/44">{item.detail}</p>
@@ -348,10 +357,9 @@ export function HomeWidgetScreen() {
         </div>
       </WidgetSurface>
 
-      <div className="lg:col-span-8 xl:h-[250vh]" ref={projectSectionRef}>
+      <div className="order-2 lg:order-none lg:col-span-8 xl:h-[250vh]" ref={projectSectionRef}>
         <div className="xl:sticky xl:top-10">
           <WidgetSurface className="p-4">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(75,167,255,0.18),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
         <div className="relative z-10">
           <div className="mb-4 flex items-center justify-between gap-4 px-1">
             <div>
@@ -489,8 +497,7 @@ export function HomeWidgetScreen() {
         </div>
       </div>
 
-      <WidgetSurface className="p-5 lg:col-span-8">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(10,132,255,0.22),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.09),rgba(28,28,30,0.22)_48%)]" />
+      <WidgetSurface className="order-3 p-5 lg:order-none lg:col-span-8">
         <div className="relative z-10">
           <div className="flex items-start justify-between gap-4">
             <div>

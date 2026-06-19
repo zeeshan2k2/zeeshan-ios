@@ -2,9 +2,12 @@ export const aboutProfile = {
   name: "Zeeshan Waheed",
   role: "iOS Developer",
   location: "Karachi, Pakistan",
-  headline: "I build native Apple-platform apps, AI-assisted systems, and polished product experiences.",
-  intro:
-    "Software Engineering graduate and iOS Developer at Synapse Tech Inc., focused on clean architecture, performance, maintainable code, production VPN apps, enterprise client work, and AI-assisted Apple-platform systems.",
+  headline: "I build production iOS apps and work on mobile security, local AI, and Apple-platform products.",
+  intro: [
+    "I’m a Software Engineering graduate and iOS developer working on production apps with Swift, UIKit, and SwiftUI. My work includes VPN products, enterprise apps, authentication, subscriptions, Firebase, StoreKit, and App Store releases.",
+    "I’ve also worked on mobile security features such as SSL pinning, device binding, and jailbreak detection, alongside backend and product teams.",
+    "Outside native iOS development, I explore small language models, RAG, local inference, and model evaluation. I’m currently building independent products and experimenting with practical uses of AI in Apple-platform apps.",
+  ],
 };
 
 export const aboutExperience = [

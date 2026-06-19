@@ -22,12 +22,19 @@ function AboutSurface({
   return (
     <section
       className={cn(
-        "relative overflow-hidden rounded-[2.15rem] border border-white/[0.07] bg-[rgba(28,28,30,0.5)] shadow-[0_22px_70px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl",
+        "relative overflow-hidden border backdrop-blur-2xl backdrop-saturate-125",
         className,
       )}
       id={id}
+      style={{
+        background:
+          "linear-gradient(145deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.04) 48%, rgba(255, 255, 255, 0.018) 100%), rgba(20, 21, 25, 0.4)",
+        borderColor: "rgba(255, 255, 255, 0.16)",
+        borderRadius: "1.75rem",
+        boxShadow:
+          "inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 20px 48px rgba(0, 0, 0, 0.26)",
+      }}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0))]" />
       {children}
     </section>
   );
@@ -50,29 +57,37 @@ function ContactAction({
   icon: "projects" | "contact" | "resume";
   label: string;
 }) {
-  const iconPath = {
-    projects:
-      "M4.75 5.25A2.25 2.25 0 0 1 7 3h2.5c.7 0 1.36.33 1.78.89l.83 1.11H17A2.25 2.25 0 0 1 19.25 7.25v.5H4.75v-2.5Zm0 4h14.5l-.92 7.36A2.25 2.25 0 0 1 16.1 18.6H6.9a2.25 2.25 0 0 1-2.23-1.99L3.75 9.25h1Z",
-    contact:
-      "M12 12.25a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm-7.25 7.25c.52-3.7 3.58-5.75 7.25-5.75s6.73 2.05 7.25 5.75a.75.75 0 0 1-.74.85H5.49a.75.75 0 0 1-.74-.85Z",
-    resume:
-      "M6.75 3.5h6.75l4.75 4.62V18.5a2 2 0 0 1-2 2H6.75a2 2 0 0 1-2-2v-14a2 2 0 0 1 2-2Zm6.45 1.7v4.15h4.25L13.2 5.2ZM8.25 13h7.5v1.5h-7.5V13Zm0 3h5.5v1.5h-5.5V16Z",
-  }[icon];
-
-  const iconClassName = {
-    projects: "bg-[linear-gradient(180deg,#5EC8FF,#32ADE6_52%,#0A84FF)] shadow-[0_12px_28px_rgba(10,132,255,0.28),inset_0_1px_0_rgba(255,255,255,0.24)]",
-    contact: "bg-[linear-gradient(180deg,#64D2FF,#0A84FF)] shadow-[0_12px_28px_rgba(10,132,255,0.28),inset_0_1px_0_rgba(255,255,255,0.24)]",
-    resume: "bg-[linear-gradient(180deg,#62D7D0,#26AFA8_52%,#167B78)] shadow-[0_12px_28px_rgba(22,123,120,0.3),inset_0_1px_0_rgba(255,255,255,0.24)]",
+  const appIconSrc = {
+    projects: "/app-icons/projects.svg",
+    contact: undefined,
+    resume: "/app-icons/resume.svg",
   }[icon];
 
   return (
-    <a className="group flex min-w-0 flex-col items-center gap-2" href={href}>
-      <div className={cn("flex h-11 w-11 items-center justify-center rounded-full text-white transition group-hover:-translate-y-0.5 group-hover:brightness-110 group-active:scale-95", iconClassName)}>
-        <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24">
-          <path d={iconPath} fill="currentColor" />
-        </svg>
+    <a
+      aria-label={label}
+      className="group flex min-w-0 flex-col items-center gap-2 text-center transition active:scale-95"
+      href={href}
+    >
+      <div
+        className={cn(
+          "flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[20%] text-white shadow-[0_8px_18px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.18)] transition group-hover:-translate-y-0.5",
+        )}
+      >
+        {appIconSrc ? (
+          <Image alt="" aria-hidden="true" className="h-full w-full object-cover" height={44} src={appIconSrc} width={44} />
+        ) : (
+          <span className="flex h-full w-full items-center justify-center bg-[linear-gradient(145deg,#64D2FF,#0A84FF)]">
+            <svg aria-hidden="true" className="h-[62%] w-[62%]" viewBox="0 0 24 24">
+              <path
+                d="M4.75 5.5h14.5c1.24 0 2.25 1.01 2.25 2.25v8.5c0 1.24-1.01 2.25-2.25 2.25H4.75A2.25 2.25 0 0 1 2.5 16.25v-8.5C2.5 6.51 3.51 5.5 4.75 5.5Zm.2 2 6.28 4.86c.45.35 1.09.35 1.54 0l6.28-4.86H4.95Z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+        )}
       </div>
-      <p className="text-[0.68rem] font-semibold text-white/48 transition group-hover:text-white/72">{label}</p>
+      <p className="text-xs font-semibold text-white/52 transition group-hover:text-white">{label}</p>
     </a>
   );
 }
@@ -140,36 +155,25 @@ const socialDockLinks = [
 export function AboutProfile() {
   return (
     <div className="space-y-4">
-      <AboutSurface className="min-h-[26rem] p-5 sm:p-7">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_4%,rgba(10,132,255,0.32),transparent_20rem),radial-gradient(circle_at_88%_0%,rgba(191,90,242,0.18),transparent_16rem),linear-gradient(145deg,rgba(24,31,43,0.82),rgba(12,14,20,0.46)_58%,rgba(8,9,12,0.72))]" />
-        <div className="relative z-10 grid min-h-[22rem] gap-7 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
-          <div className="flex h-full flex-col justify-between gap-8">
-            <div>
-              <Eyebrow>Contact Poster</Eyebrow>
-              <h1 className="mt-5 max-w-[11ch] text-[clamp(3.2rem,7vw,6.3rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-white">
-                {aboutProfile.name}
-              </h1>
-            </div>
+      <AboutSurface className="p-5 sm:p-7">
+        <div className="relative z-10">
+          <Eyebrow>Contact Poster</Eyebrow>
 
-            <div>
-              <p className="max-w-3xl text-[clamp(1.45rem,3vw,2.35rem)] font-semibold leading-tight tracking-[-0.04em] text-white/92">
-                {aboutProfile.headline}
-              </p>
-              <p className="mt-4 max-w-3xl text-base leading-7 text-white/64">
-                {aboutProfile.intro}
-              </p>
-            </div>
-          </div>
+          <h1 className="mt-6 max-w-[12ch] text-[clamp(3.2rem,7vw,6.3rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-white">
+            {aboutProfile.name}
+          </h1>
 
-          <div className="rounded-[2rem] bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
-            <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-[2.2rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.22),rgba(255,255,255,0.08))] text-4xl font-semibold tracking-[-0.06em] text-white shadow-[0_18px_44px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.18)]">
-              ZW
+          <p className="mt-8 max-w-4xl text-[clamp(1.45rem,3vw,2.35rem)] font-semibold leading-tight tracking-[-0.04em] text-white/92">
+            {aboutProfile.headline}
+          </p>
+
+          <div className="mt-8 grid gap-6 border-t border-white/[0.08] pt-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-10">
+            <div className="max-w-3xl space-y-3 text-base leading-7 text-white/64">
+              {aboutProfile.intro.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
-            <div className="mt-4 text-center">
-              <p className="text-lg font-semibold tracking-[-0.025em] text-white">{aboutProfile.role}</p>
-              <p className="mt-1 text-sm font-medium text-white/46">{aboutProfile.location}</p>
-            </div>
-            <div className="mt-5 grid grid-cols-3 gap-3 rounded-[1.55rem] bg-white/[0.06] p-3">
+            <div className="flex items-end gap-5">
               <ContactAction href="/projects" icon="projects" label="Projects" />
               <ContactAction href="#contact" icon="contact" label="Contact" />
               <ContactAction href="/resume" icon="resume" label="Resume" />
@@ -180,7 +184,6 @@ export function AboutProfile() {
 
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
         <AboutSurface className="p-5 sm:p-6">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_0%,rgba(52,199,89,0.16),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
           <div className="relative z-10">
             <Eyebrow>Experience</Eyebrow>
             <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
@@ -244,7 +247,6 @@ export function AboutProfile() {
         </AboutSurface>
 
         <AboutSurface className="p-4 sm:p-5">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_84%_0%,rgba(10,132,255,0.18),transparent_16rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
           <div className="relative z-10">
             <Eyebrow>Selected Work Areas</Eyebrow>
             <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
@@ -266,7 +268,6 @@ export function AboutProfile() {
       <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="grid gap-4">
           <AboutSurface className="self-start p-5 sm:p-6" id="stack">
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(28,28,30,0.18)_44%),radial-gradient(circle_at_90%_0%,rgba(191,90,242,0.16),transparent_20rem)]" />
             <div className="relative z-10">
               <Eyebrow>Technical Stack</Eyebrow>
               <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
@@ -312,7 +313,6 @@ export function AboutProfile() {
       </div>
 
       <AboutSurface className="p-5 sm:p-6" id="contact">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,rgba(10,132,255,0.2),transparent_18rem),radial-gradient(circle_at_90%_0%,rgba(100,210,255,0.12),transparent_18rem),linear-gradient(145deg,rgba(255,255,255,0.08),transparent_48%)]" />
         <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div>
             <Eyebrow>Contact Me</Eyebrow>
