@@ -182,69 +182,86 @@ export function AboutProfile() {
         </div>
       </AboutSurface>
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
-        <AboutSurface className="p-5 sm:p-6">
-          <div className="relative z-10">
-            <Eyebrow>Experience</Eyebrow>
-            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
-              Current role
-            </h2>
+      <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
+        <div className="grid gap-4">
+          <AboutSurface className="p-5 sm:p-6">
+            <div className="relative z-10">
+              <Eyebrow>Experience</Eyebrow>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
+                Current role
+              </h2>
 
-            <div className="mt-5 space-y-5">
-              {aboutExperience.map((item) => (
-                <div className="rounded-[1.65rem] bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" key={item.company}>
-                  <div>
-                    <div className="w-full">
-                      <p className="text-lg font-semibold tracking-[-0.025em] text-white">{item.role}</p>
-                      <p className="mt-1 text-sm font-medium text-white/46">{item.company}</p>
+              <div className="mt-5 space-y-5">
+                {aboutExperience.map((item) => (
+                  <div className="rounded-[1.65rem] bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" key={item.company}>
+                    <div>
+                      <div className="w-full">
+                        <p className="text-lg font-semibold tracking-[-0.025em] text-white">{item.role}</p>
+                        <p className="mt-1 text-sm font-medium text-white/46">{item.company}</p>
 
-                      <div className="mt-4 rounded-[1.45rem] bg-white/[0.075] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.09)]">
-                        <p className="mb-3 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/34">
-                          Progression
-                        </p>
-                        <div className="space-y-3">
-                          {item.progression.map((step, index) => (
-                            <div className="grid grid-cols-[0.8rem_minmax(0,1fr)] gap-2.5" key={`${step.role}-${step.period}`}>
-                              <div className="relative flex justify-center">
-                                <span
-                                  className={cn(
-                                    "mt-1.5 h-2 w-2 rounded-full",
-                                    index === 0 ? "bg-[#34C759]" : "bg-white/28",
-                                  )}
-                                />
-                                {index < item.progression.length - 1 ? (
-                                  <span className="absolute top-4 h-[calc(100%+0.35rem)] w-px bg-white/14" />
-                                ) : null}
-                              </div>
-                              <div className="min-w-0">
-                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                  <p className="text-sm font-semibold leading-5 text-white/86">{step.role}</p>
-                                  <span className="shrink-0 rounded-full bg-black/20 px-2 py-0.5 text-[0.62rem] font-semibold text-white/38">
-                                    {step.label}
-                                  </span>
+                        <div className="mt-4 rounded-[1.45rem] bg-white/[0.075] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.09)]">
+                          <p className="mb-3 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/34">
+                            Progression
+                          </p>
+                          <div className="space-y-3">
+                            {item.progression.map((step, index) => (
+                              <div className="grid grid-cols-[0.8rem_minmax(0,1fr)] gap-2.5" key={`${step.role}-${step.period}`}>
+                                <div className="relative flex justify-center">
+                                  <span
+                                    className={cn(
+                                      "mt-1.5 h-2 w-2 rounded-full",
+                                      index === 0 ? "bg-[#34C759]" : "bg-white/28",
+                                    )}
+                                  />
+                                  {index < item.progression.length - 1 ? (
+                                    <span className="absolute top-4 h-[calc(100%+0.35rem)] w-px bg-white/14" />
+                                  ) : null}
                                 </div>
-                                <p className="mt-0.5 text-xs font-medium text-white/42">{step.period}</p>
+                                <div className="min-w-0">
+                                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                    <p className="text-sm font-semibold leading-5 text-white/86">{step.role}</p>
+                                    <span className="shrink-0 rounded-full bg-black/20 px-2 py-0.5 text-[0.62rem] font-semibold text-white/38">
+                                      {step.label}
+                                    </span>
+                                  </div>
+                                  <p className="mt-0.5 text-xs font-medium text-white/42">{step.period}</p>
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="mt-5 space-y-3">
-                    {item.details.map((detail) => (
-                      <div className="flex gap-3" key={detail}>
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34C759]" />
-                        <p className="text-sm leading-6 text-white/58">{detail}</p>
-                      </div>
-                    ))}
+                    <div className="mt-5 space-y-3">
+                      {item.details.map((detail) => (
+                        <div className="flex gap-3" key={detail}>
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#34C759]" />
+                          <p className="text-sm leading-6 text-white/58">{detail}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </AboutSurface>
+          </AboutSurface>
+
+          <AboutSurface className="p-5">
+            <div className="relative z-10">
+              <Eyebrow>Education</Eyebrow>
+              <div className="mt-4 space-y-3">
+                {aboutEducation.map((item) => (
+                  <div className="rounded-[1.25rem] bg-black/20 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" key={`${item.degree}-${item.school}`}>
+                    <p className="text-sm font-semibold leading-5 text-white/86">{item.degree}</p>
+                    <p className="mt-1 text-sm leading-5 text-white/48">{item.school}</p>
+                    <p className="mt-2 text-xs font-semibold text-white/34">{item.period}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AboutSurface>
+        </div>
 
         <AboutSurface className="p-4 sm:p-5">
           <div className="relative z-10">
@@ -265,52 +282,29 @@ export function AboutProfile() {
         </AboutSurface>
       </div>
 
-      <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="grid gap-4">
-          <AboutSurface className="self-start p-5 sm:p-6" id="stack">
-            <div className="relative z-10">
-              <Eyebrow>Technical Stack</Eyebrow>
-              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
-                Tools I reach for
-              </h2>
+      <AboutSurface className="p-5 sm:p-6" id="stack">
+        <div className="relative z-10">
+          <Eyebrow>Technical Stack</Eyebrow>
+          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
+            Tools I reach for
+          </h2>
 
-              <div className="mt-4 grid gap-2.5 md:grid-cols-2">
-                {aboutTechStack.map((stack) => (
-                  <div className="rounded-[1.25rem] bg-black/20 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" key={stack.group}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/34">{stack.group}</p>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {stack.items.map((item) => (
-                        <span className="rounded-full bg-white/[0.07] px-2 py-0.5 text-[0.66rem] font-semibold text-white/50" key={item}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+          <div className="mt-4 grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+            {aboutTechStack.map((stack) => (
+              <div className="rounded-[1.25rem] bg-black/20 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" key={stack.group}>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/34">{stack.group}</p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {stack.items.map((item) => (
+                    <span className="rounded-full bg-white/[0.07] px-2 py-0.5 text-[0.66rem] font-semibold text-white/50" key={item}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </AboutSurface>
-
+            ))}
+          </div>
         </div>
-
-        <div className="grid gap-4">
-          <AboutSurface className="p-5">
-            <div className="relative z-10">
-              <Eyebrow>Education</Eyebrow>
-              <div className="mt-4 space-y-3">
-                {aboutEducation.map((item) => (
-                  <div className="rounded-[1.25rem] bg-black/20 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" key={`${item.degree}-${item.school}`}>
-                    <p className="text-sm font-semibold leading-5 text-white/86">{item.degree}</p>
-                    <p className="mt-1 text-sm leading-5 text-white/48">{item.school}</p>
-                    <p className="mt-2 text-xs font-semibold text-white/34">{item.period}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AboutSurface>
-
-        </div>
-      </div>
+      </AboutSurface>
 
       <AboutSurface className="p-5 sm:p-6" id="contact">
         <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
