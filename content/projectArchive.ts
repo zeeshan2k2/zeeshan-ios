@@ -144,12 +144,12 @@ const learningEntries: LearningProject[] = [
   },
   {
     name: "OOP in Swift",
-    category: "Swift Fundamentals",
+    category: "Learning Path",
     description: "A learning-focused Swift playground repository covering core object-oriented programming concepts through focused examples and practice-driven code.",
     techStack: ["Swift", "OOP", "Playgrounds"],
     githubUrl: "https://github.com/zeeshan2k2/OOP-in-Swift/tree/main",
     notionUrl: "https://secretive-fascinator-c6c.notion.site/OOP-in-Swift-GitHub-3cbcc0b5301948a689fadd2e02d4630c?source=copy_link",
-    status: "Learning",
+    status: "Learning Path",
   },
   {
     name: "Widget Kit",
@@ -376,6 +376,12 @@ const learningEntries: LearningProject[] = [
 ];
 
 export const learningPaths = learningEntries.filter((entry) => entry.status === "Learning Path");
+export const orderedLearningPaths = [
+  "Sean Allen UIKit Notes",
+  "100 Days of Swift",
+  "SwiftUI Learning Path",
+  "OOP in Swift",
+].flatMap((name) => learningPaths.filter((entry) => entry.name === name));
 
 export const technicalNotes = learningEntries.filter(
   (entry) => !entry.githubUrl && entry.status !== "Learning Path",

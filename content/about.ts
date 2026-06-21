@@ -4,9 +4,8 @@ export const aboutProfile = {
   location: "Karachi, Pakistan",
   headline: "I build production iOS apps and work on mobile security, local AI, and Apple-platform products.",
   intro: [
-    "I’m a Software Engineering graduate and iOS developer working on production apps with Swift, UIKit, and SwiftUI. My work includes VPN products, enterprise apps, authentication, subscriptions, Firebase, StoreKit, and App Store releases.",
-    "I’ve also worked on mobile security features such as SSL pinning, device binding, and jailbreak detection, alongside backend and product teams.",
-    "Outside native iOS development, I explore small language models, RAG, local inference, and model evaluation. I’m currently building independent products and experimenting with practical uses of AI in Apple-platform apps.",
+    "I’m a Software Engineering graduate and iOS developer working on production apps with Swift, UIKit, SwiftUI, and VisionOS. My work includes VPN products, enterprise apps, authentication, subscriptions, Firebase, StoreKit, and App Store releases.",
+    "I’ve also worked on mobile security features such as SSL pinning, device binding, and jailbreak detection alongside backend and product teams. Outside native iOS development, I explore small language models, RAG, local inference, and model evaluation while building independent products and experimenting with practical uses of AI in Apple-platform apps.",
   ],
 };
 
@@ -30,7 +29,6 @@ export const aboutExperience = [
     details: [
       "Re-architected and scaled shared VPN app architecture across TomatoLink, Bubble VPN, and Uranus NetTest deployments.",
       "Implemented StoreKit in-app purchases, ad monetization, Crashlytics monitoring, secure API key handling, and XCTest-backed reliability work.",
-      "Built a VisionOS AI Tutor from scratch using SwiftUI, TCA, real-time WebSocket-based AI voice streaming, SwiftData persistence, session management, and automated summaries.",
       "Contributed to enterprise iOS client projects, including Zurich-related mobile app work through Synapse Tech Inc., with onboarding, UI consistency, maintainability, localization, passkey authentication, and notification improvements.",
       "Refactored and modernized PunchLog, a legacy Objective-C iPad app, with a tailored UI overhaul and functional stability improvements.",
     ],
@@ -40,27 +38,27 @@ export const aboutExperience = [
 export const aboutWorkAreas = [
   {
     title: "Production iOS Apps",
-    body: "App Store-facing work across shared VPN architecture, onboarding, authentication, monetization, monitoring, and reliability.",
+    body: "App Store-facing iOS development across VPN products, including onboarding, authentication, subscriptions, monitoring, and long-term maintenance.",
   },
   {
     title: "AI + Apple Platforms",
-    body: "VisionOS and iOS interfaces connected to AI-assisted workflows, voice sessions, generated UI, persistence, and product-side intelligence.",
+    body: "Building VisionOS and iOS experiences that combine AI workflows, voice interactions, persistence, and dynamically generated interfaces.",
   },
   {
     title: "Enterprise Client Work",
-    body: "Client-facing iOS delivery through Synapse Tech Inc., with careful public wording, maintainable implementation, and professional polish.",
+    body: "Delivering client-facing iOS applications with a focus on maintainability, reliability, and production-ready user experiences.",
   },
   {
     title: "iPad Modernization",
-    body: "Modernizing legacy Objective-C iPad experiences with cleaner layouts, functional fixes, and native interaction expectations.",
+    body: "Modernizing legacy Objective-C iPad applications through UI improvements, functional enhancements, and platform-consistent interactions.",
   },
   {
     title: "Schema-Driven UI",
-    body: "Swift GenUI project work around local LLM-generated JSON layouts rendered into configurable native UIKit interfaces.",
+    body: "Developing Swift GenUI, an experimental framework that transforms LLM-generated JSON schemas into configurable native UIKit interfaces.",
   },
   {
     title: "Clean UIKit Architecture",
-    body: "33VPN alpha work using MVVM, Clean Architecture, reusable components, onboarding flows, alerts, and modular view controllers.",
+    body: "Exploring MVVM and Clean Architecture patterns through UIKit projects featuring reusable components, onboarding flows, alerts, and modular view controllers.",
   },
 ];
 

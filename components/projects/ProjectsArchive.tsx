@@ -5,7 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { learningPaths, learningProjects, professionalApps, showcaseProjects, technicalNotes } from "@/content/projectArchive";
+import { learningProjects, orderedLearningPaths, professionalApps, showcaseProjects, technicalNotes } from "@/content/projectArchive";
 import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
 import { cn } from "@/lib/utils";
 import type { ScreenshotFrame } from "@/types/projectArchive";
@@ -209,12 +209,17 @@ export function ProjectsArchive() {
   const archivePriority = [
     "Passkey",
     "ByteForge",
+    "SnapCast",
+    "OOP in Swift",
     "iOS Notifications Examples",
     "iOS Combine Examples",
     "iOS Networking Examples",
     "Widget Kit",
+    "NavKit",
     "GraphQL Lab",
     "Call Kit",
+    "LazyLab",
+    "Go-Swift Integration",
   ];
 
   const learningArchiveEntries = [...technicalNotes, ...learningProjects].sort((a, b) => {
@@ -347,9 +352,6 @@ export function ProjectsArchive() {
               <Eyebrow>Showcase Projects</Eyebrow>
               <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Project preview browser</h2>
             </div>
-            <span className="rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/50">
-              Manual
-            </span>
           </div>
 
           <div className="grid gap-4 xl:grid-cols-[17rem_minmax(0,1fr)]">
@@ -515,7 +517,7 @@ export function ProjectsArchive() {
               <p className="max-w-md text-sm leading-6 text-white/40">The structured tracks that shaped the way I approached Swift, UIKit, and SwiftUI before the deeper topic notes and repo work.</p>
             </div>
             <div className="grid gap-3 lg:grid-cols-3">
-              {learningPaths.map((project) => (
+              {orderedLearningPaths.map((project) => (
                 <LearningCard compact key={project.name} project={project} resourcesLabel="Notes collection" />
               ))}
             </div>

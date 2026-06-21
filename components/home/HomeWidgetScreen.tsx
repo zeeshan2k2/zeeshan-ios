@@ -298,10 +298,10 @@ export function HomeWidgetScreen() {
 
           <div>
             <p className="max-w-2xl text-[clamp(1.55rem,3vw,2.45rem)] font-semibold leading-tight tracking-[-0.04em] text-white/92">
-              iOS Developer building native apps, AI-assisted systems, and polished Apple-platform experiences.
+              iOS Developer building native apps, AI-powered tools, and polished Apple-platform products.
             </p>
             <p className="mt-4 max-w-2xl text-base leading-7 text-white/64">
-              I work across Swift, UIKit, SwiftUI, and VisionOS, with production experience in app architecture, monetization, onboarding, and client-facing iOS work.
+              I work across Swift, UIKit, SwiftUI, and VisionOS, with production experience in app architecture, onboarding, subscriptions, and shipping client and product-facing iOS work.
             </p>
           </div>
 
@@ -322,7 +322,7 @@ export function HomeWidgetScreen() {
       <WidgetSurface className="order-4 p-5 lg:order-none lg:col-span-3">
         <div className="relative z-10">
           <WidgetTitle>Apple Stack</WidgetTitle>
-          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white">Production-ready iOS toolkit.</h2>
+          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white">Core development stack.</h2>
           <div className="mt-5 space-y-2.5">
             {appleStackItems.map((item) => (
               <div className="rounded-[1.35rem] bg-white/[0.065] px-3.5 py-3" key={item.label}>
