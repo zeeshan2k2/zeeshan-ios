@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -13,12 +14,19 @@ export function ResumeViewer({ pdfPath }: ResumeViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   async function handleFullscreen() {
+    const isPhone = window.matchMedia("(max-width: 767px)").matches;
+
+    if (isPhone || !viewerRef.current?.requestFullscreen) {
+      window.open(pdfPath, "_blank", "noopener,noreferrer");
+      return;
+    }
+
     if (document.fullscreenElement) {
       await document.exitFullscreen();
       return;
     }
 
-    await viewerRef.current?.requestFullscreen();
+    await viewerRef.current.requestFullscreen();
   }
 
   useEffect(() => {
@@ -33,16 +41,33 @@ export function ResumeViewer({ pdfPath }: ResumeViewerProps) {
     };
   }, []);
 
-  const viewerMode = isFullscreen ? "page=1&zoom=100" : "view=FitH";
+  const viewerMode = "page=1&view=Fit";
 
   return (
     <div
       className="relative overflow-hidden rounded-[1.65rem] border border-white/10 bg-black/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
       ref={viewerRef}
     >
+      <a
+        aria-label="Open resume PDF"
+        className="block bg-white md:hidden"
+        href={pdfPath}
+        rel="noreferrer"
+        target="_blank"
+      >
+        <Image
+          alt="Zeeshan Waheed resume"
+          className="h-auto w-full object-contain"
+          height={1980}
+          priority
+          src="/resume/Zeeshan_CV-preview.png"
+          width={1530}
+        />
+      </a>
+
       <iframe
         className={cn(
-          "w-full bg-white",
+          "hidden w-full bg-white md:block",
           isFullscreen ? "h-[100dvh] min-h-0" : "h-[72vh] min-h-[34rem]",
         )}
         key={viewerMode}
@@ -62,7 +87,10 @@ export function ResumeViewer({ pdfPath }: ResumeViewerProps) {
               fill="currentColor"
             />
           </svg>
-          {isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+          <span className="md:hidden">Open full PDF</span>
+          <span className="hidden md:inline">
+            {isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+          </span>
         </button>
       </div>
     </div>

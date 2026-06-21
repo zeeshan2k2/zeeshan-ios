@@ -51,7 +51,7 @@ export const showcaseProjects: ShowcaseProject[] = [
     techStack: ["Swift", "UIKit", "MVVM", "Clean Architecture", "CocoaPods"],
     preferredFrame: "phone",
     screenshots: [
-      { src: "/ui/appscreenshots/33vpn/home.png" },
+      { src: "/ui/appscreenshots/33vpn/Home.png" },
       { src: "/ui/appscreenshots/33vpn/servers.png" },
       { src: "/ui/appscreenshots/33vpn/settings.png" },
       { src: "/ui/appscreenshots/33vpn/premium%201.png" },
@@ -60,7 +60,7 @@ export const showcaseProjects: ShowcaseProject[] = [
       { src: "/ui/appscreenshots/33vpn/vpn%20protocol.png" },
       { src: "/ui/appscreenshots/33vpn/privacy%20policy.png" },
       { src: "/ui/appscreenshots/33vpn/delete%20alert.png" },
-      { src: "/ui/appscreenshots/33vpn/support.png" },
+      { src: "/ui/appscreenshots/33vpn/Support.png" },
     ],
   },
   {
@@ -75,10 +75,10 @@ export const showcaseProjects: ShowcaseProject[] = [
     techStack: ["Swift", "SwiftUI", "Widgets", "Forecast UI"],
     preferredFrame: "phone",
     screenshots: [
-      { src: "/ui/appscreenshots/weather/weather-view.png" },
+      { src: "/ui/appscreenshots/weather/weather-view.PNG" },
       { src: "/ui/appscreenshots/weather/weather-list-view.png" },
-      { src: "/ui/appscreenshots/weather/day-detail-view.png" },
-      { src: "/ui/appscreenshots/weather/ai-summary-view.png" },
+      { src: "/ui/appscreenshots/weather/day-detail-view.PNG" },
+      { src: "/ui/appscreenshots/weather/ai-summary-view.PNG" },
       { src: "/ui/appscreenshots/weather/widget-medium.jpg", frame: "wide" },
       { src: "/ui/appscreenshots/weather/widget-small.jpg", frame: "square" },
     ],
