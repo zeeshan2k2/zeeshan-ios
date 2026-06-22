@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/next";
 
 import { DeviceShell } from "@/components/device/DeviceShell";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <DeviceShell>{children}</DeviceShell>
+        <Analytics />
       </body>
     </html>
   );
