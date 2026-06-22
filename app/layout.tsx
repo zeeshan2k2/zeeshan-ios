@@ -7,20 +7,38 @@ import { DeviceShell } from "@/components/device/DeviceShell";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://zeeshanwaheed.dev"),
   title: {
-    default: "Zeeshan Waheed | iOS Engineer",
+    default: "Zeeshan Waheed | iOS Developer",
     template: "%s | Zeeshan Waheed",
   },
   description:
-    "Personal portfolio for Zeeshan Waheed, an iOS engineer building native apps, local AI tools, and Apple-inspired product experiences.",
+    "Personal portfolio for Zeeshan Waheed, an iOS developer building native apps, AI-powered tools, and polished Apple-platform products.",
   authors: [{ name: "Zeeshan Waheed" }],
   creator: "Zeeshan Waheed",
   openGraph: {
-    title: "Zeeshan Waheed | iOS Engineer",
+    title: "Zeeshan Waheed | iOS Developer",
     description:
-      "iOS engineer building native apps, local AI tools, and Apple-inspired product experiences.",
+      "iOS developer building native apps, AI-powered tools, and polished Apple-platform products.",
+    url: "https://zeeshanwaheed.dev",
+    siteName: "Zeeshan Waheed",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Zeeshan Waheed - iOS Developer portfolio",
+      },
+    ],
     type: "website",
     locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zeeshan Waheed | iOS Developer",
+    description:
+      "iOS developer building native apps, AI-powered tools, and polished Apple-platform products.",
+    images: ["/opengraph-image"],
   },
 };
 
