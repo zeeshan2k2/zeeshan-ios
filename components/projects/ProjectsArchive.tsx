@@ -202,6 +202,71 @@ function LearningCard({
   );
 }
 
+function LearningPathCard({
+  index,
+  project,
+}: {
+  index: number;
+  project: {
+    name: string;
+    description: string;
+    techStack: string[];
+    notionUrl?: string;
+  };
+}) {
+  return (
+    <article className="group relative flex min-h-[19rem] flex-col overflow-hidden rounded-[1.55rem] border border-white/[0.09] bg-black/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.09)] transition hover:border-white/[0.16] hover:bg-white/[0.065]">
+      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(138,180,255,0.7),transparent)] opacity-70" />
+
+      <div className="flex flex-1 flex-col p-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.07] text-[0.68rem] font-semibold text-white/64 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <p className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-white/38">
+            Independent path
+          </p>
+        </div>
+
+        <h4 className="mt-5 text-lg font-semibold tracking-[-0.025em] text-white/92">
+          {project.name}
+        </h4>
+        <p className="mt-3 text-[0.82rem] leading-5 text-white/52">{project.description}</p>
+
+        <div className="mt-5 flex flex-wrap gap-2">
+          {project.techStack.map((tech) => (
+            <span className="rounded-full bg-white/[0.07] px-2.5 py-1 text-[0.68rem] font-semibold text-white/48" key={tech}>
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex min-h-16 items-center justify-between gap-3 border-t border-white/[0.07] bg-black/10 px-4 py-3">
+        <div>
+          <p className="text-[0.64rem] font-semibold uppercase tracking-[0.14em] text-white/28">Collection</p>
+          <p className="mt-1 text-xs text-white/42">Structured notes</p>
+        </div>
+
+        {project.notionUrl ? (
+          <a
+            className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white/[0.12] px-3.5 py-2 text-xs font-semibold text-white/78 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.18] hover:text-white"
+            href={project.notionUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <Image alt="" aria-hidden="true" className="h-4 w-4 rounded-[0.2rem] object-contain" height={16} src="/icons/notion.png" width={16} />
+            Notes
+            <svg aria-hidden="true" className="h-3.5 w-3.5" fill="none" viewBox="0 0 16 16">
+              <path d="M5 11 11 5M6 5h5v5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.4" />
+            </svg>
+          </a>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
 export function ProjectsArchive() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -516,9 +581,9 @@ export function ProjectsArchive() {
               </div>
               <p className="max-w-md text-sm leading-6 text-white/40">The structured tracks that shaped the way I approached Swift, UIKit, and SwiftUI before the deeper topic notes and repo work.</p>
             </div>
-            <div className="grid gap-3 lg:grid-cols-3">
-              {orderedLearningPaths.map((project) => (
-                <LearningCard compact key={project.name} project={project} resourcesLabel="Notes collection" />
+            <div className="relative grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+              {orderedLearningPaths.map((project, index) => (
+                <LearningPathCard index={index} key={project.name} project={project} />
               ))}
             </div>
           </div>

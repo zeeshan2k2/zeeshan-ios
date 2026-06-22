@@ -377,10 +377,10 @@ const learningEntries: LearningProject[] = [
 
 export const learningPaths = learningEntries.filter((entry) => entry.status === "Learning Path");
 export const orderedLearningPaths = [
-  "Sean Allen UIKit Notes",
   "100 Days of Swift",
-  "SwiftUI Learning Path",
   "OOP in Swift",
+  "Sean Allen UIKit Notes",
+  "SwiftUI Learning Path",
 ].flatMap((name) => learningPaths.filter((entry) => entry.name === name));
 
 export const technicalNotes = learningEntries.filter(
