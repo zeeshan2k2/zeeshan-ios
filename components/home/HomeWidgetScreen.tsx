@@ -101,8 +101,8 @@ const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
 const homeProjects: HomeProject[] = [
   {
     name: "33VPN",
-    status: "UIKit VPN alpha",
-    description: "UIKit VPN client interface with MVVM Clean Architecture.",
+    status: "UIKit architecture build",
+    description: "UIKit app architecture built with MVVM and Clean Architecture.",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
     githubUrl: "https://github.com/zeeshan2k2/33VPN",

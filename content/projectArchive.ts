@@ -42,8 +42,8 @@ export const showcaseProjects: ShowcaseProject[] = [
   {
     slug: "33vpn",
     name: "33VPN",
-    status: "UIKit VPN alpha",
-    description: "UIKit VPN client interface with MVVM Clean Architecture.",
+    status: "UIKit architecture build",
+    description: "UIKit app architecture built with MVVM and Clean Architecture.",
     category: "UIKit app architecture",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
