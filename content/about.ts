@@ -4,8 +4,8 @@ export const aboutProfile = {
   location: "Karachi, Pakistan",
   headline: "I build production iOS apps and work on mobile security, local AI, and Apple-platform products.",
   intro: [
-    "I’m a Software Engineering graduate and iOS developer working on production apps with Swift, UIKit, SwiftUI, and VisionOS. My work includes VPN products, enterprise apps, authentication, subscriptions, Firebase, StoreKit, and App Store releases.",
-    "I’ve also worked on mobile security features such as SSL pinning, device binding, and jailbreak detection alongside backend and product teams. Outside native iOS development, I explore small language models, RAG, local inference, and model evaluation while building independent products and experimenting with practical uses of AI in Apple-platform apps.",
+    "I’m a Software Engineering graduate and iOS developer working on production apps with Swift, UIKit, and SwiftUI. My work includes VPN products, enterprise apps, authentication, subscriptions, Firebase, StoreKit, and App Store releases.",
+    "I’ve also worked on mobile security features such as SSL pinning, device binding, and jailbreak detection alongside backend and product teams. Outside production iOS development, I explore VisionOS, small language models, RAG, local inference, and model evaluation while building independent Apple-platform products.",
   ],
 };
 

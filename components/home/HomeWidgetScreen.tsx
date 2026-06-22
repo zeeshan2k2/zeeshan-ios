@@ -20,7 +20,7 @@ const appleStackItems = [
 
 const currentRoleHighlights = [
   "App Store VPN apps",
-  "VisionOS AI Tutor",
+  "Authentication & mobile security",
   "Enterprise iOS client work",
   "Legacy iPad modernization",
 ];
@@ -301,7 +301,7 @@ export function HomeWidgetScreen() {
               iOS Developer building native apps, AI-powered tools, and polished Apple-platform products.
             </p>
             <p className="mt-4 max-w-2xl text-base leading-7 text-white/64">
-              I work across Swift, UIKit, SwiftUI, and VisionOS, with production experience in app architecture, onboarding, subscriptions, and shipping client and product-facing iOS work.
+              I work across Swift, UIKit, and SwiftUI, with production experience in app architecture, onboarding, subscriptions, and shipping client-facing iOS work. I also explore VisionOS and AI-powered products through independent projects.
             </p>
           </div>
 
