@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "About Zeeshan Waheed, an iOS Developer building native Apple-platform apps, AI-assisted systems, and polished product experiences.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Feed",
   description:
     "Developer feed by Zeeshan Waheed with Swift/iOS notes, local AI experiments, devlogs, and engineering thoughts.",
+  alternates: {
+    canonical: "/feed",
+  },
 };
 
 export default function FeedPage() {

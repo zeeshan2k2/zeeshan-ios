@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Projects",
   description:
     "Project archive for Zeeshan Waheed across professional iOS apps, showcase projects, and learning experiments.",
+  alternates: {
+    canonical: "/projects",
+  },
 };
 
 export default function ProjectsPage() {

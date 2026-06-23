@@ -194,6 +194,7 @@ const learningEntries: LearningProject[] = [
     description: "A Swift project exploring infinite scrolling, paginated image loading, asynchronous updates, and reusable feed patterns for large content lists.",
     techStack: ["Swift", "MVVM", "URLSession"],
     githubUrl: "https://github.com/zeeshan2k2/Infinite-Image-Feed",
+    notionUrl: "https://secretive-fascinator-c6c.notion.site/Infinite-Image-Feed-GitHub-2e0d7fcea3528027b330f12860f7a309?source=copy_link",
     status: "Learning",
   },
   {

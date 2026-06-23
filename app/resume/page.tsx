@@ -8,6 +8,9 @@ import { RESUME_PDF_PATH } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Resume",
   description: "View or download the resume for Zeeshan Waheed.",
+  alternates: {
+    canonical: "/resume",
+  },
 };
 
 export default function ResumePage() {

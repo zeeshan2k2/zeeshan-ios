@@ -51,6 +51,9 @@ export const metadata: Metadata = {
   },
   description:
     "Personal portfolio for Zeeshan Waheed, an iOS developer building native apps, AI-powered tools, and polished Apple-platform products.",
+  alternates: {
+    canonical: "/",
+  },
   authors: [{ name: "Zeeshan Waheed" }],
   creator: "Zeeshan Waheed",
   icons: {
