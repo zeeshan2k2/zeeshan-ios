@@ -2,16 +2,10 @@ import type { LearningProject, ProfessionalApp, ShowcaseProject } from "@/types/
 
 export const professionalApps: ProfessionalApp[] = [
   {
-    name: "Zurich Cyber",
-    label: "Contributed",
-    icon: "/professional-apps/zurich-cyber.png",
-    href: "https://apps.apple.com/ch/app/zurich-cyber-security/id6476657273?l=en-GB",
-  },
-  {
-    name: "Boxx Cyber",
-    label: "Contributed",
-    icon: "/professional-apps/boxx-cyber.png",
-    href: "https://apps.apple.com/us/app/boxx-cyber-security/id6752987257",
+    name: "Enterprise Security App",
+    label: "Private client work",
+    iconSymbol: "lock",
+    gradient: "linear-gradient(145deg, #4b4c50 0%, #1b1c20 46%, #050608 100%)",
   },
   {
     name: "VPN TomatoLink",
@@ -42,9 +36,9 @@ export const showcaseProjects: ShowcaseProject[] = [
   {
     slug: "33vpn",
     name: "33VPN",
-    status: "UIKit architecture build",
-    description: "UIKit app architecture built with MVVM and Clean Architecture.",
-    category: "UIKit app architecture",
+    status: "iOS VPN App",
+    description: "A UIKit VPN app built with MVVM, Clean Architecture, reusable flows, and a polished iOS interface.",
+    category: "iOS VPN App",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
     githubUrl: "https://github.com/zeeshan2k2/33VPN",

@@ -34,15 +34,12 @@ const professionalWorkGroups = [
   },
   {
     eyebrow: "Client products",
-    title: "Cybersecurity app delivery",
+    title: "Enterprise security app delivery",
     description:
       "Improved production cybersecurity experiences through stronger onboarding, maintainable UI, authentication, localization, and targeted reliability fixes.",
-    apps: [
-      { name: "Zurich Cyber", role: "Product contribution" },
-      { name: "Boxx Cyber", role: "Client app contribution" },
-    ],
+    apps: [{ name: "Enterprise Security App", role: "Private client work" }],
     highlights: ["Onboarding redesign", "Passkey authentication", "Localization", "Notifications", "UI consistency"],
-    outcome: "Zurich Cyber: refactored key flows and resolved notification issues across an established App Store product",
+    outcome: "Refactored key flows and resolved notification issues across established security-focused App Store products",
   },
   {
     eyebrow: "Modernized",
@@ -54,6 +51,21 @@ const professionalWorkGroups = [
     outcome: "Improved stability, performance, maintainability, and the overall iPad user experience",
   },
 ] as const;
+
+function AppLockIcon({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={className}
+      style={{
+        fontFamily:
+          "SF Pro, SF Pro Display, SF Symbols, -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+      }}
+    >
+      􀎡
+    </span>
+  );
+}
 
 function ArchiveSurface({
   children,
@@ -367,16 +379,27 @@ export function ProjectsArchive() {
 
                     const content = (
                       <>
-                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[1rem] shadow-[0_12px_28px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.16)]">
-                          <Image
-                            alt=""
-                            aria-hidden="true"
-                            className="h-full w-full object-cover"
-                            height={56}
-                            src={app.icon}
-                            unoptimized
-                            width={56}
-                          />
+                        <div
+                          className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_12px_28px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.16)]"
+                          style={app.gradient ? { background: app.gradient } : undefined}
+                        >
+                          {app.icon ? (
+                            <Image
+                              alt=""
+                              aria-hidden="true"
+                              className="h-full w-full object-cover"
+                              height={56}
+                              src={app.icon}
+                              unoptimized
+                              width={56}
+                            />
+                          ) : (
+                            app.iconSymbol === "lock" ? (
+                              <AppLockIcon className="inline-flex h-7 w-7 translate-x-[0.5px] items-center justify-center text-center text-[1.30rem] leading-none text-white/88" />
+                            ) : (
+                              <span className="text-sm font-semibold tracking-[-0.02em] text-white/88">{app.iconFallback}</span>
+                            )
+                          )}
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-white/88">{app.name}</p>

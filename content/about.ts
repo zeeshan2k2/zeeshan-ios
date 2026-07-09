@@ -29,7 +29,7 @@ export const aboutExperience = [
     details: [
       "Re-architected and scaled shared VPN app architecture across TomatoLink, Bubble VPN, and Uranus NetTest deployments.",
       "Implemented StoreKit in-app purchases, ad monetization, Crashlytics monitoring, secure API key handling, and XCTest-backed reliability work.",
-      "Contributed to enterprise iOS client projects, including Zurich-related mobile app work through Synapse Tech Inc., with onboarding, UI consistency, maintainability, localization, passkey authentication, and notification improvements.",
+      "Contributed to enterprise security iOS projects through Synapse Tech Inc., with onboarding, UI consistency, maintainability, localization, passkey authentication, and notification improvements.",
       "Refactored and modernized PunchLog, a legacy Objective-C iPad app, with a tailored UI overhaul and functional stability improvements.",
     ],
   },

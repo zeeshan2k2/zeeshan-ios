@@ -30,21 +30,22 @@ type ProfessionalApp = {
   label: string;
   icon?: string;
   iconFallback?: string;
+  iconSymbol?: "lock";
+  gradient?: string;
   href?: string;
 };
 
 const professionalApps: ProfessionalApp[] = [
   {
-    name: "Zurich Cyber",
-    label: "Contributed",
-    icon: "/professional-apps/zurich-cyber.png",
-    href: "https://apps.apple.com/ch/app/zurich-cyber-security/id6476657273?l=en-GB",
+    name: "Enterprise Security App",
+    label: "Private client work",
+    iconSymbol: "lock",
+    gradient: "linear-gradient(145deg, #4b4c50 0%, #1b1c20 46%, #050608 100%)",
   },
   {
-    name: "Boxx Cyber",
-    label: "Contributed",
-    icon: "/professional-apps/boxx-cyber.png",
-    href: "https://apps.apple.com/us/app/boxx-cyber-security/id6752987257",
+    name: "33VPN",
+    label: "iOS VPN App",
+    icon: "/ui/appscreenshots/33vpn/app-icon.png",
   },
   {
     name: "VPN TomatoLink",
@@ -70,6 +71,21 @@ const professionalApps: ProfessionalApp[] = [
     icon: "/professional-apps/punchlist.png",
   },
 ];
+
+function AppLockIcon({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={className}
+      style={{
+        fontFamily:
+          "SF Pro, SF Pro Display, SF Symbols, -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+      }}
+    >
+      􀎡
+    </span>
+  );
+}
 
 type ScreenshotFrame = "phone" | "wide" | "square" | "vision";
 
@@ -101,8 +117,8 @@ const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
 const homeProjects: HomeProject[] = [
   {
     name: "33VPN",
-    status: "UIKit architecture build",
-    description: "UIKit app architecture built with MVVM and Clean Architecture.",
+    status: "iOS VPN App",
+    description: "A UIKit VPN app built with MVVM, Clean Architecture, reusable flows, and a polished iOS interface.",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
     href: "/projects#33vpn",
     githubUrl: "https://github.com/zeeshan2k2/33VPN",
@@ -504,9 +520,6 @@ export function HomeWidgetScreen() {
               <WidgetTitle>Professional App Work</WidgetTitle>
               <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Apps I’ve built and contributed to.</h2>
             </div>
-            <span className="rounded-full bg-white/[0.08] px-3 py-1.5 text-xs font-semibold text-white/48">
-              Synapse
-            </span>
           </div>
 
           <p className="mt-3 max-w-2xl text-sm leading-6 text-white/52">
@@ -517,14 +530,17 @@ export function HomeWidgetScreen() {
             {professionalApps.map((app) => {
               const content = (
                 <>
-                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_14px_28px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.16)] sm:h-16 sm:w-16">
+                  <div
+                    className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_14px_28px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.16)] sm:h-16 sm:w-16"
+                    style={app.gradient ? { background: app.gradient } : undefined}
+                  >
                     {app.icon ? (
                       <Image
                         alt=""
                         aria-hidden="true"
                         className={cn(
                           "h-full w-full object-cover",
-                          (app.name === "Boxx Cyber" || app.name === "Uranus NetTest") && "scale-[1.04]",
+                          app.name === "Uranus NetTest" && "scale-[1.04]",
                         )}
                         height={64}
                         src={app.icon}
@@ -532,7 +548,11 @@ export function HomeWidgetScreen() {
                         width={64}
                       />
                     ) : (
-                      <span className="text-sm font-semibold text-white/84">{app.iconFallback}</span>
+                      app.iconSymbol === "lock" ? (
+                        <AppLockIcon className="inline-flex h-7 w-7 translate-x-[0.5px] items-center justify-center text-center text-[1.30rem] leading-none text-white/88" />
+                      ) : (
+                        <span className="text-sm font-semibold tracking-[-0.02em] text-white/88">{app.iconFallback}</span>
+                      )
                     )}
                   </div>
                   <div className="min-w-0">

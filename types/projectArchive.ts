@@ -1,7 +1,10 @@
 export type ProfessionalApp = {
   name: string;
   label: string;
-  icon: string;
+  icon?: string;
+  iconFallback?: string;
+  iconSymbol?: "lock";
+  gradient?: string;
   href?: string;
 };
 
