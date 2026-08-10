@@ -584,6 +584,28 @@ export function HomeWidgetScreen() {
         </div>
       </WidgetSurface>
 
+      <WidgetSurface className="order-4 p-5 lg:order-none lg:col-span-8">
+        <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <WidgetTitle>Contact</WidgetTitle>
+            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Let’s connect</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/54">
+              Need help with an iOS app, Swift learning, debugging, architecture, or Apple-platform product work?
+            </p>
+          </div>
+
+          <a
+            className="group inline-flex h-12 w-fit shrink-0 items-center gap-3 rounded-full border border-white/[0.12] bg-white/[0.085] px-4 pl-5 text-sm font-semibold text-white/86 shadow-[0_16px_35px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.12)] transition hover:border-white/[0.18] hover:bg-white/[0.12] hover:text-white active:scale-[0.98]"
+            href="/about#contact"
+          >
+            <span>Let&apos;s connect</span>
+            <span className="flex h-8 w-8 items-center justify-center text-sm text-white/88 transition group-hover:translate-x-0.5 group-hover:text-white">
+              →
+            </span>
+          </a>
+        </div>
+      </WidgetSurface>
+
       <ScreenshotLightbox
         activeIndex={lightboxIndex}
         onChange={setLightboxIndex}

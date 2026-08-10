@@ -1,11 +1,13 @@
+"use client";
+
 import Image from "next/image";
+import { useState, type FormEvent, type ReactNode } from "react";
 
 import {
   aboutExperience,
   aboutProfile,
   aboutTechStack,
 } from "@/content/about";
-import { socialLinks } from "@/content/social";
 import { cn } from "@/lib/utils";
 
 function AboutSurface({
@@ -13,7 +15,7 @@ function AboutSurface({
   className,
   id,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   id?: string;
 }) {
@@ -38,7 +40,7 @@ function AboutSurface({
   );
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
+function Eyebrow({ children }: { children: ReactNode }) {
   return (
     <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/48">
       {children}
@@ -90,67 +92,69 @@ function ContactAction({
   );
 }
 
-function SocialDockAction({
-  href,
-  icon,
-  label,
-}: {
-  href?: string;
-  icon: "github" | "linkedin" | "x" | "email";
-  label: string;
-}) {
-  if (!href) {
-    return null;
-  }
-
-  return (
-    <a
-      aria-label={label}
-      className={cn(
-        "group flex h-14 w-14 items-center justify-center rounded-[1.25rem] text-white shadow-[0_14px_30px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.14)] transition hover:-translate-y-0.5 hover:brightness-110 active:scale-95 sm:h-16 sm:w-16",
-        icon === "github" && "bg-[#1C1C1E]",
-        icon === "linkedin" && "bg-[#0A66C2]",
-        icon === "x" && "bg-black",
-        icon === "email" && "bg-[linear-gradient(145deg,#64D2FF,#0A84FF)]",
-      )}
-      href={href}
-      rel={href.startsWith("http") ? "noreferrer" : undefined}
-      target={href.startsWith("http") ? "_blank" : undefined}
-    >
-      {icon === "github" ? (
-        <svg aria-hidden="true" className="h-7 w-7" viewBox="0 0 24 24">
-          <path
-            d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.91.58.1.79-.25.79-.56v-2.02c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18A10.98 10.98 0 0 1 12 6.17c.98 0 1.96.13 2.88.39 2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.04c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"
-            fill="currentColor"
-          />
-        </svg>
-      ) : null}
-      {icon === "linkedin" ? (
-        <span aria-hidden="true" className="text-[2rem] font-bold leading-none tracking-[-0.04em]">in</span>
-      ) : null}
-      {icon === "x" ? (
-        <Image alt="" aria-hidden="true" className="h-6 w-6 object-contain" height={24} src="/icons/X.avif" width={24} />
-      ) : null}
-      {icon === "email" ? (
-        <svg aria-hidden="true" className="h-7 w-7" viewBox="0 0 24 24">
-          <path
-            d="M4.75 5.5h14.5c1.24 0 2.25 1.01 2.25 2.25v8.5c0 1.24-1.01 2.25-2.25 2.25H4.75A2.25 2.25 0 0 1 2.5 16.25v-8.5C2.5 6.51 3.51 5.5 4.75 5.5Zm.2 2 6.28 4.86c.45.35 1.09.35 1.54 0l6.28-4.86H4.95Z"
-            fill="currentColor"
-          />
-        </svg>
-      ) : null}
-    </a>
-  );
-}
-
-const socialDockLinks = [
-  { icon: "github", label: "GitHub", href: socialLinks.find((link) => link.label === "GitHub")?.href },
-  { icon: "linkedin", label: "LinkedIn", href: socialLinks.find((link) => link.label === "LinkedIn")?.href },
-  { icon: "x", label: "X", href: socialLinks.find((link) => link.label === "X")?.href },
-  { icon: "email", label: "Email", href: socialLinks.find((link) => link.label === "Email")?.href },
-] as const;
+const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? "";
+const contactTopicOptions = [
+  "iOS app development",
+  "Swift tutoring",
+  "Code review",
+  "Debugging help",
+  "Architecture guidance",
+  "Other",
+];
 
 export function AboutProfile() {
+  const [contactStatus, setContactStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactTopic, setContactTopic] = useState("");
+  const [isTopicOpen, setIsTopicOpen] = useState(false);
+
+  async function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    if (!WEB3FORMS_ACCESS_KEY) {
+      setContactStatus("error");
+      setContactMessage("Contact form is not configured yet.");
+      return;
+    }
+
+    if (!contactTopic) {
+      setContactStatus("error");
+      setContactMessage("Please select a topic.");
+      return;
+    }
+
+    formData.set("access_key", WEB3FORMS_ACCESS_KEY);
+    formData.set("subject", "New message from zeeshanwaheed.dev");
+    formData.set("type", contactTopic);
+
+    setContactStatus("sending");
+    setContactMessage("");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Message failed to send.");
+      }
+
+      form.reset();
+      setContactTopic("");
+      setIsTopicOpen(false);
+      setContactStatus("success");
+      setContactMessage("Message sent. I'll get back to you soon.");
+    } catch {
+      setContactStatus("error");
+      setContactMessage("Couldn't send the message. Please try again.");
+    }
+  }
+
   return (
     <div className="space-y-4">
       <AboutSurface className="p-5 sm:p-7">
@@ -270,21 +274,128 @@ export function AboutProfile() {
       </div>
 
       <AboutSurface className="p-5 sm:p-6" id="contact">
-        <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-          <div>
+        <div className="relative z-10">
+          <div className="rounded-[1.65rem] bg-black/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:p-5">
             <Eyebrow>Contact Me</Eyebrow>
             <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
               Let&apos;s connect
             </h2>
             <p className="mt-2 max-w-xl text-sm leading-6 text-white/52">
-              Find my work, connect professionally, follow updates, or send an email. If you have any questions, feel free to ask.
+              Need help with an iOS app, Swift learning, debugging, architecture, or Apple-platform product work? Send a quick note and I&apos;ll get back to you.
             </p>
-          </div>
 
-          <div className="flex justify-center gap-3 rounded-[1.75rem] bg-black/18 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:gap-4">
-            {socialDockLinks.map((link) => (
-              <SocialDockAction href={link.href} icon={link.icon} key={link.label} label={link.label} />
-            ))}
+            <form className="mt-5 grid gap-3" onSubmit={handleContactSubmit}>
+              <input name="access_key" type="hidden" value={WEB3FORMS_ACCESS_KEY} />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="grid gap-1.5">
+                  <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/38">
+                    Name
+                  </span>
+                  <input
+                    className="h-11 rounded-[1rem] border border-white/[0.08] bg-white/[0.06] px-3 text-sm font-medium text-white outline-none transition placeholder:text-white/28 focus:border-white/[0.18] focus:bg-white/[0.09]"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                    type="text"
+                  />
+                </label>
+
+                <label className="grid gap-1.5">
+                  <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/38">
+                    Email
+                  </span>
+                  <input
+                    className="h-11 rounded-[1rem] border border-white/[0.08] bg-white/[0.06] px-3 text-sm font-medium text-white outline-none transition placeholder:text-white/28 focus:border-white/[0.18] focus:bg-white/[0.09]"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    type="email"
+                  />
+                </label>
+              </div>
+
+              <div className="relative grid gap-1.5">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/38">
+                  What do you need help with?
+                </span>
+                <input name="type" type="hidden" value={contactTopic} />
+                <button
+                  aria-expanded={isTopicOpen}
+                  className={cn(
+                    "flex h-11 items-center justify-between gap-3 rounded-[1rem] border border-white/[0.08] bg-white/[0.06] px-3 pl-3.5 pr-5 text-left text-sm font-medium text-white outline-none transition focus:border-white/[0.18] focus:bg-white/[0.09]",
+                    !contactTopic && "text-white/34",
+                    isTopicOpen && "border-white/[0.18] bg-white/[0.09]",
+                  )}
+                  onClick={() => setIsTopicOpen((isOpen) => !isOpen)}
+                  type="button"
+                >
+                  <span>{contactTopic || "Select a topic"}</span>
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "text-2xl leading-none text-white/62 transition",
+                      isTopicOpen && "rotate-180 text-white/78",
+                    )}
+                  >
+                    ▾
+                  </span>
+                </button>
+
+                {isTopicOpen ? (
+                  <div className="absolute left-0 right-0 top-[4.35rem] z-30 overflow-hidden rounded-[1rem] border border-white/[0.12] bg-[#17191d]/95 p-1.5 shadow-[0_18px_40px_rgba(0,0,0,0.38),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl">
+                    {contactTopicOptions.map((topic) => (
+                      <button
+                        className={cn(
+                          "flex h-9 w-full items-center rounded-[0.75rem] px-3 text-left text-sm font-medium text-white/66 transition hover:bg-white/[0.08] hover:text-white",
+                          contactTopic === topic && "bg-white/[0.1] text-white",
+                        )}
+                        key={topic}
+                        onClick={() => {
+                          setContactTopic(topic);
+                          setIsTopicOpen(false);
+                        }}
+                        type="button"
+                      >
+                        {topic}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+
+              <label className="grid gap-1.5">
+                <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/38">
+                  Message
+                </span>
+                <textarea
+                  className="min-h-28 resize-none rounded-[1rem] border border-white/[0.08] bg-white/[0.06] px-3 py-3 text-sm font-medium leading-6 text-white outline-none transition placeholder:text-white/28 focus:border-white/[0.18] focus:bg-white/[0.09]"
+                  name="message"
+                  placeholder="Tell me what you’re building or stuck on."
+                  required
+                />
+              </label>
+
+              <div className="mt-1 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <button
+                  className="inline-flex h-11 w-full items-center justify-center rounded-full bg-white text-sm font-semibold text-black transition hover:bg-white/88 active:scale-[0.985] disabled:cursor-not-allowed disabled:bg-white/45 disabled:text-black/55 sm:w-fit sm:px-6"
+                  disabled={contactStatus === "sending"}
+                  type="submit"
+                >
+                  {contactStatus === "sending" ? "Sending..." : "Send message"}
+                </button>
+
+                {contactMessage ? (
+                  <p
+                    className={cn(
+                      "text-sm font-medium",
+                      contactStatus === "success" ? "text-[#34C759]" : "text-[#FF9F0A]",
+                    )}
+                  >
+                    {contactMessage}
+                  </p>
+                ) : null}
+              </div>
+            </form>
           </div>
         </div>
       </AboutSurface>
