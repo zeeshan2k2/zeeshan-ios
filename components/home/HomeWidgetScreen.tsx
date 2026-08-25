@@ -1,28 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useState } from "react";
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { Card } from "@/components/ui/Card";
 import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
 import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const appleStackItems = [
-  { label: "Languages", detail: "Swift, Objective-C, Python, JavaScript" },
-  { label: "Apple UI", detail: "UIKit, SwiftUI, VisionOS, WidgetKit" },
-  { label: "Data & APIs", detail: "Core Data, SwiftData, Keychain, URLSession" },
-  { label: "Reliability", detail: "XCTest, Firebase, Crashlytics, Notifications" },
-  { label: "Product", detail: "StoreKit, Ads SDKs, Lottie, Figma" },
-];
-
-const currentRoleHighlights = [
-  "App Store VPN apps",
-  "Authentication & mobile security",
-  "Enterprise iOS client work",
-  "Legacy iPad modernization",
+  "Swift",
+  "UIKit",
+  "SwiftUI",
+  "VisionOS",
+  "Core Data",
+  "SwiftData",
+  "Keychain",
+  "StoreKit",
+  "XCTest",
 ];
 
 type ProfessionalApp = {
@@ -187,424 +183,250 @@ const homeProjects: HomeProject[] = [
   },
 ];
 
-function WidgetTitle({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <p className={cn("text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/48", className)}>
-      {children}
-    </p>
-  );
-}
-
-function WidgetSurface({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <Card
-      className={cn(
-        "relative h-full overflow-hidden backdrop-blur-2xl backdrop-saturate-125",
-        className,
-      )}
-      style={{
-        background:
-          "linear-gradient(145deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.04) 48%, rgba(255, 255, 255, 0.018) 100%), rgba(20, 21, 25, 0.4)",
-        borderColor: "rgba(255, 255, 255, 0.16)",
-        borderRadius: "1.75rem",
-        boxShadow:
-          "inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -1px 0 rgba(0, 0, 0, 0.14), 0 20px 48px rgba(0, 0, 0, 0.26)",
-      }}
-    >
-      {children}
-    </Card>
-  );
-}
-
 export function HomeWidgetScreen() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const projectSectionRef = useRef<HTMLDivElement>(null);
   const selectedProject = homeProjects[selectedProjectIndex];
-
-  useEffect(() => {
-    const section = projectSectionRef.current;
-    const scrollContainer = section?.closest("[data-device-scroll]") as HTMLElement | null;
-
-    if (!section || !scrollContainer) {
-      return;
-    }
-
-    const currentSection = section;
-    const currentScrollContainer = scrollContainer;
-    const desktopProjectBrowserQuery = window.matchMedia("(min-width: 1280px)");
-
-    function updateSelectedProject() {
-      if (!desktopProjectBrowserQuery.matches) {
-        return;
-      }
-
-      const sectionRect = currentSection.getBoundingClientRect();
-      const containerRect = currentScrollContainer.getBoundingClientRect();
-      const scrollDistance = Math.max(1, sectionRect.height - containerRect.height);
-      const progress = Math.min(0.999, Math.max(0, (containerRect.top - sectionRect.top) / scrollDistance));
-      const nextIndex = Math.min(homeProjects.length - 1, Math.floor(progress * homeProjects.length));
-
-      setSelectedProjectIndex(nextIndex);
-    }
-
-    updateSelectedProject();
-    currentScrollContainer.addEventListener("scroll", updateSelectedProject, { passive: true });
-    desktopProjectBrowserQuery.addEventListener("change", updateSelectedProject);
-    window.addEventListener("resize", updateSelectedProject);
-
-    return () => {
-      currentScrollContainer.removeEventListener("scroll", updateSelectedProject);
-      desktopProjectBrowserQuery.removeEventListener("change", updateSelectedProject);
-      window.removeEventListener("resize", updateSelectedProject);
-    };
-  }, []);
 
   function handleProjectSelect(index: number) {
     setLightboxIndex(null);
     setSelectedProjectIndex(index);
-
-    const section = projectSectionRef.current;
-    const scrollContainer = section?.closest("[data-device-scroll]") as HTMLElement | null;
-
-    if (!section || !scrollContainer) {
-      return;
-    }
-
-    if (!window.matchMedia("(min-width: 1280px)").matches) {
-      return;
-    }
-
-    const sectionRect = section.getBoundingClientRect();
-    const containerRect = scrollContainer.getBoundingClientRect();
-    const scrollDistance = Math.max(1, section.offsetHeight - scrollContainer.clientHeight);
-    const segmentTop = scrollDistance * (index / homeProjects.length) + 1;
-    const targetTop = scrollContainer.scrollTop + sectionRect.top - containerRect.top + segmentTop;
-
-    scrollContainer.scrollTo({ top: targetTop, behavior: "smooth" });
   }
 
   return (
-    <div className="grid auto-rows-[minmax(10rem,auto)] gap-4 lg:grid-cols-8">
-      <WidgetSurface className="order-1 min-h-[25rem] p-6 sm:p-7 lg:order-none lg:col-span-5">
-        <div className="relative z-10 flex h-full flex-col justify-between gap-7">
-          <div className="flex items-start justify-between gap-5">
-            <div>
-              <WidgetTitle>Contact Poster</WidgetTitle>
-              <h1 className="mt-5 max-w-[12ch] text-[clamp(3.4rem,7vw,6.4rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-white">
-                {SITE_NAME}
-              </h1>
-            </div>
-            <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[0.95rem] border border-white/14 shadow-[0_10px_24px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.2)] sm:h-16 sm:w-16 sm:rounded-[0.8rem]">
-              <Image
-                alt="Swift"
-                className="h-full w-full object-cover"
-                height={96}
-                src="/icons/swift.png"
-                width={96}
-              />
-            </div>
+    <div className="mx-auto max-w-6xl px-4 pb-10 pt-7 sm:px-7 sm:pt-10 lg:px-10">
+      <section className="grid min-h-[32rem] gap-10 border-b border-white/[0.09] pb-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1fr)] lg:items-end">
+        <div>
+          <div className="mb-10 flex items-center gap-3">
+            <Image
+              alt="Swift"
+              className="h-9 w-9 rounded-[0.7rem] object-cover"
+              height={72}
+              src="/icons/swift.png"
+              width={72}
+            />
+            <p className="text-sm font-medium text-white/48">iOS Developer</p>
           </div>
 
-          <div>
-            <p className="max-w-2xl text-[clamp(1.55rem,3vw,2.45rem)] font-semibold leading-tight tracking-[-0.04em] text-white/92">
-              iOS Developer building native apps, AI-powered tools, and polished Apple-platform products.
-            </p>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-white/64">
-              I work across Swift, UIKit, and SwiftUI, with production experience in app architecture, onboarding, subscriptions, and shipping client-facing iOS work. I also explore VisionOS and AI-powered products through independent projects.
-            </p>
-          </div>
-
-          <div className="grid gap-2.5 sm:grid-cols-3">
-            {["Swift / UIKit", "SwiftUI / VisionOS", "Python / AI"].map((item) => (
-              <div
-                className="rounded-[1.35rem] bg-black/22 px-4 py-3 text-sm font-semibold text-white/78 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
-                key={item}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-
+          <h1 className="max-w-[11ch] text-6xl font-semibold leading-[0.92] text-white sm:text-7xl lg:text-8xl">
+            {SITE_NAME}
+          </h1>
+          <p className="mt-8 max-w-2xl text-xl font-medium leading-8 text-white/78 sm:text-2xl sm:leading-9">
+            Native iOS apps, AI-powered tools, and Apple-platform products built with care.
+          </p>
+          <p className="mt-5 max-w-xl text-base leading-7 text-white/48">
+            I work across Swift, UIKit, and SwiftUI, with production experience in app architecture,
+            onboarding, subscriptions, and client-facing iOS work.
+          </p>
         </div>
-      </WidgetSurface>
 
-      <WidgetSurface className="order-4 p-5 lg:order-none lg:col-span-3">
-        <div className="relative z-10">
-          <WidgetTitle>Apple Stack</WidgetTitle>
-          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white">Core development stack.</h2>
-          <div className="mt-5 space-y-2.5">
-            {appleStackItems.map((item) => (
-              <div className="rounded-[1.35rem] bg-white/[0.065] px-3.5 py-3" key={item.label}>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-white/86">{item.label}</p>
-                  <p className="mt-0.5 truncate text-xs font-medium text-white/44">{item.detail}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="lg:pb-2">
+          <p className="text-sm font-medium text-white/42">Selected work</p>
+          <div className="mt-5 space-y-0 border-y border-white/[0.09]">
+            {homeProjects.map((project, index) => {
+              const isSelected = index === selectedProjectIndex;
 
-          <div className="mt-5 rounded-[1.45rem] bg-black/22 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/42">Current Role</p>
-                <p className="mt-2 text-sm font-semibold text-white/84">iOS Developer</p>
-                <p className="mt-1 text-xs font-medium text-white/48">Synapse Tech Inc.</p>
-              </div>
-              <span className="rounded-full bg-[#34C759]/16 px-2.5 py-1 text-[0.68rem] font-semibold text-[#9BE7AE]">
-                Aug 2024 - Present
-              </span>
-            </div>
-            <div className="mt-3 grid gap-1.5">
-              {currentRoleHighlights.map((highlight) => (
-                <div className="flex items-center gap-2 text-xs font-medium text-white/54" key={highlight}>
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/36" />
-                  <span>{highlight}</span>
-                </div>
-              ))}
-            </div>
+              return (
+                <button
+                  className={cn(
+                    "group flex w-full items-center gap-4 border-b border-white/[0.07] py-4 text-left last:border-b-0 transition",
+                    isSelected ? "text-white" : "text-white/48 hover:text-white/78",
+                  )}
+                  key={project.name}
+                  onClick={() => handleProjectSelect(index)}
+                  type="button"
+                >
+                  <span className="w-7 shrink-0 text-sm font-medium tabular-nums text-white/30">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-lg font-semibold">{project.name}</span>
+                    <span className="mt-1 block truncate text-sm text-white/38">{project.status}</span>
+                  </span>
+                  <span
+                    className={cn(
+                      "h-2 w-2 shrink-0 rounded-full transition",
+                      isSelected ? "bg-[#0A84FF]" : "bg-white/18 group-hover:bg-white/36",
+                    )}
+                  />
+                </button>
+              );
+            })}
           </div>
         </div>
-      </WidgetSurface>
+      </section>
 
-      <div className="order-2 lg:order-none lg:col-span-8 xl:h-[250vh]" ref={projectSectionRef}>
-        <div className="xl:sticky xl:top-10">
-          <WidgetSurface className="p-4">
-        <div className="relative z-10">
-          <div className="mb-4 flex items-center justify-between gap-4 px-1">
+      <section className="grid gap-8 border-b border-white/[0.09] py-12 lg:grid-cols-[17rem_minmax(0,1fr)]">
+        <div>
+          <p className="text-sm font-medium text-white/42">Featured project</p>
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: 10 }}
+              key={`${selectedProject.name}-copy`}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <h2 className="mt-5 text-3xl font-semibold leading-tight text-white sm:text-4xl">
+                {selectedProject.name}
+              </h2>
+              <p className="mt-4 text-base leading-7 text-white/52">{selectedProject.description}</p>
+
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-black transition hover:bg-white/88 active:scale-[0.98]"
+                  href={selectedProject.href}
+                >
+                  View project
+                </a>
+                {selectedProject.githubUrl ? (
+                  <a
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-white/[0.14] px-5 text-sm font-semibold text-white/70 transition hover:border-white/24 hover:text-white active:scale-[0.98]"
+                    href={selectedProject.githubUrl}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    GitHub
+                  </a>
+                ) : null}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="min-w-0"
+            exit={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 14 }}
+            key={`${selectedProject.name}-screens`}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {selectedProject.screenshots.length > 0 ? (
+              <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {selectedProject.screenshots.slice(0, 5).map((screenshot, index) => (
+                  <button
+                    aria-label={`Open ${selectedProject.name} screenshot ${index + 1}`}
+                    className={cn(
+                      "relative shrink-0 snap-start cursor-zoom-in overflow-hidden rounded-[1.55rem] border border-white/[0.09] bg-black/20 text-left transition hover:border-white/22 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#64D2FF]",
+                      screenshotFrameClasses[screenshot.frame ?? selectedProject.preferredFrame ?? "phone"],
+                    )}
+                    key={`${selectedProject.name}-${index}-${screenshot.src}`}
+                    onClick={() => setLightboxIndex(index)}
+                    type="button"
+                  >
+                    <Image
+                      alt={`${selectedProject.name} screenshot ${index + 1}`}
+                      className={cn(
+                        "h-full w-full",
+                        (screenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
+                          ? "scale-[1.018] object-cover"
+                          : (screenshot.frame ?? selectedProject.preferredFrame) === "vision"
+                            ? "scale-[1.006] object-cover"
+                            : "object-contain",
+                      )}
+                      height={800}
+                      src={screenshot.src}
+                      unoptimized
+                      width={1200}
+                    />
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </motion.div>
+        </AnimatePresence>
+      </section>
+
+      <section className="grid gap-10 border-b border-white/[0.09] py-12 lg:grid-cols-[minmax(0,1fr)_17rem]">
+        <div>
+          <div className="flex items-end justify-between gap-5">
             <div>
-              <WidgetTitle>Files</WidgetTitle>
-              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Project previews</h2>
+              <p className="text-sm font-medium text-white/42">Professional work</p>
+              <h2 className="mt-4 text-3xl font-semibold text-white">Apps shipped and maintained.</h2>
             </div>
-            <a className="text-sm font-semibold text-[#9FD0FF]" href="/projects">
+            <a className="hidden text-sm font-semibold text-white/52 transition hover:text-white sm:block" href="/projects">
               View all
             </a>
           </div>
 
-          <div className="grid gap-4 xl:grid-cols-[16.5rem_minmax(0,1fr)]">
-            <div className="flex gap-2 overflow-x-auto rounded-[1.75rem] bg-black/20 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden xl:block xl:space-y-2.5 xl:overflow-visible">
-              {homeProjects.map((project, index) => {
-                const isSelected = index === selectedProjectIndex;
-
-                return (
-                  <button
-                    className={cn(
-                      "flex min-w-[13.25rem] items-center gap-3 rounded-[1.35rem] p-3 text-left transition active:scale-[0.99] xl:w-full xl:min-w-0",
-                      isSelected ? "bg-white/[0.14] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]" : "hover:bg-white/[0.07]",
-                    )}
-                    key={project.name}
-                    onClick={() => handleProjectSelect(index)}
-                    type="button"
-                  >
-                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,#2C2C2E,#111217)] shadow-[0_10px_22px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.14)]">
-                      {project.icon ? (
-                        <Image alt="" className="h-full w-full object-cover" height={48} src={project.icon} width={48} />
-                      ) : (
-                        <span className="text-sm font-semibold text-white/86">{project.iconFallback}</span>
-                      )}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-white/88">{project.name}</p>
-                      <p className="mt-1 truncate text-xs font-medium text-white/44">{project.status}</p>
-                    </div>
-                    <span className={cn("ml-auto h-2 w-2 shrink-0 rounded-full", isSelected ? "bg-[#0A84FF]" : "bg-white/18")} />
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="min-w-0 rounded-[1.75rem] bg-black/18 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-              <AnimatePresence initial={false} mode="wait">
-                <motion.div
-                  animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, x: -18, filter: "blur(8px)" }}
-                  initial={{ opacity: 0, x: 18, filter: "blur(8px)" }}
-                  key={selectedProject.name}
-                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <div className="mb-3 flex items-start justify-between gap-4 px-1">
-                    <div className="min-w-0">
-                      <p className="text-lg font-semibold tracking-[-0.025em] text-white">{selectedProject.name}</p>
-                      <p className="mt-1 max-w-xl text-sm leading-5 text-white/52">{selectedProject.description}</p>
-                    </div>
-                    {selectedProject.githubUrl ? (
-                      <a
-                        className="group flex shrink-0 items-center gap-2 rounded-xl bg-[#181717] px-3 py-2 text-xs font-semibold text-white/76 shadow-[0_10px_24px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.16)] transition hover:-translate-y-0.5 hover:bg-[#242424] hover:text-white active:scale-[0.97]"
-                        href={selectedProject.githubUrl}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24">
-                          <path
-                            d="M12 .8A11.2 11.2 0 0 0 8.46 22.63c.56.1.76-.24.76-.54v-1.97c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.15 1.72 1.15 1 1.72 2.63 1.22 3.28.94.1-.72.39-1.22.71-1.5-2.49-.29-5.11-1.25-5.11-5.56 0-1.23.44-2.23 1.15-3.01-.11-.28-.5-1.43.11-2.97 0 0 .94-.3 3.09 1.15A10.75 10.75 0 0 1 12 6.28c.96 0 1.92.13 2.82.38 2.14-1.45 3.08-1.15 3.08-1.15.61 1.54.23 2.69.12 2.97.72.78 1.15 1.78 1.15 3.01 0 4.32-2.63 5.27-5.13 5.55.4.35.76 1.04.76 2.09v2.97c0 .3.21.65.78.54A11.2 11.2 0 0 0 12 .8Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                        GitHub
-                      </a>
-                    ) : null}
-                  </div>
-
-                  {selectedProject.screenshots.length > 0 ? (
-                    <div className="flex snap-x gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                      {selectedProject.screenshots.map((screenshot, index) => (
-                        <motion.button
-                          aria-label={`Open ${selectedProject.name} screenshot ${index + 1}`}
-                          animate={{ opacity: 1, y: 0 }}
-                          className={cn(
-                            "relative shrink-0 snap-start cursor-zoom-in overflow-hidden rounded-[1.65rem] border border-white/12 bg-white/8 text-left shadow-[0_18px_42px_rgba(0,0,0,0.34)] transition hover:border-white/24 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#64D2FF]",
-                            screenshotFrameClasses[screenshot.frame ?? selectedProject.preferredFrame ?? "phone"],
-                          )}
-                          initial={{ opacity: 0, y: 10 }}
-                          key={`${selectedProject.name}-${index}-${screenshot.src}`}
-                          onClick={() => setLightboxIndex(index)}
-                          transition={{ delay: index * 0.035, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                          type="button"
-                        >
-                          <Image
-                            alt={`${selectedProject.name} screenshot ${index + 1}`}
-                            className={cn(
-                              "h-full w-full",
-                              (screenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
-                                ? "scale-[1.018] object-cover"
-                                : (screenshot.frame ?? selectedProject.preferredFrame) === "vision"
-                                  ? "scale-[1.006] object-cover"
-                                  : "object-contain",
-                            )}
-                            height={800}
-                            src={screenshot.src}
-                            unoptimized
-                            width={1200}
-                          />
-                        </motion.button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div
-                      className={cn(
-                        "flex items-center justify-center rounded-[1.65rem] border border-dashed border-white/16 bg-white/[0.045] text-center",
-                        selectedProject.preferredFrame === "vision"
-                          ? "h-[15rem] sm:h-[17rem]"
-                          : selectedProject.preferredFrame === "wide"
-                            ? "h-[13.25rem] sm:h-[15rem]"
-                            : "h-[22rem] sm:h-[25rem]",
-                      )}
-                    >
-                      <div>
-                        <p className="text-sm font-semibold text-white/72">Screenshots coming soon</p>
-                        <p className="mt-2 max-w-xs text-xs leading-5 text-white/42">
-                          Add assets for {selectedProject.name} and this preview will turn into a horizontal gallery.
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
-        </div>
-          </WidgetSurface>
-        </div>
-      </div>
-
-      <WidgetSurface className="order-3 p-5 lg:order-none lg:col-span-8">
-        <div className="relative z-10">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <WidgetTitle>Professional App Work</WidgetTitle>
-              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Apps I’ve built and contributed to.</h2>
-            </div>
-          </div>
-
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/52">
-            Selected iOS work across VPN products I built, enterprise client apps I contributed to, and iPad modernization work.
-          </p>
-
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-7 divide-y divide-white/[0.08] border-y border-white/[0.09]">
             {professionalApps.map((app) => {
-              const content = (
+              const row = (
                 <>
                   <div
-                    className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.06))] shadow-[0_14px_28px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.16)] sm:h-16 sm:w-16"
+                    className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[0.85rem] bg-[#1c1c1e]"
                     style={app.gradient ? { background: app.gradient } : undefined}
                   >
                     {app.icon ? (
                       <Image
                         alt=""
                         aria-hidden="true"
-                        className={cn(
-                          "h-full w-full object-cover",
-                          app.name === "Uranus NetTest" && "scale-[1.04]",
-                        )}
-                        height={64}
+                        className={cn("h-full w-full object-cover", app.name === "Uranus NetTest" && "scale-[1.04]")}
+                        height={48}
                         src={app.icon}
                         unoptimized
-                        width={64}
+                        width={48}
                       />
+                    ) : app.iconSymbol === "lock" ? (
+                      <AppLockIcon className="inline-flex h-6 w-6 items-center justify-center text-center text-[1.08rem] leading-none text-white/84" />
                     ) : (
-                      app.iconSymbol === "lock" ? (
-                        <AppLockIcon className="inline-flex h-7 w-7 translate-x-[0.5px] items-center justify-center text-center text-[1.30rem] leading-none text-white/88" />
-                      ) : (
-                        <span className="text-sm font-semibold tracking-[-0.02em] text-white/88">{app.iconFallback}</span>
-                      )
+                      <span className="text-xs font-semibold text-white/84">{app.iconFallback}</span>
                     )}
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold leading-tight text-white/86">{app.name}</p>
-                    <p className="mt-1 text-xs font-medium leading-tight text-white/42">{app.label}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-base font-semibold text-white/84">{app.name}</p>
+                    <p className="mt-1 truncate text-sm text-white/40">{app.label}</p>
                   </div>
-                  {app.href ? (
-                    <span className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-[0.7rem] font-semibold text-white/42 transition group-hover:bg-white/[0.14] group-hover:text-white/72">
-                      ↗
-                    </span>
-                  ) : null}
+                  {app.href ? <span className="text-sm text-white/32 transition group-hover:text-white/60">↗</span> : null}
                 </>
               );
 
-              const className =
-                "group flex min-h-24 items-center gap-3 rounded-[1.55rem] bg-black/20 p-3.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition hover:bg-white/[0.08] active:scale-[0.985]";
+              const className = "group flex min-h-20 items-center gap-4 text-left transition hover:bg-white/[0.035]";
 
               return app.href ? (
                 <a className={className} href={app.href} key={app.name} rel="noreferrer" target="_blank">
-                  {content}
+                  {row}
                 </a>
               ) : (
                 <div className={className} key={app.name}>
-                  {content}
+                  {row}
                 </div>
               );
             })}
           </div>
         </div>
-      </WidgetSurface>
 
-      <WidgetSurface className="order-4 p-5 lg:order-none lg:col-span-8">
-        <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <WidgetTitle>Contact</WidgetTitle>
-            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">Let’s connect</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/54">
-              Need help with an iOS app, Swift learning, debugging, architecture, or Apple-platform product work?
-            </p>
+        <aside className="lg:pt-14">
+          <p className="text-sm font-medium text-white/42">Stack</p>
+          <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2">
+            {appleStackItems.map((item) => (
+              <span className="text-sm font-medium text-white/58" key={item}>
+                {item}
+              </span>
+            ))}
           </div>
+          <div className="mt-8 border-t border-white/[0.09] pt-6">
+            <p className="text-sm font-medium text-white/42">Current</p>
+            <p className="mt-3 text-base font-semibold text-white/78">iOS Developer</p>
+            <p className="mt-1 text-sm text-white/42">Synapse Tech Inc. / Aug 2024 - Present</p>
+          </div>
+        </aside>
+      </section>
 
-          <a
-            className="group inline-flex h-12 w-fit shrink-0 items-center gap-3 rounded-full border border-white/[0.12] bg-white/[0.085] px-4 pl-5 text-sm font-semibold text-white/86 shadow-[0_16px_35px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.12)] transition hover:border-white/[0.18] hover:bg-white/[0.12] hover:text-white active:scale-[0.98]"
-            href="/about#contact"
-          >
-            <span>Let&apos;s connect</span>
-            <span className="flex h-8 w-8 items-center justify-center text-sm text-white/88 transition group-hover:translate-x-0.5 group-hover:text-white">
-              →
-            </span>
-          </a>
+      <section className="flex flex-col gap-5 py-12 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-sm font-medium text-white/42">Contact</p>
+          <h2 className="mt-3 text-3xl font-semibold text-white">Build something native.</h2>
         </div>
-      </WidgetSurface>
+        <a
+          className="inline-flex h-11 w-fit items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-black transition hover:bg-white/88 active:scale-[0.98]"
+          href="/about#contact"
+        >
+          Let&apos;s connect
+        </a>
+      </section>
 
       <ScreenshotLightbox
         activeIndex={lightboxIndex}
