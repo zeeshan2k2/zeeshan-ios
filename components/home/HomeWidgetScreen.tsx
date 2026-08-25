@@ -2,23 +2,18 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 
 import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
 import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const appleStackItems = [
-  "Swift",
-  "UIKit",
-  "SwiftUI",
-  "VisionOS",
-  "Core Data",
-  "SwiftData",
-  "Keychain",
-  "StoreKit",
-  "XCTest",
+const currentRoleHighlights = [
+  "App Store VPN apps",
+  "Authentication and mobile security",
+  "Enterprise iOS client work",
+  "Legacy iPad modernization",
 ];
 
 type ProfessionalApp = {
@@ -102,14 +97,6 @@ type HomeProject = {
   screenshots: HomeProjectScreenshot[];
 };
 
-const screenshotFrameClasses: Record<ScreenshotFrame, string> = {
-  phone:
-    "aspect-[1170/2532] h-auto w-[10.166rem] sm:w-[11.552rem] [@media(min-width:2300px)]:w-[17rem]",
-  wide: "h-[13.25rem] w-[24rem] sm:h-[15rem] sm:w-[27rem]",
-  square: "h-[18rem] w-[18rem] sm:h-[20rem] sm:w-[20rem]",
-  vision: "aspect-video h-auto w-[27rem] sm:w-[31rem]",
-};
-
 const homeProjects: HomeProject[] = [
   {
     name: "33VPN",
@@ -183,10 +170,27 @@ const homeProjects: HomeProject[] = [
   },
 ];
 
+function SectionLabel({ children }: { children: string }) {
+  return <p className="text-xs font-bold uppercase text-white/38">{children}</p>;
+}
+
+function ProjectIcon({ project }: { project: HomeProject }) {
+  return (
+    <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[0.95rem] bg-[#2c2c2e]">
+      {project.icon ? (
+        <Image alt="" className="h-full w-full object-cover" height={48} src={project.icon} width={48} />
+      ) : (
+        <span className="text-sm font-semibold text-white/80">{project.iconFallback}</span>
+      )}
+    </span>
+  );
+}
+
 export function HomeWidgetScreen() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const selectedProject = homeProjects[selectedProjectIndex];
+  const heroScreenshot = selectedProject.screenshots[0];
 
   function handleProjectSelect(index: number) {
     setLightboxIndex(null);
@@ -194,238 +198,255 @@ export function HomeWidgetScreen() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-10 pt-7 sm:px-7 sm:pt-10 lg:px-10">
-      <section className="grid min-h-[32rem] gap-10 border-b border-white/[0.09] pb-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1fr)] lg:items-end">
-        <div>
-          <div className="mb-10 flex items-center gap-3">
-            <Image
-              alt="Swift"
-              className="h-9 w-9 rounded-[0.7rem] object-cover"
-              height={72}
-              src="/icons/swift.png"
-              width={72}
-            />
-            <p className="text-sm font-medium text-white/48">iOS Developer</p>
-          </div>
-
-          <h1 className="max-w-[11ch] text-6xl font-semibold leading-[0.92] text-white sm:text-7xl lg:text-8xl">
-            {SITE_NAME}
-          </h1>
-          <p className="mt-8 max-w-2xl text-xl font-medium leading-8 text-white/78 sm:text-2xl sm:leading-9">
-            Native iOS apps, AI-powered tools, and Apple-platform products built with care.
-          </p>
-          <p className="mt-5 max-w-xl text-base leading-7 text-white/48">
-            I work across Swift, UIKit, and SwiftUI, with production experience in app architecture,
-            onboarding, subscriptions, and client-facing iOS work.
-          </p>
-        </div>
-
-        <div className="lg:pb-2">
-          <p className="text-sm font-medium text-white/42">Selected work</p>
-          <div className="mt-5 space-y-0 border-y border-white/[0.09]">
-            {homeProjects.map((project, index) => {
-              const isSelected = index === selectedProjectIndex;
-
-              return (
-                <button
-                  className={cn(
-                    "group flex w-full items-center gap-4 border-b border-white/[0.07] py-4 text-left last:border-b-0 transition",
-                    isSelected ? "text-white" : "text-white/48 hover:text-white/78",
-                  )}
-                  key={project.name}
-                  onClick={() => handleProjectSelect(index)}
-                  type="button"
-                >
-                  <span className="w-7 shrink-0 text-sm font-medium tabular-nums text-white/30">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-lg font-semibold">{project.name}</span>
-                    <span className="mt-1 block truncate text-sm text-white/38">{project.status}</span>
-                  </span>
-                  <span
-                    className={cn(
-                      "h-2 w-2 shrink-0 rounded-full transition",
-                      isSelected ? "bg-[#0A84FF]" : "bg-white/18 group-hover:bg-white/36",
-                    )}
-                  />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="grid gap-8 border-b border-white/[0.09] py-12 lg:grid-cols-[17rem_minmax(0,1fr)]">
-        <div>
-          <p className="text-sm font-medium text-white/42">Featured project</p>
-          <AnimatePresence initial={false} mode="wait">
-            <motion.div
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              initial={{ opacity: 0, y: 10 }}
-              key={`${selectedProject.name}-copy`}
-              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h2 className="mt-5 text-3xl font-semibold leading-tight text-white sm:text-4xl">
-                {selectedProject.name}
-              </h2>
-              <p className="mt-4 text-base leading-7 text-white/52">{selectedProject.description}</p>
-
-              <div className="mt-7 flex flex-wrap gap-3">
-                <a
-                  className="inline-flex h-11 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-black transition hover:bg-white/88 active:scale-[0.98]"
-                  href={selectedProject.href}
-                >
-                  View project
-                </a>
-                {selectedProject.githubUrl ? (
-                  <a
-                    className="inline-flex h-11 items-center justify-center rounded-full border border-white/[0.14] px-5 text-sm font-semibold text-white/70 transition hover:border-white/24 hover:text-white active:scale-[0.98]"
-                    href={selectedProject.githubUrl}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    GitHub
-                  </a>
-                ) : null}
+    <div className="mx-auto max-w-7xl px-4 pb-10 pt-5 sm:px-6 lg:px-8">
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <section className="min-h-[28rem] overflow-hidden rounded-[1.8rem] border border-white/[0.1] bg-[linear-gradient(145deg,rgba(255,255,255,0.18),rgba(255,255,255,0.055)_45%,rgba(8,10,16,0.26)),rgba(23,24,28,0.62)] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur-2xl sm:p-7">
+          <div className="flex h-full min-h-[24rem] flex-col justify-between">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Image
+                  alt="Swift"
+                  className="h-12 w-12 rounded-[1rem] object-cover shadow-[0_10px_22px_rgba(0,0,0,0.26)]"
+                  height={96}
+                  src="/icons/swift.png"
+                  width={96}
+                />
+                <div>
+                  <p className="text-sm font-bold text-white/88">iOS Developer</p>
+                  <p className="mt-0.5 text-xs font-semibold text-white/42">Swift / UIKit / SwiftUI</p>
+                </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+            </div>
 
-        <AnimatePresence initial={false} mode="wait">
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            className="min-w-0"
-            exit={{ opacity: 0, y: 14 }}
-            initial={{ opacity: 0, y: 14 }}
-            key={`${selectedProject.name}-screens`}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {selectedProject.screenshots.length > 0 ? (
-              <div className="flex snap-x gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {selectedProject.screenshots.slice(0, 5).map((screenshot, index) => (
+            <div className="pt-12">
+              <h1 className="max-w-[10ch] text-[4.25rem] font-black leading-[0.84] text-white sm:text-[6.7rem] lg:text-[7.4rem]">
+                {SITE_NAME}
+              </h1>
+              <p className="mt-7 max-w-2xl text-2xl font-bold leading-tight text-white/92 sm:text-3xl">
+                Native apps, AI tools, and Apple-platform products with product polish.
+              </p>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-white/56">
+                I build across architecture, onboarding, subscriptions, client-facing iOS products,
+                and independent AI/visionOS experiments.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <aside className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
+          <section className="rounded-[1.55rem] border border-white/[0.1] bg-[linear-gradient(180deg,rgba(44,44,46,0.7),rgba(28,28,30,0.76))] px-5 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl">
+            <SectionLabel>Current</SectionLabel>
+            <p className="mt-4 text-2xl font-black text-white">Synapse Tech Inc.</p>
+            <p className="mt-1 text-sm font-semibold text-white/46">iOS Developer / Aug 2024 - Present</p>
+            <div className="mt-6 divide-y divide-white/[0.08] border-y border-white/[0.08]">
+              {currentRoleHighlights.slice(0, 3).map((highlight) => (
+                <p className="py-3 text-sm font-semibold text-white/58" key={highlight}>
+                  {highlight}
+                </p>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-[1.55rem] border border-white/[0.1] bg-[linear-gradient(180deg,rgba(44,44,46,0.7),rgba(28,28,30,0.76))] px-5 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl">
+            <SectionLabel>Start</SectionLabel>
+            <p className="mt-4 text-2xl font-black text-white">Build something native.</p>
+            <p className="mt-3 text-sm leading-6 text-white/50">
+              Need help with an iOS app, architecture, debugging, or product polish?
+            </p>
+            <a
+              className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full bg-white px-5 text-sm font-bold !text-black transition hover:bg-white/88 active:scale-[0.98]"
+              href="/about#contact"
+            >
+              Let&apos;s connect
+            </a>
+          </section>
+        </aside>
+      </div>
+
+      <section className="mt-4 overflow-hidden rounded-[1.65rem] border border-white/[0.1] bg-[linear-gradient(145deg,rgba(44,44,46,0.76),rgba(18,19,23,0.92))] shadow-[0_22px_70px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl">
+        <div className="grid gap-0 lg:grid-cols-[5.75rem_minmax(0,1fr)]">
+          <nav aria-label="Featured projects" className="border-b border-white/[0.08] p-3 lg:border-b-0 lg:border-r">
+            <div className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:flex-col lg:overflow-visible">
+              {homeProjects.map((project, index) => {
+                const isSelected = index === selectedProjectIndex;
+
+                return (
                   <button
-                    aria-label={`Open ${selectedProject.name} screenshot ${index + 1}`}
+                    aria-label={`Show ${project.name}`}
                     className={cn(
-                      "relative shrink-0 snap-start cursor-zoom-in overflow-hidden rounded-[1.55rem] border border-white/[0.09] bg-black/20 text-left transition hover:border-white/22 hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#64D2FF]",
-                      screenshotFrameClasses[screenshot.frame ?? selectedProject.preferredFrame ?? "phone"],
+                      "group flex h-[4.45rem] w-[4.45rem] shrink-0 flex-col items-center justify-center gap-1.5 rounded-[1.1rem] text-center transition active:scale-[0.98]",
+                      isSelected
+                        ? "bg-white/[0.14] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14)]"
+                        : "text-white/42 hover:bg-white/[0.065] hover:text-white/82",
                     )}
-                    key={`${selectedProject.name}-${index}-${screenshot.src}`}
-                    onClick={() => setLightboxIndex(index)}
+                    key={project.name}
+                    onClick={() => handleProjectSelect(index)}
+                    title={project.name}
                     type="button"
                   >
-                    <Image
-                      alt={`${selectedProject.name} screenshot ${index + 1}`}
+                    <ProjectIcon project={project} />
+                    <span
                       className={cn(
-                        "h-full w-full",
-                        (screenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
-                          ? "scale-[1.018] object-cover"
-                          : (screenshot.frame ?? selectedProject.preferredFrame) === "vision"
-                            ? "scale-[1.006] object-cover"
-                            : "object-contain",
+                        "h-1 w-1 rounded-full transition",
+                        isSelected ? "bg-white" : "bg-transparent group-hover:bg-white/30",
                       )}
-                      height={800}
-                      src={screenshot.src}
-                      unoptimized
-                      width={1200}
                     />
                   </button>
-                ))}
-              </div>
-            ) : null}
-          </motion.div>
-        </AnimatePresence>
-      </section>
-
-      <section className="grid gap-10 border-b border-white/[0.09] py-12 lg:grid-cols-[minmax(0,1fr)_17rem]">
-        <div>
-          <div className="flex items-end justify-between gap-5">
-            <div>
-              <p className="text-sm font-medium text-white/42">Professional work</p>
-              <h2 className="mt-4 text-3xl font-semibold text-white">Apps shipped and maintained.</h2>
+                );
+              })}
             </div>
-            <a className="hidden text-sm font-semibold text-white/52 transition hover:text-white sm:block" href="/projects">
-              View all
-            </a>
-          </div>
+          </nav>
 
-          <div className="mt-7 divide-y divide-white/[0.08] border-y border-white/[0.09]">
-            {professionalApps.map((app) => {
-              const row = (
-                <>
-                  <div
-                    className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[0.85rem] bg-[#1c1c1e]"
-                    style={app.gradient ? { background: app.gradient } : undefined}
-                  >
-                    {app.icon ? (
+          <main className="min-w-0">
+            <AnimatePresence initial={false} mode="wait">
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                className="grid min-h-[32rem] gap-0 xl:grid-cols-[minmax(0,1fr)_22rem]"
+                exit={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 12 }}
+                key={selectedProject.name}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="min-w-0 px-4 py-5 sm:px-6">
+                  {heroScreenshot ? (
+                    <button
+                      aria-label={`Open ${selectedProject.name} featured screenshot`}
+                      className="relative flex min-h-[28rem] w-full cursor-zoom-in items-end overflow-hidden rounded-[1.35rem] bg-black text-left shadow-[0_18px_44px_rgba(0,0,0,0.42)] transition hover:brightness-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#64D2FF]"
+                      onClick={() => setLightboxIndex(0)}
+                      type="button"
+                    >
                       <Image
-                        alt=""
-                        aria-hidden="true"
-                        className={cn("h-full w-full object-cover", app.name === "Uranus NetTest" && "scale-[1.04]")}
-                        height={48}
-                        src={app.icon}
+                        alt={`${selectedProject.name} featured screenshot`}
+                        className={cn(
+                          "h-full w-full",
+                          (heroScreenshot.frame ?? selectedProject.preferredFrame ?? "phone") === "phone"
+                            ? "object-contain p-5"
+                            : (heroScreenshot.frame ?? selectedProject.preferredFrame) === "vision"
+                              ? "object-cover"
+                              : "object-contain",
+                        )}
+                        height={900}
+                        src={heroScreenshot.src}
                         unoptimized
-                        width={48}
+                        width={1200}
                       />
-                    ) : app.iconSymbol === "lock" ? (
-                      <AppLockIcon className="inline-flex h-6 w-6 items-center justify-center text-center text-[1.08rem] leading-none text-white/84" />
-                    ) : (
-                      <span className="text-xs font-semibold text-white/84">{app.iconFallback}</span>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-base font-semibold text-white/84">{app.name}</p>
-                    <p className="mt-1 truncate text-sm text-white/40">{app.label}</p>
-                  </div>
-                  {app.href ? <span className="text-sm text-white/32 transition group-hover:text-white/60">↗</span> : null}
-                </>
-              );
-
-              const className = "group flex min-h-20 items-center gap-4 text-left transition hover:bg-white/[0.035]";
-
-              return app.href ? (
-                <a className={className} href={app.href} key={app.name} rel="noreferrer" target="_blank">
-                  {row}
-                </a>
-              ) : (
-                <div className={className} key={app.name}>
-                  {row}
+                    </button>
+                  ) : null}
                 </div>
-              );
-            })}
-          </div>
-        </div>
 
-        <aside className="lg:pt-14">
-          <p className="text-sm font-medium text-white/42">Stack</p>
-          <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2">
-            {appleStackItems.map((item) => (
-              <span className="text-sm font-medium text-white/58" key={item}>
-                {item}
-              </span>
-            ))}
-          </div>
-          <div className="mt-8 border-t border-white/[0.09] pt-6">
-            <p className="text-sm font-medium text-white/42">Current</p>
-            <p className="mt-3 text-base font-semibold text-white/78">iOS Developer</p>
-            <p className="mt-1 text-sm text-white/42">Synapse Tech Inc. / Aug 2024 - Present</p>
-          </div>
-        </aside>
+                <aside className="border-t border-white/[0.08] px-5 py-5 sm:px-6 xl:border-l xl:border-t-0">
+                  <SectionLabel>Featured work</SectionLabel>
+                  <h2 className="mt-3 text-4xl font-black leading-tight text-white">{selectedProject.name}</h2>
+                  <p className="mt-3 text-base leading-7 text-white/54">{selectedProject.description}</p>
+
+                  <div className="mt-6 flex gap-2">
+                    <a
+                      className="inline-flex h-10 items-center justify-center rounded-full bg-white px-4 text-sm font-bold !text-black transition hover:bg-white/88 active:scale-[0.98]"
+                      href={selectedProject.href}
+                    >
+                      Open
+                    </a>
+                    {selectedProject.githubUrl ? (
+                      <a
+                        className="inline-flex h-10 items-center justify-center rounded-full bg-white/[0.1] px-4 text-sm font-bold !text-white transition hover:bg-white/[0.15] active:scale-[0.98]"
+                        href={selectedProject.githubUrl}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        GitHub
+                      </a>
+                    ) : null}
+                  </div>
+
+                  {selectedProject.screenshots.length > 1 ? (
+                    <div className="mt-8">
+                      <p className="text-xs font-bold uppercase text-white/30">Screens</p>
+                      <div className="mt-3 grid grid-cols-3 gap-2">
+                        {selectedProject.screenshots.slice(1, 4).map((screenshot, index) => (
+                          <button
+                            aria-label={`Open ${selectedProject.name} screenshot ${index + 2}`}
+                            className="aspect-square overflow-hidden rounded-[0.95rem] bg-black transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#64D2FF]"
+                            key={`${selectedProject.name}-thumb-${screenshot.src}`}
+                            onClick={() => setLightboxIndex(index + 1)}
+                            type="button"
+                          >
+                            <Image
+                              alt={`${selectedProject.name} screenshot ${index + 2}`}
+                              className="h-full w-full object-cover"
+                              height={260}
+                              src={screenshot.src}
+                              unoptimized
+                              width={260}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+                </aside>
+              </motion.div>
+            </AnimatePresence>
+          </main>
+        </div>
       </section>
 
-      <section className="flex flex-col gap-5 py-12 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-sm font-medium text-white/42">Contact</p>
-          <h2 className="mt-3 text-3xl font-semibold text-white">Build something native.</h2>
+      <section className="mt-4 rounded-[1.65rem] border border-white/[0.1] bg-[linear-gradient(180deg,rgba(44,44,46,0.66),rgba(28,28,30,0.78))] px-5 py-5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl sm:px-6">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <SectionLabel>App shelf</SectionLabel>
+            <h2 className="mt-2 text-2xl font-black">Shipped and maintained.</h2>
+          </div>
+          <a className="hidden text-sm font-bold !text-white/46 transition hover:!text-white sm:block" href="/projects">
+            View all
+          </a>
         </div>
-        <a
-          className="inline-flex h-11 w-fit items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-black transition hover:bg-white/88 active:scale-[0.98]"
-          href="/about#contact"
-        >
-          Let&apos;s connect
-        </a>
+
+        <div className="mt-6 grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-4 lg:grid-cols-6">
+          {professionalApps.map((app) => {
+            const icon = (
+              <div
+                className="relative mx-auto flex h-16 w-16 items-center justify-center overflow-hidden rounded-[1.15rem] bg-[#1c1c1e] shadow-[0_12px_24px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.12)]"
+                style={app.gradient ? { background: app.gradient } : undefined}
+              >
+                {app.icon ? (
+                  <Image
+                    alt=""
+                    aria-hidden="true"
+                    className={cn("h-full w-full object-cover", app.name === "Uranus NetTest" && "scale-[1.04]")}
+                    height={64}
+                    src={app.icon}
+                    unoptimized
+                    width={64}
+                  />
+                ) : app.iconSymbol === "lock" ? (
+                  <AppLockIcon className="inline-flex h-7 w-7 items-center justify-center text-center text-[1.26rem] leading-none text-white/88" />
+                ) : (
+                  <span className="text-sm font-semibold text-white/84">{app.iconFallback}</span>
+                )}
+              </div>
+            );
+
+            const content = (
+              <>
+                {icon}
+                <span className="mt-2 block truncate text-center text-xs font-bold text-white/76">{app.name}</span>
+                <span className="mt-0.5 block truncate text-center text-[0.68rem] font-semibold text-white/36">
+                  {app.label}
+                </span>
+              </>
+            );
+
+            return app.href ? (
+              <a className="min-w-0 text-center transition hover:brightness-110 active:scale-[0.98]" href={app.href} key={app.name} rel="noreferrer" target="_blank">
+                {content}
+              </a>
+            ) : (
+              <div className="min-w-0 text-center" key={app.name}>
+                {content}
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       <ScreenshotLightbox

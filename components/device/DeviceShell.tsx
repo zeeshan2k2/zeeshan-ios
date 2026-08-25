@@ -9,7 +9,6 @@ import { LockScreen } from "@/components/device/LockScreen";
 import { ScrollReset } from "@/components/device/ScrollReset";
 import { VolumeHUD } from "@/components/device/VolumeHUD";
 import { Dock } from "@/components/layout/Dock";
-import { StatusBar } from "@/components/layout/StatusBar";
 
 type DeviceShellProps = {
   children: ReactNode;
@@ -123,7 +122,6 @@ export function DeviceShell({ children }: DeviceShellProps) {
           >
             <ScrollReset />
             <IPhoneFrame />
-            <StatusBar />
             {children}
           </div>
           <Dock />
