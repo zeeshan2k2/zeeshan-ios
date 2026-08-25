@@ -58,9 +58,9 @@ export const metadata: Metadata = {
   creator: "Zeeshan Waheed",
   icons: {
     icon: [
-      { url: "/favicon.ico", type: "image/x-icon" },
       { url: "/icon.png", type: "image/png", sizes: "512x512" },
       { url: "/favicon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", type: "image/x-icon" },
     ],
     shortcut: ["/favicon.ico"],
     apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
