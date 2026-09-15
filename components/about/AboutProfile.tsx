@@ -178,7 +178,7 @@ export function AboutProfile() {
             <div className="flex items-end gap-5">
               <ContactAction href="/projects" icon="projects" label="Projects" />
               <ContactAction href="#contact" icon="contact" label="Contact" />
-              <ContactAction href="/resume" icon="resume" label="CV" />
+              <ContactAction href="/resume" icon="resume" label="Resume" />
             </div>
           </div>
         </div>

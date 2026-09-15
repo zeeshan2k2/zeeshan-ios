@@ -20,22 +20,22 @@ type DockItem = {
 };
 
 const iconStyles: Record<string, { icon: string }> = {
-  Home: {
+  "/": {
     icon: "/app-icons/home.svg",
   },
-  Projects: {
+  "/projects": {
     icon: "/app-icons/projects.svg",
   },
-  About: {
+  "/about": {
     icon: "/app-icons/about.svg",
   },
-  Resume: {
+  [RESUME_PATH]: {
     icon: "/app-icons/resume.svg",
   },
 };
 
 const navigationItems: DockItem[] = NAV_ITEMS.map((item) => {
-  const style = iconStyles[item.label] ?? {
+  const style = iconStyles[item.href] ?? {
     icon: "/app-icons/home.svg",
   };
 

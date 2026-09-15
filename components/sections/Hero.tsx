@@ -4,7 +4,7 @@ import { projects } from "@/content/projects";
 import { socialLinks } from "@/content/social";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from "@/lib/constants";
 
-const heroActions = ["View Projects", "View CV", "GitHub", "Email"].map((label) =>
+const heroActions = ["View Projects", "View Resume", "GitHub", "Email"].map((label) =>
   socialLinks.find((link) => link.label === label),
 );
 
