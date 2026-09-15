@@ -6,8 +6,8 @@ import { ResumeViewer } from "@/components/resume/ResumeViewer";
 import { RESUME_PDF_PATH } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Resume",
-  description: "View or download the resume for Zeeshan Waheed.",
+  title: "CV",
+  description: "View or download the CV for Zeeshan Waheed.",
   alternates: {
     canonical: "/resume",
   },

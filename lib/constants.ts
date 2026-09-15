@@ -20,7 +20,7 @@ export const NAV_ITEMS = [
     href: "/about",
   },
   {
-    label: "Resume",
+    label: "CV",
     href: RESUME_PATH,
   },
 ];

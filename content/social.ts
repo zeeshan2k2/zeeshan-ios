@@ -6,7 +6,7 @@ export const socialLinks = [
     href: "/projects",
   },
   {
-    label: "View Resume",
+    label: "View CV",
     href: RESUME_PATH,
   },
   {

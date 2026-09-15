@@ -49,14 +49,14 @@ export function ResumeViewer({ pdfPath }: ResumeViewerProps) {
       ref={viewerRef}
     >
       <a
-        aria-label="Open resume PDF"
+        aria-label="Open CV PDF"
         className="block bg-white md:hidden"
         href={pdfPath}
         rel="noreferrer"
         target="_blank"
       >
         <Image
-          alt="Zeeshan Waheed resume"
+          alt="Zeeshan Waheed CV"
           className="h-auto w-full object-contain"
           height={1980}
           priority
@@ -72,7 +72,7 @@ export function ResumeViewer({ pdfPath }: ResumeViewerProps) {
         )}
         key={viewerMode}
         src={`${pdfPath}#${viewerMode}`}
-        title="Zeeshan Waheed Resume PDF"
+        title="Zeeshan Waheed CV PDF"
       />
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-end bg-[linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.42))] px-4 pb-4 pt-14">
