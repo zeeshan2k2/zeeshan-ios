@@ -189,10 +189,11 @@ const homeProjects: HomeProject[] = [
 ];
 
 const homeProjectPreloadImages = homeProjects.flatMap((project) =>
-  project.screenshots.map((screenshot) => ({
+  project.screenshots.map((screenshot, index) => ({
     src: screenshot.src,
-    width: screenshot.frame === "vision" || project.preferredFrame === "vision" ? 1200 : 828,
+    widths: screenshot.frame === "vision" || project.preferredFrame === "vision" ? [828, 1080, 1200] : [640, 750, 828, 1080],
     quality: 82,
+    priority: index < (project.name === "Spatial Tutor" ? 2 : 4),
   })),
 );
 
