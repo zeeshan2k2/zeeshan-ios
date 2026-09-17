@@ -165,9 +165,9 @@ export function ScreenshotLightbox({
               className="object-contain"
               fill
               priority
+              quality={90}
               sizes="100vw"
               src={screenshots[activeIndex].src}
-              unoptimized
             />
           </motion.div>
         </motion.div>

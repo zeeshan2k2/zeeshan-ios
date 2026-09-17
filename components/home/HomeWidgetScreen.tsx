@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
 import { SITE_NAME } from "@/lib/constants";
+import { useOptimizedImagePreloader } from "@/lib/useOptimizedImagePreloader";
 import { cn } from "@/lib/utils";
 
 const appleStackItems = [
@@ -187,6 +188,14 @@ const homeProjects: HomeProject[] = [
   },
 ];
 
+const homeProjectPreloadImages = homeProjects.flatMap((project) =>
+  project.screenshots.map((screenshot) => ({
+    src: screenshot.src,
+    width: screenshot.frame === "vision" || project.preferredFrame === "vision" ? 1200 : 828,
+    quality: 82,
+  })),
+);
+
 function WidgetTitle({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <p className={cn("text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/48", className)}>
@@ -227,6 +236,8 @@ export function HomeWidgetScreen() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const projectSectionRef = useRef<HTMLDivElement>(null);
   const selectedProject = homeProjects[selectedProjectIndex];
+
+  useOptimizedImagePreloader(homeProjectPreloadImages);
 
   useEffect(() => {
     const section = projectSectionRef.current;
@@ -478,8 +489,9 @@ export function HomeWidgetScreen() {
                                   : "object-contain",
                             )}
                             height={800}
+                            quality={82}
+                            sizes="(min-width: 1280px) 31rem, (min-width: 640px) 70vw, 86vw"
                             src={screenshot.src}
-                            unoptimized
                             width={1200}
                           />
                         </motion.button>
@@ -543,8 +555,9 @@ export function HomeWidgetScreen() {
                           app.name === "Uranus NetTest" && "scale-[1.04]",
                         )}
                         height={64}
+                        quality={72}
+                        sizes="64px"
                         src={app.icon}
-                        unoptimized
                         width={64}
                       />
                     ) : (

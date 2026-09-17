@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { learningProjects, orderedLearningPaths, professionalApps, showcaseProjects, technicalNotes } from "@/content/projectArchive";
 import { ScreenshotLightbox } from "@/components/ui/ScreenshotLightbox";
+import { useOptimizedImagePreloader } from "@/lib/useOptimizedImagePreloader";
 import { cn } from "@/lib/utils";
 import type { ScreenshotFrame } from "@/types/projectArchive";
 
@@ -51,6 +52,14 @@ const professionalWorkGroups = [
     outcome: "Improved stability, performance, maintainability, and the overall iPad user experience",
   },
 ] as const;
+
+const showcasePreloadImages = showcaseProjects.flatMap((project) =>
+  project.screenshots.map((screenshot) => ({
+    src: screenshot.src,
+    width: screenshot.frame === "vision" || project.preferredFrame === "vision" ? 1200 : 828,
+    quality: 82,
+  })),
+);
 
 function AppLockIcon({ className }: { className?: string }) {
   return (
@@ -283,6 +292,9 @@ export function ProjectsArchive() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const selectedProject = showcaseProjects[selectedProjectIndex];
+
+  useOptimizedImagePreloader(showcasePreloadImages);
+
   const archivePriority = [
     "Passkey",
     "ByteForge",
@@ -389,8 +401,9 @@ export function ProjectsArchive() {
                               aria-hidden="true"
                               className="h-full w-full object-cover"
                               height={56}
+                              quality={72}
+                              sizes="56px"
                               src={app.icon}
-                              unoptimized
                               width={56}
                             />
                           ) : (
@@ -543,8 +556,9 @@ export function ProjectsArchive() {
                                   : "object-contain",
                             )}
                             height={800}
+                            quality={82}
+                            sizes="(min-width: 1280px) 31rem, (min-width: 640px) 70vw, 86vw"
                             src={screenshot.src}
-                            unoptimized
                             width={1200}
                           />
                         </motion.button>
