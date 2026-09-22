@@ -101,7 +101,6 @@ type HomeProject = {
   description: string;
   icon?: string;
   iconFallback?: string;
-  href: string;
   githubUrl?: string;
   preferredFrame?: ScreenshotFrame;
   screenshots: HomeProjectScreenshot[];
@@ -121,7 +120,6 @@ const homeProjects: HomeProject[] = [
     status: "iOS VPN App",
     description: "A UIKit VPN app built with MVVM, Clean Architecture, reusable flows, and a polished iOS interface.",
     icon: "/ui/appscreenshots/33vpn/app-icon.png",
-    href: "/projects#33vpn",
     githubUrl: "https://github.com/zeeshan2k2/33VPN",
     preferredFrame: "phone",
     screenshots: [
@@ -142,7 +140,6 @@ const homeProjects: HomeProject[] = [
     status: "SwiftUI + widgets",
     description: "SwiftUI weather interface with forecast views, widgets, and AI summary screens.",
     icon: "/ui/appscreenshots/weather/app-icon.png",
-    href: "/projects#weather-app",
     githubUrl: "https://github.com/zeeshan2k2/Weather",
     preferredFrame: "phone",
     screenshots: [
@@ -159,7 +156,6 @@ const homeProjects: HomeProject[] = [
     status: "AI + native UI",
     description: "Schema-driven UI generation rendered into native Apple-platform interfaces.",
     icon: "/ui/appscreenshots/swift-genui/app-icon.png",
-    href: "/projects#swift-genui",
     githubUrl: "https://github.com/zeeshan2k2/SwiftGenUI",
     preferredFrame: "phone",
     screenshots: [
@@ -176,7 +172,6 @@ const homeProjects: HomeProject[] = [
     status: "AI + visionOS",
     description: "VisionOS AI tutor with SwiftUI, TCA, voice streaming, and session summaries.",
     icon: "/ui/appscreenshots/spatial-tutor/app-icon.png",
-    href: "/projects#spatial-tutor",
     githubUrl: "https://github.com/zeeshan2k2/Spatial-Tutor",
     preferredFrame: "vision",
     screenshots: [
@@ -236,6 +231,12 @@ export function HomeWidgetScreen() {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const projectSectionRef = useRef<HTMLDivElement>(null);
+  const screenshotPreviewRef = useRef<HTMLDivElement>(null);
+  const hasNudgedScreenshotPreviewRef = useRef(false);
+  const hasHeldFirstProjectRef = useRef(false);
+  const selectedProjectIndexRef = useRef(0);
+  const projectLockTimeoutRef = useRef<number | null>(null);
+  const projectLockScrollTopRef = useRef<number | null>(null);
   const selectedProject = homeProjects[selectedProjectIndex];
 
   useOptimizedImagePreloader(homeProjectPreloadImages);
@@ -251,9 +252,99 @@ export function HomeWidgetScreen() {
     const currentSection = section;
     const currentScrollContainer = scrollContainer;
     const desktopProjectBrowserQuery = window.matchMedia("(min-width: 1280px)");
+    const nudgeTimers: number[] = [];
+
+    function schedule(callback: () => void, delay: number) {
+      const timer = window.setTimeout(callback, delay);
+      nudgeTimers.push(timer);
+      return timer;
+    }
+
+    function hasReachedProjectLockPoint() {
+      const sectionRect = currentSection.getBoundingClientRect();
+      const containerRect = currentScrollContainer.getBoundingClientRect();
+      const lockOffset = 48;
+
+      return sectionRect.top <= containerRect.top + lockOffset && sectionRect.bottom > containerRect.top + lockOffset;
+    }
+
+    function preventLockedScroll(event: WheelEvent | TouchEvent) {
+      if (projectLockTimeoutRef.current === null || !desktopProjectBrowserQuery.matches) {
+        return;
+      }
+
+      event.preventDefault();
+    }
+
+    function clearProjectLock() {
+      if (projectLockTimeoutRef.current !== null) {
+        window.clearTimeout(projectLockTimeoutRef.current);
+        projectLockTimeoutRef.current = null;
+      }
+
+      projectLockScrollTopRef.current = null;
+    }
+
+    function showProject(index: number) {
+      selectedProjectIndexRef.current = index;
+      setSelectedProjectIndex(index);
+    }
+
+    function startFirstProjectHold() {
+      selectedProjectIndexRef.current = 0;
+      setSelectedProjectIndex(0);
+      clearProjectLock();
+      projectLockScrollTopRef.current = currentScrollContainer.scrollTop;
+
+      projectLockTimeoutRef.current = schedule(() => {
+        projectLockTimeoutRef.current = null;
+        projectLockScrollTopRef.current = null;
+      }, 2_000);
+    }
+
+    function runFirstProjectNudge(attempt = 0) {
+      if (hasNudgedScreenshotPreviewRef.current) {
+        clearProjectLock();
+        return;
+      }
+
+      const preview = screenshotPreviewRef.current;
+
+      if (!preview || preview.scrollWidth <= preview.clientWidth) {
+        if (attempt >= 10) {
+          clearProjectLock();
+          return;
+        }
+
+        schedule(() => runFirstProjectNudge(attempt + 1), 80);
+        return;
+      }
+
+      hasNudgedScreenshotPreviewRef.current = true;
+      const previousSnapType = preview.style.scrollSnapType;
+
+      preview.style.scrollSnapType = "none";
+      preview.scrollTo({ left: 120, behavior: "smooth" });
+
+      schedule(() => {
+        preview.scrollTo({ left: 0, behavior: "smooth" });
+      }, 420);
+
+      schedule(() => {
+        preview.style.scrollSnapType = previousSnapType;
+        clearProjectLock();
+      }, 1_050);
+    }
 
     function updateSelectedProject() {
       if (!desktopProjectBrowserQuery.matches) {
+        return;
+      }
+
+      if (!hasHeldFirstProjectRef.current && hasReachedProjectLockPoint()) {
+        hasHeldFirstProjectRef.current = true;
+        startFirstProjectHold();
+        schedule(() => runFirstProjectNudge(), 80);
         return;
       }
 
@@ -263,22 +354,49 @@ export function HomeWidgetScreen() {
       const progress = Math.min(0.999, Math.max(0, (containerRect.top - sectionRect.top) / scrollDistance));
       const nextIndex = Math.min(homeProjects.length - 1, Math.floor(progress * homeProjects.length));
 
-      setSelectedProjectIndex(nextIndex);
+      if (projectLockTimeoutRef.current !== null) {
+        if (
+          projectLockScrollTopRef.current !== null &&
+          Math.abs(currentScrollContainer.scrollTop - projectLockScrollTopRef.current) > 1
+        ) {
+          currentScrollContainer.scrollTop = projectLockScrollTopRef.current;
+        }
+
+        return;
+      }
+
+      if (nextIndex === selectedProjectIndexRef.current) {
+        return;
+      }
+
+      showProject(nextIndex);
     }
 
     updateSelectedProject();
     currentScrollContainer.addEventListener("scroll", updateSelectedProject, { passive: true });
+    currentScrollContainer.addEventListener("wheel", preventLockedScroll, { passive: false });
+    currentScrollContainer.addEventListener("touchmove", preventLockedScroll, { passive: false });
     desktopProjectBrowserQuery.addEventListener("change", updateSelectedProject);
     window.addEventListener("resize", updateSelectedProject);
 
     return () => {
       currentScrollContainer.removeEventListener("scroll", updateSelectedProject);
+      currentScrollContainer.removeEventListener("wheel", preventLockedScroll);
+      currentScrollContainer.removeEventListener("touchmove", preventLockedScroll);
       desktopProjectBrowserQuery.removeEventListener("change", updateSelectedProject);
       window.removeEventListener("resize", updateSelectedProject);
+      clearProjectLock();
+      nudgeTimers.forEach((timer) => window.clearTimeout(timer));
     };
   }, []);
 
   function handleProjectSelect(index: number) {
+    if (projectLockTimeoutRef.current !== null) {
+      window.clearTimeout(projectLockTimeoutRef.current);
+      projectLockTimeoutRef.current = null;
+    }
+
+    selectedProjectIndexRef.current = index;
     setLightboxIndex(null);
     setSelectedProjectIndex(index);
 
@@ -385,7 +503,7 @@ export function HomeWidgetScreen() {
         </div>
       </WidgetSurface>
 
-      <div className="order-2 lg:order-none lg:col-span-8 xl:h-[250vh]" ref={projectSectionRef}>
+      <div className="order-2 lg:order-none lg:col-span-8 xl:h-[520vh]" ref={projectSectionRef}>
         <div className="xl:sticky xl:top-10">
           <WidgetSurface className="p-4">
         <div className="relative z-10">
@@ -464,7 +582,10 @@ export function HomeWidgetScreen() {
                   </div>
 
                   {selectedProject.screenshots.length > 0 ? (
-                    <div className="flex snap-x gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div
+                      className="flex snap-x gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                      ref={screenshotPreviewRef}
+                    >
                       {selectedProject.screenshots.map((screenshot, index) => (
                         <motion.button
                           aria-label={`Open ${selectedProject.name} screenshot ${index + 1}`}
